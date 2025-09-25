@@ -14,6 +14,13 @@
     const inputArea = document.querySelector("#inputArea");
     const inputDensidad = document.querySelector("#inputDensidad");
     const razonamiento = document.querySelector("#razonamiento");
+    
+
+    //////////////////////FUNCIONES//////////////////////
+
+
+    //CARGAR DATA
+
     cargarData();
 
     function cargarData(){
@@ -34,7 +41,12 @@
     Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
     }
     const paisSelect = document.querySelector("#paisSelect");
+   
+    
+    //OBTENER PAISES
+    
     obtenerPaises();
+   
     async function obtenerPaises(){
         const response = await fetch("https://restcountries.com/v3.1/all?fields=name,area,flag")
         const data = await response.json();
@@ -50,6 +62,10 @@
 
     paisSelect.addEventListener("change", cambiarArea);
     console.log(listaPaises);
+
+
+    //CAMBIAR AREA
+  
     function cambiarArea(){
         let contenido = paisSelect.value;
         listaPaises.forEach(element => {
@@ -60,49 +76,4 @@
 
         inputArea.innerHTML = area;
         cargarData();
-    }
-
-
-
-
-
-    //async function obtenerPokemon(){
-    //    const respuesta = await fetch("https://pokeapi.co/api/v2/type/3")
-    //    console.log(respuesta);
-    //    const data = await respuesta.json()
-    //    console.log(data);
-//
-    //    data.pokemon.forEach(pokemon => {
-    //        console.log(pokemon.pokemon.name)
-    //    })
-    //}
-
-    //obtenerPokemon();
-
-    const contenedorDetalle = document.querySelector("#contenedorDetalle");
-    const contenedorPokemon = document.querySelector("#contenedorPokemon");
-
-    iniciarPokemon();
-    async function iniciarPokemon(){
-        const pokemons = await obtenerPokemones(nombre);
-        pokemons.forEach((pokemon) =>{
-            const btn = document.createElement("button")
-            btn.textContent = `nombre: ${pokemon.name}`
-            btn.addEventListener("click", async () => {
-                const miPokemon = await obtenerPokemon(pokemon.name)
-                contenedorDetalle.innerHTML = `<img src="${miPokemon.img}"> <h1>${miPokemon.nombre}</h1>`
-            })
-            contenedorPokemon.appendChild(btn);
-        })
-    }
-
-    async function obtenerPokemones(nombre){
-        const respuesta = await fetch(`https://pokeapi.co/api/v2/${nombre}`)
-        const data = await respuesta.json();
-        const nuestroPokemon = {
-            nombre: data.name,
-            id: data.id,
-            img: data.sprites.front_default
-        }
-        return nuestroPokemon
     }
