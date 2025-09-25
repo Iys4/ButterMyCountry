@@ -27,6 +27,7 @@
 
         cargarData();
 
+<<<<<<< HEAD
     function cargarData(){
     gramosPorMetroDeSuelo = densidad * 1000;
     gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
@@ -39,6 +40,7 @@
     }
     const paisSelect = document.querySelector("#paisSelect");
    
+=======
         function cargarData(){
         gramosPorMetroDeSuelo = densidad * 1000;
         gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
@@ -62,6 +64,7 @@
         try {
         let response = await fetch(`${BASE_URL}name,flags`);
         let data = await response.json();
+>>>>>>> a94bc4901e23072bad9c27cec56f3fdd59d38477
     
             data.forEach(pais => {
             console.log(pais.name.common, pais.flags.png);
@@ -110,6 +113,7 @@
         inputArea.innerHTML = area;
         cargarData();
     }
+<<<<<<< HEAD
     const selectComparador = document.querySelector("#comparador");
     selectComparador.addEventListener("change", cambiarComparacion)
 cargarComparador();
@@ -132,4 +136,6 @@ cargarComparador();
     });
 
     }
+=======
     const selectComparador = document.querySelector("#paisSelect");
+>>>>>>> a94bc4901e23072bad9c27cec56f3fdd59d38477
