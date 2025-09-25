@@ -39,6 +39,26 @@
     
     const BASE_URL = "https://restcountries.com/v3.1/all?fields=";
 
+
+    //OBTENER BANDERAS
+
+        async function obtenerBanderas(){
+
+        try {
+        let response = await fetch(`${BASE_URL}name,flags`);
+        let data = await response.json();
+    
+            data.forEach(pais => {
+            console.log(pais.name.common, pais.flags.png);
+            });
+        } catch (error) {
+            console.log("Error: No hemos podido acceder a las banderas." + error);
+        }
+    }
+
+    obtenerBanderas();
+    
+
     //OBTENER PAISES
     
     obtenerPaises();
@@ -78,13 +98,3 @@
         cargarData();
     }
     const selectComparador = document.querySelector("#paisSelect");
-    
-    cargarComparador();
-    
-    //COMPARADOR DE PAISES
-
-    function cargarComparador (){
-        produccionDeMantecaPorPais.forEach(element => {
-            
-        });
-    }
