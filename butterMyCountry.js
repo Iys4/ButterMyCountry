@@ -46,7 +46,6 @@
     //OBTENER PAISES
     
     obtenerPaises();
-   
     async function obtenerPaises(){
         const response = await fetch("https://restcountries.com/v3.1/all?fields=name,area,flag")
         const data = await response.json();
@@ -76,4 +75,11 @@
 
         inputArea.innerHTML = area;
         cargarData();
+    }
+    const selectComparador = document.querySelector("#paisSelect");
+cargarComparador();
+    function cargarComparador (){
+        produccionDeMantecaPorPais.forEach(element => {
+            
+        });
     }
