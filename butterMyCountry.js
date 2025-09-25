@@ -32,13 +32,7 @@
     porcentajeDeProduccion = parseFloat(toneladasTotales/produccionDeManteca);
     inputArea.innerHTML = `${area} km cuadrados`
     inputDensidad.innerHTML = `${densidad} cm cubicos de densidad`
-    razonamiento.innerHTML = `La manteca
-    requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. <br>
-    esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado <br>
-    Como nuestra area es ${area} km2 tendriamos que usar <br>
-    ${kilogramosPorArea} kilogramos de manteca para embadurnar el area <br>
-    esto en toneladas serian <br> ${toneladasTotales} Toneladas de manteca  <br> <br>
-    Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
+    razonamiento.innerHTML = `La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area. Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
     }
     const paisSelect = document.querySelector("#paisSelect");
    
@@ -47,6 +41,8 @@
     
     obtenerPaises();
     async function obtenerPaises(){
+
+        try {
         const response = await fetch("https://restcountries.com/v3.1/all?fields=name,area,flag")
         const data = await response.json();
         listaPaises = data;
@@ -55,6 +51,9 @@
         nombrePaises.forEach(element => {
             paisSelect.innerHTML += `<option nombre="${element}">${element}</option>`
         });
+        } catch (error) {
+            console.log("Error: No hemos podido acceder a los países." + error);
+        }
     }
 
         let listaPaises = [];
