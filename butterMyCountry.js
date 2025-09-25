@@ -102,13 +102,20 @@
     }
     const selectComparador = document.querySelector("#comparador");
     selectComparador.addEventListener("change", cambiarComparacion)
-cargarComparador();
+    cargarComparador();
+    
+    
+    //CARGAR COMPARADOR
+    
     function cargarComparador (){
         produccionDeMantecaPorPais.forEach(element => {
             selectComparador.innerHTML += `<option>${element.nombre}</option>`
             console.log(element)
         });
     }
+
+
+    //CAMBIAR COMPARACION
 
     function cambiarComparacion(){
     let paisUsado = selectComparador.value;
