@@ -1,3 +1,4 @@
+    
     let area = 17125200;
     let densidad = 0.911;
     let covertura = 0.1;
@@ -5,6 +6,7 @@
 
     let gramosPorMetroDeSuelo = densidad * 1000;
     let gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+    let paisComparado = "Reino Unido"
     let produccionDeManteca = 200000;
 
     let kilogramosPorArea = (gramosPorKilometro/1000) * area;
@@ -26,13 +28,12 @@
     function cargarData(){
     gramosPorMetroDeSuelo = densidad * 1000;
     gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
-    produccionDeManteca = 200000;
     kilogramosPorArea = (gramosPorKilometro/1000) * area;
     toneladasTotales = kilogramosPorArea / 1000;
     porcentajeDeProduccion = parseFloat(toneladasTotales/produccionDeManteca);
     inputArea.innerHTML = `${area} km cuadrados`
     inputDensidad.innerHTML = `${densidad} cm cubicos de densidad`
-    razonamiento.innerHTML = `La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area. Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
+    razonamiento.innerHTML = `La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area. Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del ${paisComparado} para llenar a ${pais} de manteca`
     }
     const paisSelect = document.querySelector("#paisSelect");
    
@@ -75,10 +76,25 @@
         inputArea.innerHTML = area;
         cargarData();
     }
-    const selectComparador = document.querySelector("#paisSelect");
+    const selectComparador = document.querySelector("#comparador");
+    selectComparador.addEventListener("change", cambiarComparacion)
 cargarComparador();
     function cargarComparador (){
         produccionDeMantecaPorPais.forEach(element => {
-            
+            selectComparador.innerHTML += `<option>${element.nombre}</option>`
+            console.log(element)
         });
+    }
+
+    function cambiarComparacion(){
+    let paisUsado = selectComparador.value;
+    produccionDeMantecaPorPais.forEach(element => {
+        if (element.nombre === paisUsado){
+                paisComparado = element.nombre;
+                produccionDeManteca = element.manteca;
+                console.log(element.manteca);
+                cargarData();
+        }
+    });
+
     }
