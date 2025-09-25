@@ -20,10 +20,12 @@
 
     //////////////////////FUNCIONES//////////////////////
 
+        const BASE_URL = "https://restcountries.com/v3.1/all?fields=";
+
 
     //CARGAR DATA
 
-    cargarData();
+        cargarData();
 
     function cargarData(){
     gramosPorMetroDeSuelo = densidad * 1000;
@@ -37,14 +39,46 @@
     }
     const paisSelect = document.querySelector("#paisSelect");
    
+        function cargarData(){
+        gramosPorMetroDeSuelo = densidad * 1000;
+        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+        produccionDeManteca = 200000;
+        kilogramosPorArea = (gramosPorKilometro/1000) * area;
+        toneladasTotales = kilogramosPorArea / 1000;
+        porcentajeDeProduccion = parseFloat(toneladasTotales/produccionDeManteca);
+        inputArea.innerHTML = `${area} km cuadrados`
+        inputDensidad.innerHTML = `${densidad} cm cubicos de densidad`
+        razonamiento.innerHTML = `La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area. Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
+        }
+        const paisSelect = document.querySelector("#paisSelect");
+
+
+    //OBTENER BANDERAS
+
+        obtenerBanderas();
+
+        async function obtenerBanderas(){
+
+        try {
+        let response = await fetch(`${BASE_URL}name,flags`);
+        let data = await response.json();
     
+            data.forEach(pais => {
+            console.log(pais.name.common, pais.flags.png);
+            });
+        } catch (error) {
+            console.log("Error: No hemos podido acceder a las banderas." + error);
+        }
+    }
+
+
     //OBTENER PAISES
     
     obtenerPaises();
     async function obtenerPaises(){
 
         try {
-        const response = await fetch("https://restcountries.com/v3.1/all?fields=name,area,flag")
+        const response = await fetch(`${BASE_URL}name,area,flag`)
         const data = await response.json();
         listaPaises = data;
         let nombrePaises = data.map(element => (element.name.common))
@@ -98,3 +132,4 @@ cargarComparador();
     });
 
     }
+    const selectComparador = document.querySelector("#paisSelect");
