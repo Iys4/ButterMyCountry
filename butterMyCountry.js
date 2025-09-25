@@ -18,29 +18,30 @@
 
     //////////////////////FUNCIONES//////////////////////
 
+        const BASE_URL = "https://restcountries.com/v3.1/all?fields=";
+
 
     //CARGAR DATA
 
-    cargarData();
+        cargarData();
 
-    function cargarData(){
-    gramosPorMetroDeSuelo = densidad * 1000;
-    gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
-    produccionDeManteca = 200000;
-    kilogramosPorArea = (gramosPorKilometro/1000) * area;
-    toneladasTotales = kilogramosPorArea / 1000;
-    porcentajeDeProduccion = parseFloat(toneladasTotales/produccionDeManteca);
-    inputArea.innerHTML = `${area} km cuadrados`
-    inputDensidad.innerHTML = `${densidad} cm cubicos de densidad`
-    razonamiento.innerHTML = `La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area. Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
-    }
-    const paisSelect = document.querySelector("#paisSelect");
-   
-    
-    const BASE_URL = "https://restcountries.com/v3.1/all?fields=";
+        function cargarData(){
+        gramosPorMetroDeSuelo = densidad * 1000;
+        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+        produccionDeManteca = 200000;
+        kilogramosPorArea = (gramosPorKilometro/1000) * area;
+        toneladasTotales = kilogramosPorArea / 1000;
+        porcentajeDeProduccion = parseFloat(toneladasTotales/produccionDeManteca);
+        inputArea.innerHTML = `${area} km cuadrados`
+        inputDensidad.innerHTML = `${densidad} cm cubicos de densidad`
+        razonamiento.innerHTML = `La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area. Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del Reino Unido para llenar a ${pais} de manteca`
+        }
+        const paisSelect = document.querySelector("#paisSelect");
 
 
     //OBTENER BANDERAS
+
+        obtenerBanderas();
 
         async function obtenerBanderas(){
 
@@ -56,8 +57,6 @@
         }
     }
 
-    obtenerBanderas();
-    
 
     //OBTENER PAISES
     
