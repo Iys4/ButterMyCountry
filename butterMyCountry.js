@@ -37,13 +37,15 @@
     const paisSelect = document.querySelector("#paisSelect");
    
     
+    const BASE_URL = "https://restcountries.com/v3.1/all?fields=";
+
     //OBTENER PAISES
     
     obtenerPaises();
     async function obtenerPaises(){
 
         try {
-        const response = await fetch("https://restcountries.com/v3.1/all?fields=name,area,flag")
+        const response = await fetch(`${BASE_URL}name,area,flag`)
         const data = await response.json();
         listaPaises = data;
         let nombrePaises = data.map(element => (element.name.common))
@@ -76,7 +78,11 @@
         cargarData();
     }
     const selectComparador = document.querySelector("#paisSelect");
-cargarComparador();
+    
+    cargarComparador();
+    
+    //COMPARADOR DE PAISES
+
     function cargarComparador (){
         produccionDeMantecaPorPais.forEach(element => {
             
