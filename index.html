@@ -7,22 +7,28 @@
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
+    <main>
+        <div class="menuSelects">
     <select name="pais" id="paisSelect">
         <option value="" disabled selected>Selecciona el pais a enmantecar</option>
     </select>
     <select name="" id="comparador">
         <option value="" disabled selected>Selecciona el pais enmantecador</option>
     </select>
+        </div>
+    <div class="informacionFija">
     <h2>Densidad de la manteca</h2>
     <h3 id="inputDensidad">0.911 g/cm3</h3>
     <h2>Covertura de manteca</h2>
     <h3 id="inputCovertura">0.1 cm3</h3>
+    </div>
     <h2>Razonamiento</h2>
     <h3 id="razonamiento"></h3>
     <div id="visualizadorCaja">
         <p id="visualizador"></p>
     </div>
     <p id="contenedorDetalle"></p>
+    </main>
     <script src="datos.js"></script>
     <script src="butterMyCountry.js">
     </script>
