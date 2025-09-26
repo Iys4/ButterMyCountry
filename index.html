@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Butter My Country</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
     <select name="pais" id="paisSelect">
         <option value="" disabled selected>Selecciona el pais a enmantecar</option>
+    </select>
+    <select name="" id="comparador">
+        <option value="" disabled selected>Selecciona el pais enmantecador</option>
     </select>
     <h2>Densidad de la manteca</h2>
     <h3 id="inputDensidad">0.911 g/cm3</h3>
@@ -15,10 +19,9 @@
     <h3 id="inputCovertura">0.1 cm3</h3>
     <h2>Razonamiento</h2>
     <h3 id="razonamiento"></h3>
-    <h2 id="visualizador"></h2>
-    <select name="" id="comparador">
-        <option value="" disabled selected>Selecciona el pais enmantecador</option>
-    </select>
+    <div id="visualizadorCaja">
+        <p id="visualizador"></p>
+    </div>
     <p id="contenedorDetalle"></p>
     <script src="datos.js"></script>
     <script src="butterMyCountry.js">

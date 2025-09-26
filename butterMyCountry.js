@@ -37,6 +37,7 @@
         <p>Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area.  </p> 
         <p>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. </p> 
         <p>Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del ${paisComparado} para llenar a ${pais} de manteca </p>`
+        visualizador.innerHTML = "";
         for (let i = 0; i < porcentajeDeProduccion; i++) {
             visualizador.innerHTML += `O`
         }
