@@ -16,6 +16,7 @@
     const inputDensidad = document.querySelector("#inputDensidad");
     const razonamiento = document.querySelector("#razonamiento");
     const visualizador = document.querySelector("#visualizador");
+    const imagenPais = document.querySelector("#imagenPais");
     
 
     //////////////////////FUNCIONES//////////////////////
