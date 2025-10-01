@@ -1,8 +1,6 @@
 BASE_URL0 = 'https://api.worldbank.org/v2/';
 const BASE_URL_PAISES = `${BASE_URL0}country?format=json&per_page=300`;
 
-obtenerPaises();
-
 async function obtenerPaises() {
     try {
         let response = await fetch(BASE_URL_PAISES);
@@ -12,13 +10,30 @@ async function obtenerPaises() {
         //Este socotroco es para filtrar las regiones de los paises que por alguna razon los incluyen en el API de paises
         countries.filter(country => country.region.id !== 'NA').forEach(country => {
                 console.log(country);
-                listaPaises.push(country);
+                listaPaises.push(country.id);
             });
+            return listaPaises;
     } catch (error) {
         console.log("Error: No hemos podido acceder a los países. " + error);
     }
 }
-
+//getIndicator();
+async function getIndicator() {
+    let countryList = await obtenerPaises();
+    const indicator = 'AG.LND.TOTL.K2';
+    for (let country of countryList) {
+        const url = `${BASE_URL0}country/${country}/indicator/${indicator}?format=json&date=2022`;
+        try {
+            let response = await fetch(url);
+            let data = await response.json();
+            // The area value is in data[1][0].value if available
+            let info = data[1][0].value;
+            console.log(`Pais: ${country}, Area: ${info}`);
+        } catch (error) {
+            console.log(`Error getting area for ${country}: ${error}`);
+        }
+    }
+}
 
 //Buscador de topicos
 //Esto es para encontrar la id de lo que estemos buscando
@@ -69,7 +84,7 @@ async function obtenerPaises() {
 //obtenerTopicos();
 
 //Usando este codigo y cambiando la const "Tematica" podemos encontrar las id de todas las tematicas que querramos
-let tematicaId = 6;
+let tematicaId = 21;
     const INDICATOR_URL = `${BASE_URL0}topic/${tematicaId}/indicator?format=json&per_page=300`;
 async function obtenerIndicesPorTopico() {
     try {
