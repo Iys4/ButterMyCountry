@@ -1,0 +1,65 @@
+#visualizadorCaja {
+    width: 80%;
+    overflow-wrap: break-word;
+}
+
+*{
+    box-sizing: border-box;
+    margin : 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+.informacionFija {
+    width: 20%;
+    background-color: rgb(255, 255, 255);
+    border: 3px solid black;
+    color: rgb(41, 0, 0);
+    padding: 2vw;
+    margin: 2vh 0;
+    filter: drop-shadow(5px 6px 4px #d1d1d1);
+}
+
+.infoYCoso {
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+}
+
+.menuSelects {
+    display: flex;
+    flex-direction: row;
+    gap: 1vh;
+}
+
+.menuSelects select{
+    height: 5vh;
+    border: none;
+    width: 20vw;
+    filter: drop-shadow(5px 6px 4px #d1d1d1);
+}
+
+.informacionFija h2 {
+    font-size: 1em;
+}
+
+.informacionFija h3 {
+    font-size: 1em;
+}
+
+header {
+    text-align: center;
+    width: 100%;
+    height: 20vh;
+    background-color: rgb(255, 215, 71);
+    margin-bottom: 5vh;
+
+    img{
+        height: 100%;
+        width: auto;
+    }
+}

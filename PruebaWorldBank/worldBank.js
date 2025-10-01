@@ -17,21 +17,37 @@ async function obtenerPaises() {
         console.log("Error: No hemos podido acceder a los países. " + error);
     }
 }
-//getIndicator();
-async function getIndicator() {
+getIndicator("AG.LND.TOTL.K2");
+async function getIndicator(indicador) {
     let countryList = await obtenerPaises();
-    const indicator = 'AG.LND.TOTL.K2';
+    let indicator = indicador;
     for (let country of countryList) {
         const url = `${BASE_URL0}country/${country}/indicator/${indicator}?format=json&date=2022`;
         try {
             let response = await fetch(url);
             let data = await response.json();
             // The area value is in data[1][0].value if available
+            let nombrePais = data[1][0].country.value;
             let info = data[1][0].value;
-            console.log(`Pais: ${country}, Area: ${info}`);
+            let nombreIndicador = data[1][0].indicator.value;
+            console.log(`El valor del indicador ${nombreIndicador} para ${nombrePais} en 2022 es: ${info}`);
         } catch (error) {
             console.log(`Error getting area for ${country}: ${error}`);
         }
+    }
+}
+
+async function getIndicatorForCountry(indicador, pais) {
+    const url = `${BASE_URL0}country/${pais}/indicator/${indicador}?format=json&date=2022`;
+    try {
+        let response = await fetch(url);
+        let data = await response.json();
+            let nombrePais = data[1][0].country.value;
+            let info = data[1][0].value;
+            let nombreIndicador = data[1][0].indicator.value;
+            return { pais: nombrePais, indicador: nombreIndicador, valor: info };
+    } catch (error) {
+        return { error: `Error obteniendo el indicador: ${error}` };
     }
 }
 
@@ -84,25 +100,25 @@ async function getIndicator() {
 //obtenerTopicos();
 
 //Usando este codigo y cambiando la const "Tematica" podemos encontrar las id de todas las tematicas que querramos
-let tematicaId = 21;
-    const INDICATOR_URL = `${BASE_URL0}topic/${tematicaId}/indicator?format=json&per_page=300`;
-async function obtenerIndicesPorTopico() {
-    try {
-        let response = await fetch(INDICATOR_URL);
-        let data = await response.json();
-        let indices = data[1]; // The second element contains the indicators
-        if (indices) {
-            indices.forEach(indicador => {
-                console.log(indicador.name);
-                console.log(indicador.id);
-            });
-        } else {
-            console.log("No se encontraron indicadores para el tópico especificado.");
-        }
-    } catch (error) {
-        console.log("Error al obtener los índices: " + error);
-    }
-}
-
-// Llama a la función para el tópico 6
-obtenerIndicesPorTopico(6);
+//let tematicaId = 3;
+//    const INDICATOR_URL = `${BASE_URL0}topic/${tematicaId}/indicator?format=json&per_page=300`;
+//async function obtenerIndicesPorTopico() {
+//    try {
+//        let response = await fetch(INDICATOR_URL);
+//        let data = await response.json();
+//        let indices = data[1]; // The second element contains the indicators
+//        if (indices) {
+//            indices.forEach(indicador => {
+//                console.log(indicador.name);
+//                console.log(indicador.id);
+//            });
+//        } else {
+//            console.log("No se encontraron indicadores para el tópico especificado.");
+//        }
+//    } catch (error) {
+//        console.log("Error al obtener los índices: " + error);
+//    }
+//}
+//
+//// Llama a la función para el tópico 6
+//obtenerIndicesPorTopico(6);
