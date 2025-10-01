@@ -27,6 +27,7 @@
     //CARGAR DATA
 
         function cargarData(){
+        imagenPais.innerHTML = 
         gramosPorMetroDeSuelo = densidad * 1000;
         gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
         kilogramosPorArea = (gramosPorKilometro/1000) * area;
@@ -64,14 +65,14 @@
         }
     }
 
+    imagenPais.innerHTML = `<img src="" alt="">`
 
     //OBTENER PAISES
-    
     obtenerPaises();
     async function obtenerPaises(){
 
         try {
-        const response = await fetch(`${BASE_URL}name,area,flag`)
+        const response = await fetch(`${BASE_URL}name,area,flags`)
         const data = await response.json();
         listaPaises = data;
         let nombrePaises = data.map(element => (element.name.common))
@@ -98,6 +99,9 @@
             if(element.name.common === contenido){
                 area = element.area;
                 pais = element.name.common
+                console.log(element.area);
+                console.log(element.flags.png);
+                imagenPais.innerHTML = `<img src="${element.flags.png}" alt="">`
             }
         });
         cargarData();
