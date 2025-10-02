@@ -17,7 +17,18 @@
     const razonamiento = document.querySelector("#razonamiento");
     const visualizador = document.querySelector("#visualizador");
     const imagenPais = document.querySelector("#imagenPais");
+
+    //BotonIniciarSesion
+    const inicioSesion = document.querySelector("#inicioSesion");
+    const contenedorUsuario = document.querySelector("#contenedorUsuario");
+    inicioSesion.addEventListener("click", iniciarSesion);
     
+    crearBoton();
+    function crearBoton(){
+        contenedorUsuario.innerHTML = 
+        `<p id="nombreUsuario">Invitado</p>
+        <button id="inicioSesion">Iniciar Sesion</button>`;
+    }
 
     //////////////////////FUNCIONES//////////////////////
 
@@ -68,7 +79,6 @@
     //CARGAR DATA
 
         function cargarData(){
-        imagenPais.innerHTML = 
         gramosPorMetroDeSuelo = densidad * 1000;
         gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
         kilogramosPorArea = (gramosPorKilometro/1000) * area;

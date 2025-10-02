@@ -6,7 +6,7 @@ async function obtenerPaises() {
         let response = await fetch(BASE_URL_PAISES);
         let data = await response.json();
         let listaPaises = [];
-        let countries = data[1]; // The second element contains the country data
+        let countries = data[1];
         //Este socotroco es para filtrar las regiones de los paises que por alguna razon los incluyen en el API de paises
         countries.filter(country => country.region.id !== 'NA').forEach(country => {
                 console.log(country);
@@ -17,6 +17,7 @@ async function obtenerPaises() {
         console.log("Error: No hemos podido acceder a los países. " + error);
     }
 }
+
 getIndicator("AG.LND.TOTL.K2");
 async function getIndicator(indicador) {
     let countryList = await obtenerPaises();
