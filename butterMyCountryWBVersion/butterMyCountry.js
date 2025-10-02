@@ -21,7 +21,6 @@
     //BotonIniciarSesion
     const inicioSesion = document.querySelector("#inicioSesion");
     const contenedorUsuario = document.querySelector("#contenedorUsuario");
-    inicioSesion.addEventListener("click", iniciarSesion);
     
     crearBoton();
     function crearBoton(){
