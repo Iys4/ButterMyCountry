@@ -38,33 +38,36 @@ let toneladasTotales = kilogramosPorArea / 1000;
     botonJ4.addEventListener("click", cargarJ4);
     botonJ5.addEventListener("click", cargarJ5);
 
+    const imagenModuloPaisJ1 = document.querySelector("#imagenModuloPaisJ1");
+    const imagenModuloPaisJ2 = document.querySelector("#imagenModuloPaisJ2");
+    const imagenModuloPaisJ2_2 = document.querySelector("#imagenModuloPaisJ2_2");
+    const imagenModuloPaisJ3 = document.querySelector("#imagenModuloPaisJ3");
+    const imagenModuloPaisJ4 = document.querySelector("#imagenModuloPaisJ4");
+    const imagenModuloPaisJ4_2 = document.querySelector("#imagenModuloPaisJ4_2");
+    const imagenModuloPaisJ5 = document.querySelector("#imagenModuloPaisJ5");
+    const imagenModuloPaisJ5_2 = document.querySelector("#imagenModuloPaisJ5_2");
+
+
+
     //FUNCIONES BOTONES
     function cargarJ2(){
         esconderArticulos();
-        cargarPaisesEnSelect(selectPaisJ2);
-        cargarPaisesEnSelect(selectPaisJ2_2);
         articleJ2.style = "display: block";
     }
     function cargarJ1(){
         esconderArticulos();
-        cargarPaisesEnSelect(selectPaisJ1);
         articleJ1.style = "display: block";
     }
     function cargarJ3(){
         esconderArticulos();
-        cargarPaisesEnSelect(selectPaisJ3);
         articleJ3.style = "display: block";
     }
     function cargarJ4(){
         esconderArticulos();
-        cargarPaisesEnSelect(selectPaisJ4);
-        cargarPaisesEnSelect(selectPaisJ4_2);
         articleJ4.style = "display: block";
     }
     function cargarJ5(){
         esconderArticulos();
-        cargarPaisesEnSelect(selectPaisJ5);
-        cargarPaisesEnSelect(selectPaisJ5_2);
         articleJ5.style = "display: block";
     }
     function esconderArticulos(){
@@ -105,6 +108,13 @@ let toneladasTotales = kilogramosPorArea / 1000;
         }
     }
 
+    async function recibirBanderaDePais(pais) {
+        let response = await fetch(`https://restcountries.com/v3.1/alpha/${pais}`);
+        let data = await response.json();
+        console.log(data[0].flags.png);
+        return data[0].flags.png;
+    }
+
     async function recibirDatoDePais(indicador, pais) {
     const url = `${BASE_URL0}country/${pais}/indicator/${indicador}?format=json&date=2022`;
     try {
@@ -142,25 +152,71 @@ let toneladasTotales = kilogramosPorArea / 1000;
         <p>Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. </p> 
         <p>Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area.  </p> 
         `
+        
         resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. </h3>`
         }
 
 
 
     //OBTENER PAISES
-     selectPaisJ1.addEventListener("change", cambiarArea);
+    selectPaisJ1.addEventListener("change", () => {
+        cambiarArea(selectPaisJ1);
+        conseguirBandera(selectPaisJ1, imagenModuloPaisJ1);
+    });
+
+    selectPaisJ2.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ2, imagenModuloPaisJ2);
+    });
+    selectPaisJ2_2.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ2_2, imagenModuloPaisJ2_2);
+    });
+
+    selectPaisJ3.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
+    });
+    selectPaisJ4.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ4, imagenModuloPaisJ4);
+    });
+    selectPaisJ4_2.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ4_2, imagenModuloPaisJ4_2);
+    }); 
+    selectPaisJ5.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ5, imagenModuloPaisJ5);
+    });
+    selectPaisJ5_2.addEventListener("change", () => {
+        conseguirBandera(selectPaisJ5_2, imagenModuloPaisJ5_2);
+    });
     //CAMBIAR AREA
 
   async function conseguirId(select){
     let contenido = select.options[select.selectedIndex].getAttribute("id");
     return contenido;
   }
-    async function cambiarArea(){
-        let contenido = await conseguirId(selectPaisJ1);
+
+
+  async function conseguirBandera(selectAUsar, imagen){
+    let contenido = await conseguirId(selectAUsar);
+    let pais = await recibirBanderaDePais(contenido);
+    imagen.innerHTML = `<img src="${pais}"></img>`;
+  }
+    async function cambiarArea(selectAUsar){
+        let contenido = await conseguirId(selectAUsar);
         let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
         area = pais.valor;
         pais = pais.pais;
         cargarDataButterMyCountryBase();
+    }
+
+        cargarTodosLosSelect();
+    function cargarTodosLosSelect(){
+        cargarPaisesEnSelect(selectPaisJ1);
+        cargarPaisesEnSelect(selectPaisJ2);
+        cargarPaisesEnSelect(selectPaisJ2_2);
+        cargarPaisesEnSelect(selectPaisJ3);
+        cargarPaisesEnSelect(selectPaisJ4);
+        cargarPaisesEnSelect(selectPaisJ4_2);
+        cargarPaisesEnSelect(selectPaisJ5);
+        cargarPaisesEnSelect(selectPaisJ5_2);
     }
 
     //COMPARADOR
