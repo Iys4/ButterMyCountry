@@ -30,6 +30,10 @@ main {
     gap: 2vw;
 }
 
+.escondido {
+    display: none;
+}
+
 .menuSelects {
     display: flex;
     flex-direction: row;

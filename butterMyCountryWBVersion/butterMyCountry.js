@@ -13,22 +13,28 @@
     let porcentajeDeProduccion = parseInt(toneladasTotales/produccionDeManteca);
 
     
-    const inputDensidad = document.querySelector("#inputDensidad");
-    const razonamiento = document.querySelector("#razonamiento");
-    const visualizador = document.querySelector("#visualizador");
-    const imagenPais = document.querySelector("#imagenPais");
-
-    //BotonIniciarSesion
-    const inicioSesion = document.querySelector("#inicioSesion");
-    const contenedorUsuario = document.querySelector("#contenedorUsuario");
-    
-    crearBoton();
-    function crearBoton(){
-        contenedorUsuario.innerHTML = 
-        `<p id="nombreUsuario">Invitado</p>
-        <button id="inicioSesion">Iniciar Sesion</button>`;
+    //BOTONES
+    const botonJ1 = document.querySelector("#J1");
+    const botonJ2 = document.querySelector("#J2");
+    const articleJ1 = document.querySelector("#articleJ1");
+    const articleJ2 = document.querySelector("#articleJ2");
+    botonJ1.addEventListener("click", cargarJ1);
+    botonJ2.addEventListener("click", cargarJ2);
+    function cargarJ2(){
+        esconderArticulos();
+        articleJ2.style = "display: block";
     }
-
+    function cargarJ1(){
+        esconderArticulos();
+        articleJ1.style = "display: block";
+    }
+    function esconderArticulos(){
+        articleJ1.style = "display: none";
+        articleJ2.style = "display: none";
+        //articleJ3.style = "display: none";
+    }
+    const infoContenidoJ1 = document.querySelector("#infoContenidoJ1");
+    esconderArticulos();
     //////////////////////FUNCIONES//////////////////////
 
     BASE_URL0 = 'https://api.worldbank.org/v2/';
@@ -59,7 +65,7 @@
             let nombrePais = data[1][0].country.value;
             let info = data[1][0].value;
             let nombreIndicador = data[1][0].indicator.value;
-            return { pais: nombrePais, indicador: nombreIndicador, valor: info };
+            return {pais: nombrePais, indicador: nombreIndicador, valor: info};
     } catch (error) {
         return { error: `Error obteniendo el indicador: ${error}` };
     }
@@ -71,51 +77,47 @@
         const listaPaises = await obtenerListaPaisesWorldBank();
         listaPaises.sort();
         listaPaises.forEach(element => {
-            paisSelect.innerHTML += `<option nombre="${element.id}">${element.name}</option>`;
+            selectPaisJ1.innerHTML += `<option id="${element.id}">${element.name}</option>`;
         });
     }
+    const resultadoGrandeJ1 = document.querySelector("#resultadoGrandeJ1");
 
+    //FUNCIONES NO GENERALES/////////////////////////////////////////////////////////////////////
     //CARGAR DATA
 
-        function cargarData(){
+        function cargarDataButterMyCountryBase(){
         gramosPorMetroDeSuelo = densidad * 1000;
         gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
         kilogramosPorArea = (gramosPorKilometro/1000) * area;
         toneladasTotales = kilogramosPorArea / 1000;
         porcentajeDeProduccion = parseFloat(toneladasTotales/produccionDeManteca);
-        inputDensidad.innerHTML = `${densidad} cm cubicos de densidad`
-        razonamiento.innerHTML = `<p>La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. </p> 
+        infoContenidoJ1.innerHTML = `<p>La manteca requiere ${gramosPorMetroDeSuelo} gramos por metro cuadrado de suelo. </p> 
         <p>Esto significa que precisamos ${gramosPorKilometro} gramos de manteca por kilometro cuadrado. </p> 
         <p>Como nuestra area es ${area} km2 tendriamos que usar ${kilogramosPorArea} kilogramos de manteca para embadurnar el area.  </p> 
-        <p>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. </p> 
-        <p>Esto significa que se requiere ${porcentajeDeProduccion} veces la produccion de manteca del ${paisComparado} para llenar a ${pais} de manteca </p>`
-        visualizador.innerHTML = "";
-        for (let i = 0; i < porcentajeDeProduccion; i++) {
-            visualizador.innerHTML += `O`
+        `
+        resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. </h3>`
         }
-        }
-        const paisSelect = document.querySelector("#paisSelect");
+        const selectPaisJ1 = document.querySelector("#selectPaisJ1");
 
-
-    //OBTENER BANDERAS
-
-    imagenPais.innerHTML = `<img src="" alt="">`
 
     //OBTENER PAISES
-     paisSelect.addEventListener("change", cambiarArea);
-
-
+     selectPaisJ1.addEventListener("change", cambiarArea);
     //CAMBIAR AREA
-  
+
+  async function conseguirId(select){
+    let contenido = select.options[select.selectedIndex].getAttribute("id");
+    return contenido;
+  }
     async function cambiarArea(){
-        let contenido = paisSelect.options[paisSelect.selectedIndex].getAttribute("nombre");
-        console.log(contenido);
+        let contenido = await conseguirId(selectPaisJ1);
         let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
         area = pais.valor;
         pais = pais.pais;
-        cargarData();
+        cargarDataButterMyCountryBase();
     }
-    const selectComparador = document.querySelector("#comparador");
+
+    //COMPARADOR
+    /* const selectComparador = document.querySelector("#comparador");
     selectComparador.addEventListener("change", cambiarComparacion)
     cargarComparador();
     
@@ -139,8 +141,8 @@
                 paisComparado = element.nombre;
                 produccionDeManteca = element.manteca;
                 console.log(element.manteca);
-                cargarData();
+                cargarDataButterMyCountryBase();
         }
     });
 
-    }
+    } */

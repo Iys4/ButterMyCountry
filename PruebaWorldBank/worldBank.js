@@ -1,5 +1,5 @@
 BASE_URL0 = 'https://api.worldbank.org/v2/';
-const BASE_URL_PAISES = `${BASE_URL0}country?format=json&per_page=300`;
+/* const BASE_URL_PAISES = `${BASE_URL0}country?format=json&per_page=300`;
 
 async function obtenerPaises() {
     try {
@@ -50,7 +50,7 @@ async function getIndicatorForCountry(indicador, pais) {
     } catch (error) {
         return { error: `Error obteniendo el indicador: ${error}` };
     }
-}
+} */
 
 //Buscador de topicos
 //Esto es para encontrar la id de lo que estemos buscando
@@ -101,25 +101,25 @@ async function getIndicatorForCountry(indicador, pais) {
 //obtenerTopicos();
 
 //Usando este codigo y cambiando la const "Tematica" podemos encontrar las id de todas las tematicas que querramos
-//let tematicaId = 3;
-//    const INDICATOR_URL = `${BASE_URL0}topic/${tematicaId}/indicator?format=json&per_page=300`;
-//async function obtenerIndicesPorTopico() {
-//    try {
-//        let response = await fetch(INDICATOR_URL);
-//        let data = await response.json();
-//        let indices = data[1]; // The second element contains the indicators
-//        if (indices) {
-//            indices.forEach(indicador => {
-//                console.log(indicador.name);
-//                console.log(indicador.id);
-//            });
-//        } else {
-//            console.log("No se encontraron indicadores para el tópico especificado.");
-//        }
-//    } catch (error) {
-//        console.log("Error al obtener los índices: " + error);
-//    }
-//}
-//
-//// Llama a la función para el tópico 6
-//obtenerIndicesPorTopico(6);
+let tematicaId = 8;
+    const INDICATOR_URL = `${BASE_URL0}topic/${tematicaId}/indicator?format=json&per_page=300`;
+async function obtenerIndicesPorTopico() {
+    try {
+        let response = await fetch(INDICATOR_URL);
+        let data = await response.json();
+        let indices = data[1]; // The second element contains the indicators
+        if (indices) {
+            indices.forEach(indicador => {
+                console.log(indicador.name);
+                console.log(indicador.id);
+            });
+        } else {
+            console.log("No se encontraron indicadores para el tópico especificado.");
+        }
+    } catch (error) {
+        console.log("Error al obtener los índices: " + error);
+    }
+}
+
+// Llama a la función para el tópico 6
+obtenerIndicesPorTopico();

@@ -1,47 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Butter My Country</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
+
 <body>
-    <main>
-            <header>
+    <header>
         <img src="img/butter my country.png" alt="lOGO BMC">
         <div id="contenedorUsuario">
         </div>
     </header>
-        <div class="menuSelects">
-    <select name="pais" id="paisSelect">
-        <option value="" disabled selected>Selecciona el pais a enmantecar</option>
-    </select>
-    <select name="" id="comparador">
-        <option value="" disabled selected>Selecciona el pais enmantecador</option>
-    </select>
-    <div id="imagenPais">
+
+    <div id="juegosSelect">
+        <button class="juego" id="J1">Butter My Country</button>
+        <button class="juego" id="J2">Pay for My Butter</button>
+        <button class="juego" id="J3">Butter to the Moon</button>
+        <button class="juego" id="J4">Produce my Butter</button>
     </div>
-        </div>
-        <div class="infoYCoso">
-    <div class="informacionFija">
-    <h2>Densidad de la manteca</h2>
-    <h3 id="inputDensidad">0.911 g/cm3</h3>
-    <h2>Covertura de manteca</h2>
-    <h3 id="inputCovertura">0.1 cm3</h3>
+    <div id="selectModo">
+        <button class="modoJuego" id="modoSingleButton">Single Player</button>
+        <button class="modoJuego" id="modoCompetitivoButton">Competitivo</button>
     </div>
-    <div class="razonamiento">
-    <h2>Razonamiento</h2>
-    <h3 id="razonamiento"></h3>
-    <div id="visualizadorCaja">
-        <p id="visualizador"></p>
-    </div>
-    <p id="contenedorDetalle"></p>
-    </div>
-    </div>
-    </main>
+
+
+    <article id="articleJ1" class="articleJuego">
+        <section id="seccionJuego1">
+            <div class="moduloPais" id="moduloPaisJ1">
+                <h2 id="TituloJ1"></h2>
+                <div class="imagenModuloPais" id="imagenModuloPaisJ1">
+                </div>
+                <h3>Selecciona un país</h3>
+                <select name="selectPaisJ1" id="selectPaisJ1">
+                    <option value="" selected disabled>Tu país</option>
+                </select>
+            </div>
+            <div class="infoModulo" id="infoModuloJ1">
+                <h2 id="infoTituloJ1"></h2>
+                <div class="infoContenido" id="infoContenidoJ1">
+                </div>
+                <div class="resultadoGrande" id="resultadoGrandeJ1">
+                </div>
+            </div>
+        </section>
+
+
+        <p id="contenedorDetalle"></p>
+    </article>
+        <article id="articleJ2" class="articleJuego">
+            <section id="seccionJuego2">
+                <div class="moduloPaises" id="moduloPaisesJ2">
+                    <div class="moduloPais" id="moduloPaisJ2">
+                        <h2 id="TituloJ2"></h2>
+                        <div class="imagenModuloPais" id="imagenModuloPaisJ2">
+                        </div>
+                        <h3>Selecciona el país enmantecado</h3>
+                        <select name="selectPaisJ2" id="selectPaisJ2">
+                            <option value="" selected disabled>Tu país</option>
+                        </select>
+                    </div>
+                    <div class="moduloPais" id="moduloPaisJ2_2">
+                        <h2 id="TituloJ2_2"></h2>
+                        <div class="imagenModuloPais" id="imagenModuloPaisJ2_2">
+                        </div>
+                        <h3>Selecciona el país enmantecador</h3>
+                        <select name="selectPaisJ2_2" id="selectPaisJ2_2">
+                            <option value="" selected disabled>Otro país</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="infoModulo" id="infoModuloJ2">
+                    <h2 id="infoTituloJ2"></h2>
+                    <div class="infoContenido" id="infoContenidoJ2">
+                    </div>
+                    <div class="resultadoGrande" id="resultadoGrandeJ2">
+                    </div>
+                </div>
+            </section>
+
+
+        <p id="contenedorDetalle"></p>
+    </article>
+
+    <footer>
+
+    </footer>
     <script src="datos.js"></script>
     <script src="butterMyCountry.js">
     </script>
 </body>
+
 </html>
