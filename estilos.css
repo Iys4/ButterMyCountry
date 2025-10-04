@@ -17,6 +17,10 @@
     --AmarilloOscuro: #BF9F36;
 }
 
+.container{
+    width: 80vw;
+}
+
 #visualizadorCaja {
     width: 80%;
     overflow-wrap: break-word;
