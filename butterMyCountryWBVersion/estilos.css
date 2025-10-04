@@ -25,6 +25,7 @@
 *{
     box-sizing: border-box;
     margin : 0;
+    padding: 0;
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -35,6 +36,9 @@
 body{
     background-color: var(--FondoAmarillo);
     width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 main{
@@ -76,18 +80,29 @@ footer{
     width: 100vw;
     height: 10vh;
     background-color: var(--AmarilloPrincipal);
-    margin-top: 5vh;
     box-shadow: 0 -16px 0 var(--AmarilloClaro);
     display: flex;
     justify-content: center;
 }
 
-#juegosSelect{
+.sectionJuegos{
     display: flex;
     justify-content: center;
+    width: 100%;
+    margin-bottom: 5vh;
+}
+
+#juegosSelect{
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     max-width: 100%;
     margin-bottom: 2vh;
+
+    button{
+        width: 20%;
+        height: 100px;
+    }
 }
 
 #selectModo{
@@ -96,7 +111,6 @@ footer{
 
 button{
   background-color: var(--RojoPrincipal);
-  height: 100%;
   color: white;
   font-weight: 1000;
   font-size: 1.5rem;
@@ -162,28 +176,33 @@ button:active {
     box-shadow: 0 4px 0 var(--AzulOscuro);
 }
 
-#seccionJuego1{
+.boxJuego{
     display: flex;
     width: 100%;
     color: var(--Negro);
+    justify-content: center;
+    gap: 1rem;
 }
 
 .moduloPais{
     background-color: var(--AmarilloPrincipal);
+    width: 50%;
     border-radius: 28px;
     padding: 2rem;
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     color: white;
     text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
     gap: 1rem;
     box-shadow: 0 12px 0 var(--AmarilloOscuro);
+    border: solid 5px var(--AmarilloOscuro);
 
     img{
         border-radius: var(--borderRadius);
         box-shadow: 0 -12px 0 var(--AmarilloOscuro);
+        max-width: 100%;
     }
 
     h3{
@@ -191,15 +210,10 @@ button:active {
     }
 }
 
-#TituloJ1{
+.boxTitulo{
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
-}
-
-.infoModulo{
-    width: 50%;
-    padding: 1rem;
 }
 
 #selectPais, .moduloPais select{
@@ -224,3 +238,104 @@ button:active {
     background-position: right 18px center;
     background-size: 40px 40px;
 }
+
+.infoModulo{
+
+    background-color: white;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 12px 0 var(--Gris);
+    border: solid 5px var(--Gris);
+
+    width: 50%;
+    padding: 4rem;
+
+    p{
+        font-size: 1.5rem;
+        padding-bottom: 1rem;
+    }
+
+    h3{
+        font-size: 30px;
+    }
+
+    span{
+        font-weight: bold;
+    }
+}
+
+#seccionJuego2{
+    display: flex;
+    flex-direction: column;
+    width: 100;
+    gap: 2rem;
+}
+
+#moduloPaisesJ2{
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+#moduloPaisJ2{
+    width: 50%;
+}
+
+#infoModuloJ2{
+    width: 100%;
+}
+
+#moduloPaisJ3{
+    width: 100%;
+}
+
+#moduloPaisesJ3{
+    display: flex;
+    width: 50%;
+    gap: 1rem;
+}
+
+#seccionJuego4{
+    display: flex;
+    flex-direction: column;
+    width: 100;
+    gap: 2rem;
+}
+
+#moduloPaisesJ4{
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+#moduloPaisJ4{
+    width: 50%;
+}
+
+#infoModuloJ4{
+    width: 100%;
+}
+
+#seccionJuego5{
+    display: flex;
+    flex-direction: column;
+    width: 100;
+    gap: 2rem;
+}
+
+#moduloPaisesJ5{
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+#moduloPaisJ5{
+    width: 50%;
+}
+
+#infoModuloJ5{
+    width: 100%;
+}
+
