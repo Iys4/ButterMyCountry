@@ -9,6 +9,7 @@
     --VerdePrincipal: #9EFF48;
 
     --Negro: #272727;
+    --Gris: #BFBFBF;
     --FondoAmarillo: #FFFFDF;
     --AmarilloClaro: #FFE89C;
     --AzulClaro: #DFF4FF;
@@ -76,7 +77,7 @@ footer{
     height: 10vh;
     background-color: var(--AmarilloPrincipal);
     margin-top: 5vh;
-    box-shadow: 0 16px 0 var(--AmarilloOscuro);
+    box-shadow: 0 -16px 0 var(--AmarilloClaro);
     display: flex;
     justify-content: center;
 }
@@ -169,25 +170,57 @@ button:active {
 
 .moduloPais{
     background-color: var(--AmarilloPrincipal);
-    border-radius: var(--borderRadius);
-    padding: 1rem;
+    border-radius: 28px;
+    padding: 2rem;
+    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     color: white;
     text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
-    gap: .5rem;
+    gap: 1rem;
+    box-shadow: 0 12px 0 var(--AmarilloOscuro);
 
     img{
         border-radius: var(--borderRadius);
+        box-shadow: 0 -12px 0 var(--AmarilloOscuro);
+    }
+
+    h3{
+        font-size: 2rem;
     }
 }
 
 #TituloJ1{
     text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .infoModulo{
     width: 50%;
     padding: 1rem;
+}
+
+#selectPais, .moduloPais select{
+    -webkit-appearance: none;   
+    width: 100%;
+    background: white;
+    color: var(--Negro);    
+
+    font-weight: 1000;
+    font-size: 1.5rem;  
+
+    padding: 1rem 4rem 1rem 2rem;
+    border: none;
+    border-radius: var(--borderRadius); 
+    box-shadow: 0 6px 0 var(--Gris);
+
+    outline: none;
+    cursor: pointer;    
+
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%236b6b6b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 40px 40px;
 }
