@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    /* Colores Principales */
+
+    --AmarilloPrincipal: #FFD448;
+    --RojoPrincipal: #FF6448;
+    --AzulPrincipal: #48A7FF;
+    --VerdePrincipal: #9EFF48;
+
+    --Negro: #272727;
+    --AmarilloClaro: #FFE89C;
+    --AzulClaro: #DFF4FF;
+    --RojoClaro: #FFE3DF;
+    --AzulOscuro: #367DBF;
+    --RojoOscuro: #BF4B36;
+    --AmarilloOscuro: #BF9F36;
+}
+
 #visualizadorCaja {
     width: 80%;
     overflow-wrap: break-word;
@@ -6,7 +25,7 @@
 *{
     box-sizing: border-box;
     margin : 0;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 main {
@@ -55,11 +74,32 @@ header {
     text-align: center;
     width: 100%;
     height: 20vh;
-    background-color: rgb(255, 215, 71);
+    background-color: var(--AmarilloPrincipal);
     margin-bottom: 5vh;
+    box-shadow: 0 8px 0 var(--AmarilloOscuro);
 
     img{
         height: 100%;
         width: auto;
     }
+}
+
+button{
+  background-color: var(--RojoPrincipal);
+  color: white;
+  font-weight: 1000;
+  font-size: 2rem;
+  padding: 2rem 4rem;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 0 var(--RojoOscuro);
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+button:active {
+  transform: translateY(4px);
+  box-shadow: 0 4px 0 var(--RojoOscuro);
 }

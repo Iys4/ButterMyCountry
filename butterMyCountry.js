@@ -135,3 +135,11 @@
     });
 
     }
+
+    async function restPrueba(){
+        let response = await fetch(`https://restcountries.com/v3.1/name/uruguay?fullText=true&fields=name,capital,region,subregion,flags,population`);
+        let data = await response.json();
+        console.log(data);
+    }
+
+    restPrueba();
