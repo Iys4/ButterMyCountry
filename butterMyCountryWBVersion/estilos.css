@@ -339,3 +339,18 @@ button:active {
     width: 100%;
 }
 
+#popUpUsuario {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--AmarilloClaro);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 2rem;
+    border-radius: var(--borderRadius);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}

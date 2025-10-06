@@ -46,8 +46,23 @@ let toneladasTotales = kilogramosPorArea / 1000;
     const imagenModuloPaisJ4_2 = document.querySelector("#imagenModuloPaisJ4_2");
     const imagenModuloPaisJ5 = document.querySelector("#imagenModuloPaisJ5");
     const imagenModuloPaisJ5_2 = document.querySelector("#imagenModuloPaisJ5_2");
+    const juegosContainer = document.querySelectorAll(".container");
+    const popUpUsuario = document.querySelector("#popUpUsuario");
+    const iniciarSesion = document.querySelector("#iniciarSesion");
 
+    const modoCompetitivoButton = document.querySelector("#modoCompetitivoButton");
+    modoCompetitivoButton.addEventListener("click", cargarModoCompetitivo);
+    const modoCompetitivo = document.querySelector("#modoCompetitivo");
 
+    async function cargarModoCompetitivo(){
+        esconderArticulos();
+        let cuentaIniciada = await popUpConfirm();
+        if (!cuentaIniciada) {
+        popUpUsuario.style = "display: block";
+        } else {
+        modoCompetitivo.style = "display: block";
+        }
+    }
 
     //FUNCIONES BOTONES
     function cargarJ2(){
@@ -70,12 +85,16 @@ let toneladasTotales = kilogramosPorArea / 1000;
         esconderArticulos();
         articleJ5.style = "display: block";
     }
+
+
     function esconderArticulos(){
         articleJ1.style = "display: none";
         articleJ2.style = "display: none";
         articleJ3.style = "display: none";
         articleJ4.style = "display: none";
         articleJ5.style = "display: none";
+        modoCompetitivo.style = "display: none";
+        popUpUsuario.style = "display: none";
     }
     const infoContenidoJ1 = document.querySelector("#infoContenidoJ1");
     const infoContenidoJ2 = document.querySelector("#infoContenidoJ2");
@@ -218,6 +237,112 @@ let toneladasTotales = kilogramosPorArea / 1000;
         cargarPaisesEnSelect(selectPaisJ5);
         cargarPaisesEnSelect(selectPaisJ5_2);
     }
+
+
+
+
+
+
+    //////////////////////CREACION DE USUARIOS//////////////////////
+
+    const BASE_URL_USUARIOS = ("https://api-usuarios-p2.up.railway.app/api/users")
+    async function popUpConfirm() {
+        await iniciarSesionUsuario();
+        return false;
+    }
+
+    async function iniciarSesionUsuario(){
+        const response = await fetch(`${BASE_URL_USUARIOS}`);
+        const data = await response.json();
+        console.log(data);
+    }
+const inputUsuario = document.querySelector("#inputUsuario");
+iniciarSesion.addEventListener("click", verificarUsuarioExistente);
+const inputEmail = document.querySelector("#inputEmail");
+const registrarseSesion = document.querySelector("#registrarseSesion");
+
+async function verificarUsuarioExistente(){
+    const response = await fetch(`${BASE_URL_USUARIOS}`);
+    const data = await response.json();
+    let usersDeButter = [];
+    data.data.forEach(element => {
+       if (element.data.juego === "ButterMyCountry"){
+           usersDeButter.push(element);
+           console.log(element);
+       }
+       listaDeUsuarios = [];
+       listaDeEmails = [];
+       usersDeButter.forEach(element => {
+        listaDeUsuarios.push(element.username);
+        listaDeEmails.push(element.email);
+       });
+    });
+    if (listaDeUsuarios.includes(inputUsuario.value)){
+        alert("El usuario ya existe, por favor elija otro nombre de usuario.");
+        return false;
+    } else if (inputUsuario.value === "" || inputEmail.value === ""){
+        alert("Por favor complete todos los campos.");
+        return false;
+    } else if (!inputEmail.value.includes("@")){
+        alert("Por favor ingrese un email válido.");
+        return false;
+    } else if (listaDeEmails.includes(inputEmail.value)){
+        alert("El email ya está en uso, por favor ingrese otro email.");
+        return false;
+    } else {
+        crearUsuario();
+        alert("Usuario creado con éxito.");
+        popUpUsuario.style = "display: none";
+        return true;
+    }
+}
+
+//Creador de usuarios
+async function crearUsuario(){
+    let idNueva = await crearId();
+    const nuevoUsuario = {
+        username: `${inputUsuario.value}`,
+        email: `${inputEmail.value}`,
+        data: {
+            juego: "ButterMyCountry",
+            scoreMaximo: 0,
+            partidasJugadas: 0,
+            id: idNueva
+        }
+    };
+    const response = await fetch(`${BASE_URL_USUARIOS}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(nuevoUsuario)
+});
+}
+
+async function crearId(){
+    const response = await fetch(`${BASE_URL_USUARIOS}`);
+    const data = await response.json();
+    let usersDeButter = [];
+    data.data.forEach(element => {
+       if (element.data.juego === "ButterMyCountry"){
+           usersDeButter.push(element);
+           console.log(element);
+       }
+    });
+    const idUnicas = [];
+    usersDeButter.forEach(element => {
+        idUnicas.push(element.data.id);
+    });
+    let idUnica = darIdUnica(idUnicas);
+    return idUnica;
+}
+
+function darIdUnica(idUnicas){
+    let randomId = Math.floor(Math.random() * 9999);
+    while (idUnicas.includes(randomId)){
+        randomId = Math.floor(Math.random() * 9999);
+    }
+    return randomId;}
 
     //COMPARADOR
     /* const selectComparador = document.querySelector("#comparador");
