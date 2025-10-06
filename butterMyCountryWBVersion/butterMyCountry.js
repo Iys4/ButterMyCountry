@@ -12,7 +12,7 @@ let toneladasTotales = kilogramosPorArea / 1000;
 
 
 
-let Usuario = "Bienvenido"
+let Usuario = "";
 
     //Selects
     const selectPaisJ1 = document.querySelector("#selectPaisJ1");
@@ -59,8 +59,8 @@ let Usuario = "Bienvenido"
 
     async function cargarModoCompetitivo(){
         esconderArticulos();
-        let cuentaIniciada = await popUpConfirm();
-        if (!cuentaIniciada) {
+        if (Usuario === ""){ 
+        await popUpConfirm();
         popUpUsuario.style = "display: block";
         } else {
         modoCompetitivo.style = "display: block";
@@ -276,16 +276,18 @@ async function iniciarSesionUsuario(){
             if (element.data.juego === "ButterMyCountry"){
             Usuario = element;
             mostrarUsuario();
+            popUpUsuario.style = "display: none";
         }
         }
     });
     } else if (listaDeEmails.includes(inputEmail.value)) {
         alert("Ingresaras con el email " + inputEmail.value);
             data.data.forEach(element => {
-        if (element.username === inputEmail.value){
+        if (element.email === inputEmail.value){
             if (element.data.juego === "ButterMyCountry"){
             Usuario = element;
             mostrarUsuario();
+            popUpUsuario.style = "display: none";
         }
         }
     });
