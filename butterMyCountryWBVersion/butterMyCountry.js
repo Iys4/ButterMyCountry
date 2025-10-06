@@ -11,6 +11,9 @@ let kilogramosPorArea = (gramosPorKilometro / 1000) * area;
 let toneladasTotales = kilogramosPorArea / 1000;
 
 
+
+let Usuario = "Bienvenido"
+
     //Selects
     const selectPaisJ1 = document.querySelector("#selectPaisJ1");
     const selectPaisJ2 = document.querySelector("#selectPaisJ2");
@@ -257,26 +260,45 @@ let toneladasTotales = kilogramosPorArea / 1000;
         console.log(data);
     }
 const inputUsuario = document.querySelector("#inputUsuario");
-iniciarSesion.addEventListener("click", verificarUsuarioExistente);
+iniciarSesion.addEventListener("click", iniciarSesionUsuario);
 const inputEmail = document.querySelector("#inputEmail");
 const registrarseSesion = document.querySelector("#registrarseSesion");
+registrarseSesion.addEventListener("click", registrarUsuario)
 
-async function verificarUsuarioExistente(){
+async function iniciarSesionUsuario(){
     const response = await fetch(`${BASE_URL_USUARIOS}`);
     const data = await response.json();
-    let usersDeButter = [];
-    data.data.forEach(element => {
-       if (element.data.juego === "ButterMyCountry"){
-           usersDeButter.push(element);
-           console.log(element);
-       }
-       listaDeUsuarios = [];
-       listaDeEmails = [];
-       usersDeButter.forEach(element => {
-        listaDeUsuarios.push(element.username);
-        listaDeEmails.push(element.email);
-       });
+    const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
+    if (listaDeUsuarios.includes(inputUsuario.value)){
+        alert("Iniciaras sesion como" + inputUsuario.value);
+            data.data.forEach(element => {
+        if (element.username === inputUsuario.value){
+            if (element.data.juego === "ButterMyCountry"){
+            Usuario = element;
+            mostrarUsuario();
+        }
+        }
     });
+    } else if (listaDeEmails.includes(inputEmail.value)) {
+        alert("Ingresaras con el email " + inputEmail.value);
+            data.data.forEach(element => {
+        if (element.username === inputEmail.value){
+            if (element.data.juego === "ButterMyCountry"){
+            Usuario = element;
+            mostrarUsuario();
+        }
+        }
+    });
+    } else {
+        alert("El usuario que ingresaste no existe, registrate o revisa tus datos");
+        return false;
+    }
+}
+
+async function registrarUsuario(){
+    const response = await fetch(`${BASE_URL_USUARIOS}`);
+    const data = await response.json();
+    const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
     if (listaDeUsuarios.includes(inputUsuario.value)){
         alert("El usuario ya existe, por favor elija otro nombre de usuario.");
         return false;
@@ -296,6 +318,28 @@ async function verificarUsuarioExistente(){
         return true;
     }
 }
+
+const nombreUsuarioMostrar = document.querySelector("#nombreUsuarioMostrar")
+
+function mostrarUsuario(){
+    nombreUsuarioMostrar.innerHTML = `<p>${Usuario.username} #${Usuario.data.id}</p>`;
+}
+
+async function listaDeUsuariosYMails(data){
+    let usersDeButter = [];
+    data.data.forEach(element => {
+       if (element.data.juego === "ButterMyCountry"){
+           usersDeButter.push(element);
+       }
+       listaDeUsuarios = [];
+       listaDeEmails = [];
+       usersDeButter.forEach(element => {
+        listaDeUsuarios.push(element.username);
+        listaDeEmails.push(element.email);
+       });
+    });
+    return {listaDeUsuarios, listaDeEmails};
+};
 
 //Creador de usuarios
 async function crearUsuario(){
@@ -317,6 +361,7 @@ async function crearUsuario(){
   },
   body: JSON.stringify(nuevoUsuario)
 });
+mostrarUsuario();
 }
 
 async function crearId(){
