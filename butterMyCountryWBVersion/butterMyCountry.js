@@ -165,47 +165,90 @@ let Usuario = "";
     //FUNCIONES NO GENERALES/////////////////////////////////////////////////////////////////////
     //CARGAR DATA
 
-        function cargarDataButterMyCountryBase(){
+        function cargarDataButterMyCountryBase(areaData, paisData){
+        gramosPorMetroDeSuelo = densidad * 1000;
+        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+        kilogramosPorArea = (gramosPorKilometro/1000) * areaData;
+        toneladasTotales = kilogramosPorArea / 1000;
+        infoContenidoJ1.innerHTML = `<p>La manteca requiere <span>${gramosPorMetroDeSuelo} gramos por metro cuadrado</span> de suelo. </p> 
+        <p>Esto significa que precisamos <span>${gramosPorKilometro} gramos de manteca</span> por kilometro cuadrado. </p> 
+        <p>Como el area de ${paisData} es <span>${areaData} km2</span> tendriamos que usar <span>${kilogramosPorArea} kilogramos de manteca</span> para embadurnar el area.  </p> 
+        `
+        resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca para enmantecar todo ${paisData}</h3>`
+        }
+
+
+    ///////////////////PAY FOR MY BUTTER///////////////////////////////////////////////////////////////
+
+
+    function toneladasTotalesCalc(area){
         gramosPorMetroDeSuelo = densidad * 1000;
         gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
         kilogramosPorArea = (gramosPorKilometro/1000) * area;
         toneladasTotales = kilogramosPorArea / 1000;
-        infoContenidoJ1.innerHTML = `<p>La manteca requiere <span>${gramosPorMetroDeSuelo} gramos por metro cuadrado</span> de suelo. </p> 
-        <p>Esto significa que precisamos <span>${gramosPorKilometro} gramos de manteca</span> por kilometro cuadrado. </p> 
-        <p>Como nuestra area es <span>${area} km2</span> tendriamos que usar <span>${kilogramosPorArea} kilogramos de manteca</span> para embadurnar el area.  </p> 
-        `
-        
-        resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca. </h3>`
-        }
+        return toneladasTotales;
+    }
+
+
+
+
+    
+
+
+
 
 
 
     //OBTENER PAISES
-    selectPaisJ1.addEventListener("change", () => {
-        cambiarArea(selectPaisJ1);
+    selectPaisJ1.addEventListener("change", async () => {
+        let {areaData, paisData} = await cambiarArea(selectPaisJ1);
         conseguirBandera(selectPaisJ1, imagenModuloPaisJ1);
+        cargarDataButterMyCountryBase(areaData, paisData);
     });
 
-    selectPaisJ2.addEventListener("change", () => {
+    selectPaisJ2.addEventListener("change", async() => {
         conseguirBandera(selectPaisJ2, imagenModuloPaisJ2);
+        cargarInfoPayForMyButter();
     });
-    selectPaisJ2_2.addEventListener("change", () => {
+    selectPaisJ2_2.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ2_2, imagenModuloPaisJ2_2);
+        console.log("cambio");
+        cargarInfoPayForMyButter();
     });
 
-    selectPaisJ3.addEventListener("change", () => {
+    async function cargarInfoPayForMyButter () {
+        let {areaData, paisData} = await cambiarArea(selectPaisJ2);
+        let objetoManteca = await cambiarProduccion(selectPaisJ2_2);
+        let cantidadManteca2 = objetoManteca.cantidadManteca;
+        let pais2 = objetoManteca.pais;
+        console.log(cantidadManteca2, pais2);
+        cargarDataPayForMyButter(areaData, paisData, cantidadManteca2, pais2);
+    }
+
+    function cargarDataPayForMyButter(areaData, paisData, cantidadManteca2, pais2){
+        console.log(areaData, paisData, cantidadManteca2, pais2);
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        let proporcion = toneladasTotales / cantidadManteca2;
+        infoContenidoJ2.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>${pais2} produce ${cantidadManteca2} toneladas de manteca al año. </p>
+        <p>Esto quiere decir que para embadurnar ${paisData} se necesita la produccion de manteca de ${pais2} durante ${proporcion} años. </p>`
+        resultadoGrandeJ2.innerHTML = `<h3>Se necesitan ${proporcion} años de produccion de manteca de ${pais2} para embadurnar todo ${paisData}</h3>`
+        }
+        
+
+    selectPaisJ3.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
     });
-    selectPaisJ4.addEventListener("change", () => {
+    selectPaisJ4.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ4, imagenModuloPaisJ4);
     });
-    selectPaisJ4_2.addEventListener("change", () => {
+    selectPaisJ4_2.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ4_2, imagenModuloPaisJ4_2);
-    }); 
-    selectPaisJ5.addEventListener("change", () => {
+    });
+    selectPaisJ5.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ5, imagenModuloPaisJ5);
     });
-    selectPaisJ5_2.addEventListener("change", () => {
+    selectPaisJ5_2.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ5_2, imagenModuloPaisJ5_2);
     });
     //CAMBIAR AREA
@@ -224,10 +267,31 @@ let Usuario = "";
     async function cambiarArea(selectAUsar){
         let contenido = await conseguirId(selectAUsar);
         let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
-        area = pais.valor;
-        pais = pais.pais;
-        cargarDataButterMyCountryBase();
+        areaData = pais.valor;
+        paisData = pais.pais;
+        return {areaData, paisData}
     }
+
+    async function cambiarProduccion(selectAUsar) {
+        console.log("cambio produccion");
+        let contenido = await conseguirId(selectAUsar);
+        let objetoManteca = recibirDatosDeManteca(contenido);
+        let cantidadManteca = objetoManteca.cantidadManteca;
+        let pais = objetoManteca.pais;
+        console.log(objetoManteca);
+        return objetoManteca;
+    }
+
+function recibirDatosDeManteca(id) {
+    const element = produccionDeMantecaPorPais.find(e => e.iso3 === id);
+    if (element) {
+        return {
+            cantidadManteca: element.manteca,
+            pais: element.nombre
+        };
+    }
+    return { cantidadManteca: 0, pais: "Desconocido" }; // fallback
+}
 
         cargarTodosLosSelect();
     function cargarTodosLosSelect(){
