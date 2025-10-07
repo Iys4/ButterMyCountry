@@ -181,7 +181,13 @@ let Usuario = "";
     ///////////////////PAY FOR MY BUTTER///////////////////////////////////////////////////////////////
 
 
-
+    function toneladasTotalesCalc(area){
+        gramosPorMetroDeSuelo = densidad * 1000;
+        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+        kilogramosPorArea = (gramosPorKilometro/1000) * area;
+        toneladasTotales = kilogramosPorArea / 1000;
+        return toneladasTotales;
+    }
 
 
 
@@ -201,13 +207,29 @@ let Usuario = "";
     });
 
     selectPaisJ2.addEventListener("change", async() => {
-        let {areaData, paisData} = await cambiarArea(selectPaisJ2);
         conseguirBandera(selectPaisJ2, imagenModuloPaisJ2);
+        cargarInfoPayForMyButter();
     });
     selectPaisJ2_2.addEventListener("change", async () => {
-        let {areaData, paisData} = await cambiarArea(selectPaisJ2_2);
         conseguirBandera(selectPaisJ2_2, imagenModuloPaisJ2_2);
+        cargarInfoPayForMyButter();
     });
+
+    async function cargarInfoPayForMyButter () {
+        let {areaData, paisData} = await cambiarArea(selectPaisJ2);
+        let {cantidadManteca2, pais2} = cambiarProduccion(selectPaisJ2_2);
+        cargarDataPayForMyButter(areaData, paisData, cantidadManteca2, pais2);
+    }
+
+    function cargarDataPayForMyButter(areaData, paisData, cantidadManteca2, pais2){
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        let proporcion = toneladasTotales / cantidadManteca2;
+        infoContenidoJ2.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>${pais2} produce ${cantidadManteca2} toneladas de manteca al año. </p>
+        <p>Esto quiere decir que para embadurnar ${paisData} se necesita la produccion de manteca de ${pais2} durante ${proporcion} años. </p>`
+        resultadoGrandeJ2.innerHTML = `<h3>Se necesitan ${proporcion} años de produccion de manteca de ${pais2} para embadurnar todo ${paisData}</h3>`
+        }
+        
 
     selectPaisJ3.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
@@ -247,16 +269,20 @@ let Usuario = "";
 
     async function cambiarProduccion(selectAUsar) {
         let contenido = await conseguirId(selectAUsar)
-        let pais = recibirDatosDeManteca(contenido);
-        return pais;
+        let {cantidadManteca, pais} = recibirDatosDeManteca(contenido);
+        console.log(cantidadManteca);
+        return {cantidadManteca, pais};
     }
 
     function recibirDatosDeManteca(id){
         produccionDeMantecaPorPais.forEach(element => {
             if (element.iso3 === id) {
-                return element.manteca
+                let cantidadManteca = element.manteca;
+                let nombrePais = element.pais;
+                return {cantidadManteca, nombrePais}
+                }
             }
-        });
+        );
     }
 
         cargarTodosLosSelect();
