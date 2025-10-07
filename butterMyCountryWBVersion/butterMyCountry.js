@@ -421,3 +421,46 @@ function darIdUnica(idUnicas){
     });
 
     } */
+
+const actualizarUsuario = document.querySelector("#actualizarUsuario");
+const inputNuevoUsuario = document.querySelector("#nuevoUsuario");
+const inputNuevoEmail = document.querySelector("#nuevoEmail");
+
+actualizarUsuario.addEventListener("click", actualizarDatosUsuario);
+
+async function actualizarDatosUsuario(){
+    if (Usuario === ""){
+        alert("Debes Iniciar Sesion para actualizar tus datos");
+        return false;
+    }
+
+    const url = `${BASE_URL_USUARIOS}/${Usuario.data.id}`;
+    
+    const nuevosDatos = {
+        username: inputNuevoUsuario.value || Usuario.username,
+        email: inputNuevoEmail.value || Usuario.email,
+        data: Usuario.data
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(nuevosDatos)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert("Usuario actualizado con éxito.");
+            Usuario = data;
+            mostrarUsuario();
+        } else {
+            alert("Error al actualizar el usuario.");
+        }
+    } catch (error) {
+        console.log("Error actualizando:", error);
+        alert("Ocurrió un error al intentar actualizar el usuario.");
+    }
+}
