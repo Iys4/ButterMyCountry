@@ -439,11 +439,12 @@ async function actualizarDatosUsuario(){
     const nuevosDatos = {
         username: inputNuevoUsuario.value || Usuario.username,
         email: inputNuevoEmail.value || Usuario.email,
-        data: Usuario.data
+        data: Usuario.data.id
     };
+    console.log(nuevosDatos)
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(`${url}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
