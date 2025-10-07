@@ -217,7 +217,7 @@ button:active {
 }
 
 #selectPais, .moduloPais select{
-    -webkit-appearance: none;   
+    appearance: none;  
     width: 100%;
     background: white;
     color: var(--Negro);    
@@ -239,11 +239,11 @@ button:active {
     background-size: 40px 40px;
 }
 
-input{
+input, option{
     background: white;
     color: var(--Negro);    
 
-    font-weight: 1000;
+    font-weight: 800;
     font-size: 1.5rem;  
 
     padding: 1rem 4rem 1rem 2rem;
