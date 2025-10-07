@@ -529,3 +529,24 @@ async function actualizarDatosUsuario(){
         alert("Ocurrió un error al intentar actualizar el usuario.");
     }
 }
+
+
+////////Juego 5////////
+
+const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
+
+selectPaisJ5.addEventListener("change", eatMyButter);
+selectPaisJ5_2.addEventListener("change", eatMyButter);
+
+async function eatMyButter(){
+    const paisConsumidor = await cambiarArea(selectPaisJ5);
+    const paisProductor = await cambiarArea(selectPaisJ5_2);
+
+    const calorías = 2400;
+    const diasAño = 365;
+    const caloriasAño = calorías * diasAño;
+
+    const caloriasMantecaGramo = 7.17;
+
+    
+    
