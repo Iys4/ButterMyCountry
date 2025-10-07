@@ -571,13 +571,11 @@ async function Juego4(){
 
     const produccionToneladas = infoProductor.manteca;
 
-    infoContenidoJ4.innerHTML = `
-aas        <p>Para cubrir completamente a <strong>${nombreEnmantecado}</strong> se necesitan aproximadamente <strong>${Math.round(totalToneladas)} toneladas</strong> de manteca.</p>
-        <p><strong>${nombreProductor}</strong> produce <strong>${Math.round(produccionToneladas)} toneladas</strong> de manteca al año.</p>
-    `;
+    infoContenidoJ4.innerHTML = `<p>Para cubrir completamente a <strong>${nombreEnmantecado}</strong> se necesitan aproximadamente <strong>${Math.round(totalToneladas)} toneladas</strong> de manteca.</p>
+    <p><strong>${nombreProductor}</strong> produce <strong>${Math.round(produccionToneladas)} toneladas</strong> de manteca al año.</p>`;
 
     if (produccionToneladas >= totalToneladas) {
-        resultadoGrandeJ4.innerHTML = `<h3>Esto significa que <strong>${nombreProductor} produce suficiente manteca para cubrir a ${nombreEnmantecado}</strong> en menos de 1 año.</h3>`;
+        resultadoGrandeJ4.innerHTML = `<h3>Esto significa que ${nombreProductor} produce suficiente manteca para cubrir a ${nombreEnmantecado} en menos de 1 año.</h3>`;
     } else {
         resultadoGrandeJ4.innerHTML = `<h3>${nombreProductor} no produce suficiente manteca para cubrir a ${nombreEnmantecado} en menos de 1 año.</h3>`;
     }
