@@ -1,12 +1,12 @@
     
     //////////////////////VARIABLES//////////////////////
 let area = 0;
-let densidad = 0.911;
-let covertura = 0.1;
+const densidad = 0.911;
+const covertura = 0.1;
 let pais = "";
 let paisComparado = "";
-let gramosPorMetroDeSuelo = densidad * 1000;
-let gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+const gramosPorMetroDeSuelo = densidad * 1000;
+const gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
 let kilogramosPorArea = (gramosPorKilometro / 1000) * area;
 let toneladasTotales = kilogramosPorArea / 1000;
 
@@ -422,7 +422,22 @@ function darIdUnica(idUnicas){
 
     } */
 
-const actualizarUsuario = document.querySelector("#actualizarUsuario");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* const actualizarUsuario = document.querySelector("#actualizarUsuario");
 const inputNuevoUsuario = document.querySelector("#nuevoUsuario");
 const inputNuevoEmail = document.querySelector("#nuevoEmail");
 
@@ -464,4 +479,56 @@ async function actualizarDatosUsuario(){
         console.log("Error actualizando:", error);
         alert("Ocurrió un error al intentar actualizar el usuario.");
     }
+} */
+
+
+////////////////////JUEGO 4//////////////////////
+
+selectPaisJ4.addEventListener("change", Juego4);
+selectPaisJ4_2.addEventListener("change", Juego4);
+
+const resultadoGrandeJ4 = document.querySelector("#resultadoGrandeJ4");
+
+async function Juego4(){
+    const paisEnmantecado = await conseguirId(selectPaisJ4);
+    const paisProductor = await conseguirId(selectPaisJ4_2);
+    
+    if (!paisEnmantecado || !paisProductor) return;
+
+    const infoEnmantecado = await recibirDatoDePais("AG.LND.TOTL.K2", paisEnmantecado);
+    const kmEnmantecado = infoEnmantecado.valor;
+    const nombreEnmantecado = infoEnmantecado.pais;
+
+    const gramosPorMetro = densidad * 1000;
+    const gramosPorKm2 = gramosPorMetro * 1000;
+    const totalGramos = gramosPorKm2 * kmEnmantecado;
+    const totalToneladas = totalGramos / 1_000_000;
+
+    const nombreProductor = await obtenerNombrePais(paisProductor);
+    const infoProductor = produccionDeMantecaPorPais.find(p => p.nombre === nombreProductor);
+
+    if (!infoProductor) {
+        infoContenidoJ4.innerHTML = `<p>No se encontró información de la producción de manteca de ${nombreProductor}.</p>`;
+        resultadoGrandeJ4.innerHTML = "";        
+        return;
+    }
+
+    const produccionToneladas = infoProductor.manteca;
+
+    infoContenidoJ4.innerHTML = `
+aas        <p>Para cubrir completamente a <strong>${nombreEnmantecado}</strong> se necesitan aproximadamente <strong>${Math.round(totalToneladas)} toneladas</strong> de manteca.</p>
+        <p><strong>${nombreProductor}</strong> produce <strong>${Math.round(produccionToneladas)} toneladas</strong> de manteca al año.</p>
+    `;
+
+    if (produccionToneladas >= totalToneladas) {
+        resultadoGrandeJ4.innerHTML = `<h3>Esto significa que <strong>${nombreProductor} produce suficiente manteca para cubrir a ${nombreEnmantecado}</strong> en menos de 1 año.</h3>`;
+    } else {
+        resultadoGrandeJ4.innerHTML = `<h3>${nombreProductor} no produce suficiente manteca para cubrir a ${nombreEnmantecado} en menos de 1 año.</h3>`;
+    }
+}
+
+async function obtenerNombrePais(codigo) {
+    const response = await fetch(`https://restcountries.com/v3.1/alpha/${codigo}`);
+    const data = await response.json();
+    return data[0].name.common;
 }
