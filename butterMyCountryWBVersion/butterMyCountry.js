@@ -164,7 +164,6 @@ let Usuario = "";
     const resultadoGrandeJ2 = document.querySelector("#resultadoGrandeJ2");
     const resultadoGrandeJ3 = document.querySelector("#resultadoGrandeJ3");
     const resultadoGrandeJ4 = document.querySelector("#resultadoGrandeJ4");
-    const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
 
     //FUNCIONES NO GENERALES/////////////////////////////////////////////////////////////////////
     //CARGAR DATA
@@ -242,10 +241,35 @@ let Usuario = "";
 
     selectPaisJ3.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
+        await cargarButterToTheMoon();
     });
+    async function cargarButterToTheMoon (){
+        let {areaData, paisData} = await cambiarArea(selectPaisJ3);
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        const alturaBarraMantecaMetros = 0.115;
+        //Una barra de manteca pesa 200gramos
+        const alturaKiloManteca = alturaBarraMantecaMetros * 5;
+        const alturaToneladaManteca = alturaKiloManteca * 1000;
+        const distanciaTierraALuna = 384400000;
+        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+        let vecesALaLuna = alturaTotal / distanciaTierraALuna;
+        infoContenidoJ3.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>Con ${toneladasTotales} toneladas de manteca se puede construir una torre de manteca de ${alturaTotal} metros de altura. </p>`
+        if (vecesALaLuna < 1){
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} llegariamos a solo ${vecesALaLuna}% de la distancia a la luna</h3>`
+        } else if (vecesALaLuna < 2){
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna pero no se podria volver ${vecesALaLuna} veces</h3>
+            `}
+            else {
+                resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna y volver ${(vecesALaLuna/2)} veces</h3>
+            `
+            }
+    }
+
+
     selectPaisJ4.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ4, imagenModuloPaisJ4);
-        cargarInfoPayForMyButter();
+        await cargarInfoPayForMyButter();
     });
 
     async function cargarInfoPayForMyButter() {
@@ -574,24 +598,3 @@ async function actualizarDatosUsuario(){
         alert("Ocurrió un error al intentar actualizar el usuario.");
     }
 }
-
-
-////////Juego 5////////
-
-const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
-
-selectPaisJ5.addEventListener("change", eatMyButter);
-selectPaisJ5_2.addEventListener("change", eatMyButter);
-
-async function eatMyButter(){
-    const paisConsumidor = await cambiarArea(selectPaisJ5);
-    const paisProductor = await cambiarArea(selectPaisJ5_2);
-
-    const calorías = 2400;
-    const diasAño = 365;
-    const caloriasAño = calorías * diasAño;
-
-    const caloriasMantecaGramo = 7.17;
-
-    
-    
