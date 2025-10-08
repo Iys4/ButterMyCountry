@@ -61,6 +61,8 @@ let Usuario = "";
         esconderArticulos();
         if (Usuario === ""){ 
         await popUpConfirm();
+        iniciarButterRoyale.style = "display: block";
+        butterRoyaleJuego.style = "display: none";
         popUpUsuario.style = "display: block";
         } else {
         modoCompetitivo.style = "display: block";
@@ -649,4 +651,21 @@ async function eatMyButter(){
     }
 
     
+}
+
+
+//BUTTERROYALE//
+
+const iniciarButterRoyale = document.querySelector("#iniciarButterRoyale");
+const butterRoyaleJuego = document.querySelector("#butterRoyaleJuego");
+const preguntaButterRoyale = document.querySelector("#preguntaButterRoyale");
+const opcion1ButterRoyale = document.querySelector("#opcion1ButterRoyale");
+const apretarOpcion1ButterRoyale = document.querySelector("#apretarOpcion1ButterRoyale");
+const opcion2ButterRoyale = document.querySelector("#opcion2ButterRoyale");
+const apretarOpcion2ButterRoyale = document.querySelector("#apretarOpcion2ButterRoyale");
+iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
+
+async function iniciarButterRoyaleFuncion(){
+    iniciarButterRoyale.style = "display: none";
+    butterRoyaleJuego.style = "display: block";
 }
