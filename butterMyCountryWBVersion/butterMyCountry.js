@@ -679,16 +679,17 @@ async function cargarRondaRoyale() {
     const paises = await obtenerListaPaisesWorldBank();
     const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
     const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
-     await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
-     await cargarDatosDePaisRandomCompetitivo(paisAleatorio2, opcion2ButterRoyale);
         let electorDeJuego = Math.floor(Math.random() * 5);    
         electorDeJuego = 1;
         console.log(electorDeJuego); 
     if (electorDeJuego === 0){
-        await juegoButterRoyaleButterMyCountry(paisAleatorio, paisAleatorio2);
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+        await juegoButterRoyaleButterMyCountry(paisAleatorio);
     } else if (electorDeJuego === 1){
-        await juegoButterRoyaleProduceMyButter(paisAleatorio, paisAleatorio2);
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+        await juegoButterRoyaleProduceMyButter(paisAleatorio);
     } else if (electorDeJuego === 2){
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio2, opcion2ButterRoyale);
         await juegoButterRoyaleButterToTheMoon(paisAleatorio, paisAleatorio2);
 } else if (electorDeJuego === 3){
         await juegoButterRoyalePayForMyButter(paisAleatorio, paisAleatorio2);
@@ -724,7 +725,6 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
     preguntaButterRoyale.innerHTML = `<h2>Prdouce My Butter</h2>`
     let electorDeJuego = Math.floor(Math.random() * 2);
     console.log(electorDeJuego);
-    if (electorDeJuego === 0) {
         preguntaButterRoyale.innerHTML += `
         <h2>Qué pais puede enmantecar completamente a ${pais1.name} con su producción de manteca?</h2>`
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
@@ -736,31 +736,15 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
         let paisRandom = recibirPaises.Random;
         console.log(paisProductor);
         console.log(paisRandom);
+        if (electorDeJuego === 0) {
         apretarOpcion1ButterRoyale.innerHTML = `<h3>${paisProductor}</h3>`;
         apretarOpcion2ButterRoyale.innerHTML = `<h3>${paisRandom}</h3>`;
-    } else {
-
-    }
-}
-
-function conseguirPaisConMantecaSimilar(toneladasTotales) {
-    for (let index = produccionDeMantecaPorPais.length - 1; index >= 0; index--) {
-        const element = produccionDeMantecaPorPais[index];
-        if (element.manteca > toneladasTotales) {
-            let paisProductor = element.nombre;
-            let randomIndex = Math.floor(Math.random() * (index + 1));
-            let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
-            let retorno = {Productor: paisProductor, Random: paisRandom};
-            return retorno;
+        } else {
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${paisRandom}</h3>`;
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${paisProductor}</h3>`;  
         }
-    }
-    // If no country produces more, use the first one as producer and a random one
-    let paisProductor = produccionDeMantecaPorPais[0].nombre;
-    let randomIndex = Math.floor(Math.random() * produccionDeMantecaPorPais.length);
-    let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
-    let retorno = {Productor: paisProductor, Random: paisRandom};
-    return retorno;
 }
+
 
 async function juegoButterRoyaleButterToTheMoon() {
 }
@@ -784,3 +768,22 @@ async function juegoButterRoyaleEatMyButter() {
         paisData = pais.pais;
         return {areaData, paisData}
     }
+
+
+function conseguirPaisConMantecaSimilar(toneladasTotales) {
+    for (let index = produccionDeMantecaPorPais.length - 1; index >= 0; index--) {
+        const element = produccionDeMantecaPorPais[index];
+        if (element.manteca > toneladasTotales) {
+            let paisProductor = element.nombre;
+            let randomIndex = Math.floor(Math.random() * (index + 1));
+            let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
+            let retorno = {Productor: paisProductor, Random: paisRandom};
+            return retorno;
+        }
+    }
+    let paisProductor = produccionDeMantecaPorPais[0].nombre;
+    let randomIndex = Math.floor(Math.random() * produccionDeMantecaPorPais.length);
+    let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
+    let retorno = {Productor: paisProductor, Random: paisRandom};
+    return retorno;
+}
