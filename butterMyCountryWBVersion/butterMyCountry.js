@@ -175,6 +175,8 @@ let Usuario = "";
         <p>Como el area de ${paisData} es <span>${areaData} km2</span> tendriamos que usar <span>${kilogramosPorArea} kilogramos de manteca</span> para embadurnar el area.  </p> 
         `
         resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca para enmantecar todo ${paisData}</h3>`
+
+        return toneladasTotales;
         }
 
 
@@ -247,9 +249,11 @@ let Usuario = "";
     });
     selectPaisJ5.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ5, imagenModuloPaisJ5);
+        eatMyButter();
     });
     selectPaisJ5_2.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ5_2, imagenModuloPaisJ5_2);
+        eatMyButter();
     });
     //CAMBIAR AREA
 
@@ -535,12 +539,10 @@ async function actualizarDatosUsuario(){
 
 const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
 
-selectPaisJ5.addEventListener("change", eatMyButter);
-selectPaisJ5_2.addEventListener("change", eatMyButter);
-
 async function eatMyButter(){
-    const paisConsumidor = await cambiarArea(selectPaisJ5);
-    const paisProductor = await cambiarArea(selectPaisJ5_2);
+    
+    const paisConsumidor = await conseguirId(selectPaisJ5_2);
+    const paisEnmantecado = await conseguirId(selectPaisJ5);
 
     const calorías = 2400;
     const diasAño = 365;
@@ -548,5 +550,32 @@ async function eatMyButter(){
 
     const caloriasMantecaGramo = 7.17;
 
-    
-    
+    const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
+    const kilosMantecaPersona = gramosMantecaPersona / 1000;
+    const toneladasMantecaPersona = kilosMantecaPersona / 1000;
+
+    let {areaData, paisData} = await cambiarArea(selectPaisJ5);;
+    const toneladasTotales = toneladasTotalesCalc(areaData);
+
+    const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
+
+    const infoPaisConsumidor = await recibirDatoDePais("SP.POP.TOTL", paisConsumidor);
+    const poblacionTotal = infoPaisConsumidor.valor;
+    const nombreConsumidor = infoPaisConsumidor.pais;
+
+    const infoPaisEnmantecado = await recibirDatoDePais("SP.POP.TOTL", paisEnmantecado);
+    const nombreProductor = infoPaisEnmantecado.pais;
+
+    infoContenidoJ5.innerHTML = `
+        <p>Si cubriéramos completamente el territorio de <strong>${nombreProductor}</strong> con una capa de manteca de 1 milímetro de altura, se necesitarían aproximadamente <strong>${Math.round(toneladasTotales)} toneladas</strong> de manteca.</p>
+        <p>Una persona necesita alrededor de <strong>${toneladasMantecaPersona} toneladas</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
+        <p>Con esa cantidad total de manteca, se podría alimentar durante un año a unas <strong>${Math.floor(personasAlimentadas)} personas</strong>.</p>
+        <p>La población de <strong>${nombreConsumidor}</strong> es de aproximadamente <strong>${Math.round(poblacionTotal)}</strong> personas.</p>
+    `;
+
+    if (personasAlimentadas >= poblacionTotal) {
+        resultadoGrandeJ5.innerHTML = `<h3>¡La manteca que cubriría a ${nombreProductor} alcanza para alimentar a toda la población de ${nombreConsumidor} durante un año!</h3>`;
+    } else {
+        resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
+    }
+}
