@@ -679,8 +679,7 @@ async function cargarRondaRoyale() {
     const paises = await obtenerListaPaisesWorldBank();
     const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
     const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
-        let electorDeJuego = Math.floor(Math.random() * 5);    
-        electorDeJuego = 1;
+        let electorDeJuego = Math.floor(Math.random() * 2);    
         console.log(electorDeJuego); 
     if (electorDeJuego === 0){
         await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
