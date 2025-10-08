@@ -161,6 +161,9 @@ let Usuario = "";
         });
     }
     const resultadoGrandeJ1 = document.querySelector("#resultadoGrandeJ1");
+    const resultadoGrandeJ2 = document.querySelector("#resultadoGrandeJ2");
+    const resultadoGrandeJ3 = document.querySelector("#resultadoGrandeJ3");
+    const resultadoGrandeJ4 = document.querySelector("#resultadoGrandeJ4");
 
     //FUNCIONES NO GENERALES/////////////////////////////////////////////////////////////////////
     //CARGAR DATA
@@ -210,24 +213,24 @@ let Usuario = "";
 
     selectPaisJ2.addEventListener("change", async() => {
         conseguirBandera(selectPaisJ2, imagenModuloPaisJ2);
-        cargarInfoPayForMyButter();
+        cargarInfoProcudeMyButter();
     });
     selectPaisJ2_2.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ2_2, imagenModuloPaisJ2_2);
         console.log("cambio");
-        cargarInfoPayForMyButter();
+        cargarInfoProcudeMyButter();
     });
 
-    async function cargarInfoPayForMyButter () {
+    async function cargarInfoProcudeMyButter () {
         let {areaData, paisData} = await cambiarArea(selectPaisJ2);
         let objetoManteca = await cambiarProduccion(selectPaisJ2_2);
         let cantidadManteca2 = objetoManteca.cantidadManteca;
         let pais2 = objetoManteca.pais;
         console.log(cantidadManteca2, pais2);
-        cargarDataPayForMyButter(areaData, paisData, cantidadManteca2, pais2);
+        cargarDataProduceMyButter(areaData, paisData, cantidadManteca2, pais2);
     }
 
-    function cargarDataPayForMyButter(areaData, paisData, cantidadManteca2, pais2){
+    function cargarDataProduceMyButter(areaData, paisData, cantidadManteca2, pais2){
         console.log(areaData, paisData, cantidadManteca2, pais2);
         let toneladasTotales = toneladasTotalesCalc(areaData);
         let proporcion = toneladasTotales / cantidadManteca2;
@@ -240,12 +243,71 @@ let Usuario = "";
 
     selectPaisJ3.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
+        await cargarButterToTheMoon();
     });
+    async function cargarButterToTheMoon (){
+        let {areaData, paisData} = await cambiarArea(selectPaisJ3);
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        const alturaBarraMantecaMetros = 0.115;
+        //Una barra de manteca pesa 200gramos
+        const alturaKiloManteca = alturaBarraMantecaMetros * 5;
+        const alturaToneladaManteca = alturaKiloManteca * 1000;
+        const distanciaTierraALuna = 384400000;
+        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+        let vecesALaLuna = alturaTotal / distanciaTierraALuna;
+        infoContenidoJ3.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>Con ${toneladasTotales} toneladas de manteca se puede construir una torre de manteca de ${alturaTotal} metros de altura. </p>`
+        if (vecesALaLuna < 1){
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} llegariamos a solo ${vecesALaLuna}% de la distancia a la luna</h3>`
+        } else if (vecesALaLuna < 2){
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna pero no se podria volver ${vecesALaLuna} veces</h3>
+            `}
+            else {
+                resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna y volver ${(vecesALaLuna/2)} veces</h3>
+            `
+            }
+    }
+
+
     selectPaisJ4.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ4, imagenModuloPaisJ4);
+        await cargarInfoPayForMyButter();
     });
+
+    async function cargarInfoPayForMyButter() {
+        let {areaData, paisData} = await cambiarArea(selectPaisJ4);
+        console.log(areaData, paisData);
+        let infoGuita = await cambiarGuita(selectPaisJ4_2);
+        let paisData2 = infoGuita.nombre;
+        let guitaData = infoGuita.valor;
+        console.log(infoGuita);
+        cargarDataPayForMyButter(areaData, paisData, guitaData, paisData2)
+    }
+
+    function cargarDataPayForMyButter(areaData, paisData, guitaData, paisData2){
+        let precioDeToneladaDeManteca = 9270;
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        let precioTotal = toneladasTotales * precioDeToneladaDeManteca;
+        let toneladasComprables = guitaData / precioDeToneladaDeManteca;
+        let proporcionPais = guitaData / precioTotal;
+        let paisPobre = 1 / proporcionPais;
+        console.log(proporcionPais)
+        infoContenidoJ4.innerHTML = 
+        `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+         <p>Con el GDP de ${paisData2} se podria comprar ${toneladasComprables} toneladas de manteca.
+         </p>`
+         if (proporcionPais > 1) {
+         resultadoGrandeJ4.innerHTML = `<h3> Con su GDP de 2025, ${paisData2} puede embadurnar todo ${paisData} ${proporcionPais} veces</h3>
+         `} else {
+            resultadoGrandeJ4.innerHTML = `<h3> Se necesitan ${paisPobre} veces la economia de ${paisData2} para embadurnar todo ${paisData} de manteca</h3>
+         `
+         }
+    }
+    
+
     selectPaisJ4_2.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ4_2, imagenModuloPaisJ4_2);
+        cargarInfoPayForMyButter();
     });
     selectPaisJ5.addEventListener("change", async () => {
         conseguirBandera(selectPaisJ5, imagenModuloPaisJ5);
@@ -276,13 +338,20 @@ let Usuario = "";
         return {areaData, paisData}
     }
 
+        async function cambiarGuita(selectAUsar){
+        let contenido = await conseguirId(selectAUsar);
+        let pais = await recibirDatoDePais("NY.GDP.MKTP.CD", contenido)
+        guitaData = pais.valor;
+        paisData = pais.pais;
+        let dataEnviar = {nombre: paisData, valor: guitaData}
+        console.log(paisData)
+        return dataEnviar
+        }
+
     async function cambiarProduccion(selectAUsar) {
         console.log("cambio produccion");
         let contenido = await conseguirId(selectAUsar);
         let objetoManteca = recibirDatosDeManteca(contenido);
-        let cantidadManteca = objetoManteca.cantidadManteca;
-        let pais = objetoManteca.pais;
-        console.log(objetoManteca);
         return objetoManteca;
     }
 
@@ -578,4 +647,6 @@ async function eatMyButter(){
     } else {
         resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
     }
+
+    
 }
