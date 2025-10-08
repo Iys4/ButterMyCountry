@@ -668,4 +668,50 @@ iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
 async function iniciarButterRoyaleFuncion(){
     iniciarButterRoyale.style = "display: none";
     butterRoyaleJuego.style = "display: block";
+    await cargarPartidaRoyale();
 }
+async function cargarPartidaRoyale(){
+await cargarRondaRoyale();
+}
+
+
+async function cargarRondaRoyale() {
+    const paises = await obtenerListaPaisesWorldBank();
+    const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
+    const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
+     await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+     await cargarDatosDePaisRandomCompetitivo(paisAleatorio2, opcion2ButterRoyale);
+        let electorDeJuego = Math.floor(Math.random() * 5);     
+    if (electorDeJuego === 0){
+        await juegoButterRoyaleButterMyCountry();
+    } else if (electorDeJuego === 1){
+        await juegoButterRoyaleProduceMyButter();
+    } else if (electorDeJuego === 2){
+        await juegoButterRoyaleButterToTheMoon();
+} else if (electorDeJuego === 3){
+        await juegoButterRoyalePayForMyButter();
+}else if (electorDeJuego === 4){
+        await juegoButterRoyaleEatMyButter();
+}}
+
+//Juegos Competitivos//
+
+async function juegoButterRoyaleButterMyCountry() {
+}
+async function juegoButterRoyaleProduceMyButter() {
+}
+async function juegoButterRoyaleButterToTheMoon() {
+}
+async function juegoButterRoyalePayForMyButter() {
+}
+async function juegoButterRoyaleEatMyButter() {
+}
+
+
+  async function cargarDatosDePaisRandomCompetitivo(contenido, imagen){
+    let idContenido = contenido.id;
+    let nombreContenido = contenido.name;
+    let pais = await recibirBanderaDePais(idContenido);
+    imagen.innerHTML = `<h3>${nombreContenido}</h3>`
+    imagen.innerHTML += `<img src="${pais}"></img>`;
+  }
