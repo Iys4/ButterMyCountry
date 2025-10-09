@@ -80,7 +80,6 @@ header{
 footer{
     width: 100vw;
     height: 15vh;
-    padding: ;
     background-color: var(--AmarilloPrincipal);
     box-shadow: 0 -16px 0 var(--AmarilloClaro);
     display: flex;
