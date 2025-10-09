@@ -517,10 +517,11 @@ function mostrarUsuario(){
     nombreUsuarioMostrar.innerHTML = `<p>${Usuario.username} #${Usuario.data.id}</p>`;
 }
 
-async function listaDeUsuariosYMails(data){
+async function listaDeUsuariosYMails(array){
     let usersDeButter = [];
-    data.data.forEach(element => {
-       if (element.data.juego === "ButterMyCountry"){
+    console.log(array.data);
+    array.data.forEach(element => {
+       if (element.data && element.data.juego === "ButterMyCountry"){
            usersDeButter.push(element);
        }
        listaDeUsuarios = [];
@@ -1087,7 +1088,7 @@ async function cargarLeaderboard() {
         const data = await response.json();
         const usuarios = data.data;
 
-        const usuariosDeButter = usuarios.filter(u => u.data.juego === "ButterMyCountry");
+        const usuariosDeButter = usuarios.filter(u => u.data && u.data.juego === "ButterMyCountry");
 
         usuariosDeButter.sort((a, b) => b.data.scoreMaximo - a.data.scoreMaximo);
 
