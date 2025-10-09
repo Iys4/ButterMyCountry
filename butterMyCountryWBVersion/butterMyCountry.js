@@ -1,4 +1,4 @@
-    
+
     //////////////////////VARIABLES//////////////////////
 let area = 0;
 let densidad = 0.911;
@@ -400,11 +400,6 @@ function recibirDatosDeManteca(id) {
         return false;
     }
 
-    async function iniciarSesionUsuario(){
-        const response = await fetch(`${BASE_URL_USUARIOS}`);
-        const data = await response.json();
-        console.log(data);
-    }
 const inputUsuario = document.querySelector("#inputUsuario");
 iniciarSesion.addEventListener("click", iniciarSesionUsuario);
 const inputEmail = document.querySelector("#inputEmail");
@@ -733,6 +728,7 @@ async function iniciarButterRoyaleFuncion(){
     console.log("se carga boton");
     await cargarPartidaRoyale();
 }
+
 async function cargarPartidaRoyale(){
 await cargarRondaRoyale();
 }
@@ -956,4 +952,6 @@ async function conseguirPaisConGDPSimilar(guita) {
     let paisRandom = matrizPlataPais[randomIndex].nombre;
     let retorno = {"Productor": paisProductor, "Random": paisRandom};
     console.log(retorno);
-return retorno}
+    return retorno;
+}
+}
