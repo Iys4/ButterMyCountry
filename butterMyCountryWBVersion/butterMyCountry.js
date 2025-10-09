@@ -668,6 +668,7 @@ iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
 async function iniciarButterRoyaleFuncion(){
     //iniciarButterRoyale.style = "display: none";
     butterRoyaleJuego.style = "display: block";
+    console.log("se carga boton");
     await cargarPartidaRoyale();
 }
 async function cargarPartidaRoyale(){
@@ -679,8 +680,8 @@ async function cargarRondaRoyale() {
     const paises = await obtenerListaPaisesWorldBank();
     const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
     const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
-        let electorDeJuego = Math.floor(Math.random() * 2);    
-        console.log(electorDeJuego); 
+        let electorDeJuego = Math.floor(Math.random() * 3);    
+        console.log("elector " + electorDeJuego); 
     if (electorDeJuego === 0){
         await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
         await juegoButterRoyaleButterMyCountry(paisAleatorio);
@@ -688,9 +689,9 @@ async function cargarRondaRoyale() {
         await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
         await juegoButterRoyaleProduceMyButter(paisAleatorio);
     } else if (electorDeJuego === 2){
-        await cargarDatosDePaisRandomCompetitivo(paisAleatorio2, opcion2ButterRoyale);
         await juegoButterRoyaleButterToTheMoon(paisAleatorio, paisAleatorio2);
 } else if (electorDeJuego === 3){
+            await cargarDatosDePaisRandomCompetitivo(paisAleatorio2, opcion2ButterRoyale);
         await juegoButterRoyalePayForMyButter(paisAleatorio, paisAleatorio2);
 }else if (electorDeJuego === 4){
         await juegoButterRoyaleEatMyButter(paisAleatorio, paisAleatorio2);
@@ -745,7 +746,27 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
 }
 
 
-async function juegoButterRoyaleButterToTheMoon() {
+async function juegoButterRoyaleButterToTheMoon(pais1) {
+        preguntaButterRoyale.innerHTML = `<h2>Butter My Country</h2>`
+        let electorDeJuego = Math.floor(Math.random() * 2);
+        preguntaButterRoyale.innerHTML += `
+        <h2>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h2>`
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        let toneladasTotales1 = toneladasTotalesCalc(areaData);
+        const alturaBarraMantecaMetros = 0.115;
+        //Una barra de manteca pesa 200gramos
+        const alturaKiloManteca = alturaBarraMantecaMetros * 5;
+        const alturaToneladaManteca = alturaKiloManteca * 1000;
+        const distanciaTierraALuna = 384400000;
+        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+        let vecesALaLuna = alturaTotal / distanciaTierraALuna;
+        if (electorDeJuego === 0) {
+            apretarOpcion1ButterRoyale.innerHTML = `<h3>${vecesALaLuna}</h3>`;
+            apretarOpcion2ButterRoyale.innerHTML = `<h3>${vecesALaLuna * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+        } else {
+            apretarOpcion2ButterRoyale.innerHTML = `<h3>${vecesALaLuna}</h3>`;
+            apretarOpcion1ButterRoyale.innerHTML = `<h3>${vecesALaLuna * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+        }
 }
 async function juegoButterRoyalePayForMyButter() {
 }
