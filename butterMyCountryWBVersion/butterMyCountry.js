@@ -492,6 +492,7 @@ async function registrarUsuario(){
     const response = await fetch(`${BASE_URL_USUARIOS}`);
     const data = await response.json();
     const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
+    
     if (listaDeUsuarios.includes(inputUsuario.value)){
         cargarAlerta("El usuario ya existe, por favor elija otro nombre de usuario.");
         return false;
@@ -505,9 +506,18 @@ async function registrarUsuario(){
         cargarAlerta("El email ya está en uso, por favor ingrese otro email.");
         return false;
     } else {
-        crearUsuario();
-        cargarAlerta("Usuario creado con éxito. Inicia sesion para continuar.");
-        popUpUsuario.style = "display: none";
+
+        try {
+            const nuevoUsuario = await crearUsuario();
+            Usuario = nuevoUsuario;
+            mostrarUsuario()
+            cargarModoCompetitivo();
+            cargarAlerta("Usuario creado con éxito.");
+            popUpUsuario.style = "display: none"
+        }catch (error){
+            console.error("Error detallado al crear el usuario:", error);
+            cargarAlerta("Ocurrió un error al crear el usuario");
+        }
     }
 }
 
@@ -519,18 +529,27 @@ function mostrarUsuario(){
 
 async function listaDeUsuariosYMails(array){
     let usersDeButter = [];
+
     console.log(array.data);
+
     array.data.forEach(element => {
        if (element.data && element.data.juego === "ButterMyCountry"){
            usersDeButter.push(element);
        }
-       listaDeUsuarios = [];
-       listaDeEmails = [];
-       usersDeButter.forEach(element => {
-        listaDeUsuarios.push(element.username);
-        listaDeEmails.push(element.email);
-       });
     });
+
+    let listaDeUsuarios = [];  // Lista de usernames únicos
+    let listaDeEmails = [];    // Lista de emails únicos
+
+    usersDeButter.forEach(element => {
+        if (element.username) {
+            listaDeUsuarios.push(element.username);
+        }
+        if (element.email) {
+            listaDeEmails.push(element.email);
+        }
+    });
+
     return {listaDeUsuarios, listaDeEmails};
 };
 
@@ -547,22 +566,32 @@ async function crearUsuario(){
             id: idNueva
         }
     };
+    
     const response = await fetch(`${BASE_URL_USUARIOS}`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(nuevoUsuario)
-});
-mostrarUsuario();
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(nuevoUsuario)
+    });
+
+    if(response.ok){
+        const data = await response.json();
+        return data;
+    }else{
+        console.log("Error al crear el usuario");
+    }
+
+    mostrarUsuario();
 }
 
 async function crearId(){
     const response = await fetch(`${BASE_URL_USUARIOS}`);
     const data = await response.json();
     let usersDeButter = [];
+   
     data.data.forEach(element => {
-       if (element.data.juego === "ButterMyCountry"){
+       if (element.data && element.data.juego === "ButterMyCountry"){
            usersDeButter.push(element);
            console.log(element);
        }
@@ -618,6 +647,7 @@ async function confirmarBorradoUsuario(){
             cargarAlerta("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
             Usuario="";
 
+            await cargarLeaderboard();
             nombreUsuarioMostrar.innerHTML="";
             PUBorrar.style.display="none";
             popUpUsuario.style.display="none";
@@ -1109,7 +1139,7 @@ async function cargarLeaderboard() {
 
         top10.forEach((user, index) => {
             const li = document.createElement("li");
-            li.innerHTML = `<strong>${user.username}</strong> - ${user.data.scoreMaximo} puntos`;
+            li.innerHTML = `<strong>${user.username}</strong> ${user.data.scoreMaximo} puntos`;
             listaLeaderboard.appendChild(li);
         });
 

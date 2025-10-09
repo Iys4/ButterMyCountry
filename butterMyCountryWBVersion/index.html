@@ -180,11 +180,13 @@
         </article>
         <article id="modoCompetitivo" class="container">
             <section>
-                <h2>Butter Royale</h2>
-                <h3>Como Jugar:</h3>
-                <p>Butter Royale es una modalidad de juego diseñada para demostrar tus conocimientos de enmantecacion contra todos los otros usuarios de la web </p>
-                <p>Se te dara una pregunta y dos opciones para responderla, el que logre más respuestas correctas quedara en el top de los rankings</p>
-                <button id="iniciarButterRoyale">Iniciar Butter Royale</button>
+                <div id="explicacionRoyale">
+                    <h2>Butter Royale</h2>
+                    <h3>Cómo Jugar:</h3>
+                    <p>Butter Royale es una modalidad de juego diseñada para demostrar tus conocimientos de enmantecacion contra todos los otros usuarios de la web </p>
+                    <p>Se te dara una pregunta y dos opciones para responderla, el que logre más respuestas correctas quedara en el top de los rankings</p>
+                    <button id="iniciarButterRoyale">Iniciar Butter Royale</button>
+                </div>
                 <section id="butterRoyaleJuego" style="display: none;">
                     <div id="contenedorButterRoyale">
                     <div id="scoreTemporal"><p>Score: </p></div>
@@ -226,8 +228,11 @@
         <div id="PUBorrar" style="display: none;">
             <div>
                 <p>¿Estás seguro de que querés borrar tu cuenta? Butter my Country te valora muchísimo como usuario</p>
-                <button id="confirmarBorrado">Sí, borrar</button>
-                <button id="cancelarBorrado">Cancelar</button>
+                
+                <div id="divButtons">
+                    <button id="confirmarBorrado">Sí, borrar</button>
+                    <button id="cancelarBorrado">Cancelar</button>
+                </div>
             </div>
         </div>
     </footer>

@@ -34,7 +34,7 @@
 }
 
 body{
-    background-color: var(--FondoAmarillo);
+    background-color: var(--AmarilloClaro);
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -60,16 +60,16 @@ header{
 
 #headerDiv{
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     p{
         font-size: 2rem;
         font-weight: 1000;
         color: white;
         text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
     }
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
     img{
         height: 100%;
@@ -79,11 +79,16 @@ header{
 
 footer{
     width: 100vw;
-    height: 10vh;
+    height: 15vh;
+    padding: ;
     background-color: var(--AmarilloPrincipal);
     box-shadow: 0 -16px 0 var(--AmarilloClaro);
     display: flex;
     justify-content: center;
+
+    button{
+        margin: 2rem;
+    }
 }
 
 .sectionJuegos{
@@ -111,10 +116,6 @@ footer{
     display: flex;
     justify-content: center;
     flex-direction: column;
-
-    button{
-        width: 100%;
-    }
 }
 
 button{
@@ -392,14 +393,20 @@ ol {
     margin-top: 3vh;
     text-align: center;
     width: 100%;
-    background-color: var(--AmarilloClaro);
+    background-color: var(--FondoAmarillo);
     padding: 2rem;
-    border-radius: var(--borderRadius);
+    border-radius: 20px;
     box-shadow: 0 12px 0 var(--AmarilloPrincipal);
     border: solid 5px var(--AmarilloPrincipal);
     margin-bottom: 5vh;
 }
 
+#contenedorButterRoyale{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
 #butterRoyaleJuego h2{
     font-size: 2rem;
     margin-bottom: 2vh;
@@ -410,21 +417,60 @@ ol {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    width: 100%;
 }
 
-#separadorOpciones button{
+#separadorOpciones button:nth-of-type(1){
     width: 100%;
     height: 15vh;
-    box-shadow: 0 12px 0 var(--AmarilloOscuro);
-    background-color: var(--AmarilloPrincipal);
-    color: #272727;
+    box-shadow: 0 12px 0 var(--AzulOscuro);
+    background-color: var(--AzulPrincipal);
+    color: white;
+}
+#separadorOpciones button:nth-of-type(2){
+    width: 100%;
+    height: 15vh;
+    box-shadow: 0 12px 0 var(--RojoOscuro);
+    background-color: var(--RojoPrincipal);
+    color: white;
+}
+
+#explicacionRoyale{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--FondoAmarillo);
+    border-radius: var(--borderRadius);
+
+    h2{
+        font-size: 2rem;
+        font-weight: 1000;
+        color: var(--Negro);
+    }
+    p{
+        width: 80%;
+    }
+    button{
+        width: 100%;
+        padding: 2rem;
+        background-color: var(--AmarilloPrincipal);
+        box-shadow: 0 12px 0 var(--AmarilloOscuro);
+    }
 }
 
 #scoreTemporal p {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--FondoAmarillo);
-    background-color: var(--RojoOscuro);
+    background-color: var(--VerdePrincipal);
+    padding: 1rem;
+    border-radius: var(--borderRadius);
+    color: var(--Negro);
+
 }
 
 
@@ -433,7 +479,7 @@ ol {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--AmarilloClaro);
+    background-color: rgb(233, 233, 233);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -445,6 +491,33 @@ ol {
     display: flex;
     flex-direction: column;
     gap: 1vh;
+
+    h2{
+        margin-bottom: 2rem;
+        font-size: 3rem;
+        text-align: center;
+        font-weight: 1000;
+    }
+
+    p{
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    input{
+        width: 100%;
+        margin: 0.5rem;
+    }
+    button{
+        width: 100%;
+    }
+
+    button:nth-of-type(1){
+        background-color: var(--AzulPrincipal);
+        box-shadow: 0 8px 0 var(--AzulOscuro);    
+    }
 }
 
 #popUpAlert {
@@ -453,8 +526,8 @@ ol {
     left: 50%;
     width: 40vw;
     transform: translate(-50%, 0);
-    background-color: var(--RojoPrincipal);
-    color: white;
+    background-color: white;
+    color: rgb(0, 0, 0);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -465,6 +538,49 @@ ol {
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     text-align: center;
     font-size: 1.2rem;
+    font-weight: 600;
+    
+
+    button{
+        background-color: var(--AzulPrincipal);
+        box-shadow: 0 8px 0 var(--AzulOscuro); 
+        color: white; 
+        width: 100%;  
+    }
+}
+
+#PUBorrar{
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    width: 40vw;
+    transform: translate(-50%, 0);
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 2rem 2rem;
+    border-radius: var(--borderRadius);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    button{
+        width: 50%;
+    }
+
+    button:nth-of-type(1){
+        background-color: var(--AzulPrincipal);
+        box-shadow: 0 8px 0 var(--AzulOscuro);    
+    }
+
+    #divButtons{
+        display: flex;
+
+    }
 }
 
 #cerrarPopUp{
@@ -529,4 +645,41 @@ ol {
 .boxJuego{
     flex-direction: column;
 }
+}
+
+li:nth-of-type(1){
+    background-color: var(--AmarilloPrincipal);
+    box-shadow: 0 8px 0 var(--AmarilloOscuro);
+}
+
+li:nth-of-type(2){
+    background-color: #e1e1e1;
+    box-shadow: 0 8px 0 #a0a0a0;
+}
+
+li:nth-of-type(3){
+    background-color: #ff8d4b;
+    box-shadow: 0 8px 0 #ca5b00;
+}
+
+.opcionButterRoyale{
+    display: flex;
+    flex-direction: column-reverse;
+    h3{
+        font-size: 2rem;
+    }
+}
+
+#opcion1ButterRoyale{
+    background-color: var(--AmarilloPrincipal);
+    padding: 2rem;
+    border-radius: var(--borderRadius);
+    color: white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    h3{
+        padding-top: 1rem;
+        text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+    }
 }
