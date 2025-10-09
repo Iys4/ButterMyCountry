@@ -794,13 +794,13 @@ async function juegoButterRoyaleEatMyButter(pais1) {
 
     opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
 
-    apretarOpcion1ButterRoyale.innerText = opciones[0];
-    apretarOpcion2ButterRoyale.innerText = opciones[1];
+    apretarOpcion1ButterRoyale.innerHTML = `${opciones[0]}`;
+    apretarOpcion2ButterRoyale.innerHTML = `${opciones[1]}`;
 
-    apretarOpcion1ButterRoyale.onclick = () => verificarRespuesta(opciones[0], respuestaCorrecta);
-    apretarOpcion2ButterRoyale.onclick = () => verificarRespuesta(opciones[1], respuestaCorrecta);
-
+    apretarOpcion1ButterRoyale.addEventListener("click", verificarRespuestaEMB1);
+    apretarOpcion2ButterRoyale.addEventListener("click", verificarRespuestaEMB2);
 }
+
 
 async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
 
@@ -810,17 +810,29 @@ if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
         console.log("Correcto. Puntaje ahora:", puntajeActual);
     }else{
         alert("¡Incorrecto!");
+        puntajeActual = 0;
+        console.log("Incorrecto. Puntaje ahora:", puntajeActual);
     }
 
     const highscoreActual = Usuario.data?.scoreMaximo || 0;
+    console.log(highscoreActual);
+
     if (puntajeActual > highscoreActual) {
+
+        Usuario.data.scoreMaximo = puntajeActual;
         await actualizarHighScore(puntajeActual);
+        await cargarLeaderboard();
     }
 
-    await cargarLeaderboard()
     cargarRondaRoyale();
 }
 
+async function verificarRespuestaEMB1(){
+    verificarRespuesta(opciones[0], respuestaCorrecta)
+};
+async function verificarRespuestaEMB2(){
+    verificarRespuesta(opciones[1], respuestaCorrecta)
+};
 
 
 async function actualizarHighScore(nuevoScore) {
