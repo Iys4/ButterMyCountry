@@ -56,6 +56,14 @@ let Usuario = "";
     modoCompetitivoButton.addEventListener("click", cargarModoCompetitivo);
     const modoCompetitivo = document.querySelector("#modoCompetitivo");
 
+    const modoSingleButton = document.querySelector("#modoSingleButton");
+    const leaderboard = document.querySelector("#leaderboard");
+    modoSingleButton.addEventListener("click", cargarLeaderBoard);
+    function cargarLeaderBoard(){
+        esconderArticulos();
+        leaderboard.style = "display: block";
+    }
+
     async function cargarModoCompetitivo(){
         esconderArticulos();
         if (Usuario === ""){ 
@@ -99,6 +107,7 @@ let Usuario = "";
         articleJ5.style = "display: none";
         modoCompetitivo.style = "display: none";
         popUpUsuario.style = "display: none";
+        leaderboard.style = "display: none";
     }
     const infoContenidoJ1 = document.querySelector("#infoContenidoJ1");
     const infoContenidoJ2 = document.querySelector("#infoContenidoJ2");
@@ -455,7 +464,7 @@ async function iniciarSesionUsuario(){
     const data = await response.json();
     const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
     if (listaDeUsuarios.includes(inputUsuario.value)){
-        alert("Iniciaras sesion como" + inputUsuario.value);
+        cargarAlerta("Iniciaras sesion como" + inputUsuario.value)
             data.data.forEach(element => {
         if (element.username === inputUsuario.value){
             if (element.data.juego === "ButterMyCountry"){
@@ -466,7 +475,7 @@ async function iniciarSesionUsuario(){
         }
     });
     } else if (listaDeEmails.includes(inputEmail.value)) {
-        alert("Ingresaras con el email " + inputEmail.value);
+        cargarAlerta("Ingresaras con el email " + inputEmail.value);
             data.data.forEach(element => {
         if (element.email === inputEmail.value){
             if (element.data.juego === "ButterMyCountry"){
@@ -477,7 +486,7 @@ async function iniciarSesionUsuario(){
         }
     });
     } else {
-        alert("El usuario que ingresaste no existe, registrate o revisa tus datos");
+        cargarAlerta("El usuario que ingresaste no existe, registrate o revisa tus datos");
         return false;
     }
 }
@@ -487,20 +496,20 @@ async function registrarUsuario(){
     const data = await response.json();
     const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
     if (listaDeUsuarios.includes(inputUsuario.value)){
-        alert("El usuario ya existe, por favor elija otro nombre de usuario.");
+        cargarAlerta("El usuario ya existe, por favor elija otro nombre de usuario.");
         return false;
     } else if (inputUsuario.value === "" || inputEmail.value === ""){
-        alert("Por favor complete todos los campos.");
+        cargarAlerta("Por favor complete todos los campos.");
         return false;
     } else if (!inputEmail.value.includes("@")){
-        alert("Por favor ingrese un email válido.");
+        cargarAlerta("Por favor ingrese un email válido.");
         return false;
     } else if (listaDeEmails.includes(inputEmail.value)){
-        alert("El email ya está en uso, por favor ingrese otro email.");
+        cargarAlerta("El email ya está en uso, por favor ingrese otro email.");
         return false;
     } else {
         crearUsuario();
-        alert("Usuario creado con éxito.");
+        cargarAlerta("Usuario creado con éxito.");
         popUpUsuario.style = "display: none";
         return true;
     }
@@ -589,7 +598,7 @@ cancelarBorrado.addEventListener("click", cancelarBorradoUsuario);
 
 function mostrarPopupBorrado() {
     if (Usuario === "") {
-        alert("Debes iniciar sesión para borrar tu usuario.");
+        cargarAlerta("Debes iniciar sesión para borrar tu usuario.");
         return;
     }
     PUBorrar.style.display = "block";
@@ -609,7 +618,7 @@ async function confirmarBorradoUsuario(){
         });
 
         if(response.ok){
-            alert("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
+            cargarAlerta("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
             Usuario="";
 
             nombreUsuarioMostrar.innerHTML="";
@@ -617,12 +626,12 @@ async function confirmarBorradoUsuario(){
             popUpUsuario.style.display="none";
         }else{
             const errorData = await response.json();
-            alert(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
+            cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
         }
     }catch(error){
         const errorData = await response.json();
         console.log("Respuesta de error:", errorData);
-        alert(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
+        cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
 
     }    
 }
@@ -671,7 +680,7 @@ actualizarUsuario.addEventListener("click", actualizarDatosUsuario);
 
 async function actualizarDatosUsuario(){
     if (Usuario === ""){
-        alert("Debes Iniciar Sesion para actualizar tus datos");
+        cargarAlerta("Debes Iniciar Sesion para actualizar tus datos");
         return false;
     }
 
@@ -695,15 +704,15 @@ async function actualizarDatosUsuario(){
 
         if (response.ok) {
             const data = await response.json();
-            alert("Usuario actualizado con éxito.");
+            cargarAlerta("Usuario actualizado con éxito.");
             Usuario = data;
             mostrarUsuario();
         } else {
-            alert("Error al actualizar el usuario.");
+            cargarAlerta("Error al actualizar el usuario.");
         }
     } catch (error) {
         console.log("Error actualizando:", error);
-        alert("Ocurrió un error al intentar actualizar el usuario.");
+        cargarAlerta("Ocurrió un error al intentar actualizar el usuario.");
     }
 }
 
@@ -725,7 +734,7 @@ let opciones = [];
 async function iniciarButterRoyaleFuncion(){
 
     if (Usuario === "" || !Usuario._id) {
-        alert("Debes iniciar sesión correctamente para jugar y guardar puntaje.");
+        cargarAlerta("Debes iniciar sesión correctamente para jugar y guardar puntaje.");
         popUpUsuario.style = "display: block";
         return;
     }
@@ -794,22 +803,36 @@ async function juegoButterRoyaleEatMyButter(pais1) {
 
     opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
 
-    apretarOpcion1ButterRoyale.innerText = opciones[0];
-    apretarOpcion2ButterRoyale.innerText = opciones[1];
+    apretarOpcion1ButterRoyale.innerHTML = `${opciones[0]}`;
+    apretarOpcion2ButterRoyale.innerHTML = `${opciones[1]}`;
 
     apretarOpcion1ButterRoyale.onclick = () => verificarRespuesta(opciones[0], respuestaCorrecta);
     apretarOpcion2ButterRoyale.onclick = () => verificarRespuesta(opciones[1], respuestaCorrecta);
 
 }
 
+const popUpAlert = document.querySelector("#popUpAlert");
+const mensajePopUp = document.querySelector("#mensajePopUp");
+const cerrarPopUp = document.querySelector("#cerrarPopUp");
+
+cerrarPopUp.addEventListener("click", () => {
+    popUpAlert.style.display = "none";
+});
+
+async function cargarAlerta(mensaje) {
+    mensajePopUp.innerHTML = `<p>${mensaje}</p>`;
+    popUpAlert.style.display = "block";
+    cerrarPopUp.focus();
+}
+
 async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
 
 if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
-        alert("¡Correcto! Sumaste un punto.");
+        cargarAlerta("¡Correcto! Sumaste un punto.");
         puntajeActual++;
         console.log("Correcto. Puntaje ahora:", puntajeActual);
     }else{
-        alert("¡Incorrecto!");
+        cargarAlerta("¡Incorrecto!");
     }
 
     const highscoreActual = Usuario.data?.scoreMaximo || 0;
@@ -827,7 +850,7 @@ async function actualizarHighScore(nuevoScore) {
 
     if (!Usuario || !Usuario._id) {
         console.error("Usuario inválido para update:", Usuario);
-        alert("Error: No estás logueado correctamente. Reinicia sesión.");
+        cargarAlerta("Error: No estás logueado correctamente. Reinicia sesión.");
         return;
     }
     
