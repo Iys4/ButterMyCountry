@@ -850,9 +850,14 @@ async function actualizarHighScore(nuevoScore) {
 
         if (response.ok) {
             const updatedUser = await response.json();
-            Usuario = updatedUser ;
-            Usuario.data.scoreMaximo = nuevoScore;
-            console.log("Usuario actualizado:", updatedUser);
+                Usuario = {
+                            ...Usuario, 
+                            ...updatedUser,
+                            data: {
+                                ...Usuario.data,
+                                ...updatedUser.data
+                            }
+                        };
         }
     
     } catch (error) {
