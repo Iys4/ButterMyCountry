@@ -768,6 +768,24 @@ async function cargarRondaRoyale() {
 
 /////////COMPETITIVO EAT MY BUTTER/////////////////////
 
+function configurarOpcionesDeRespuesta(opcionesArray, respuestaCorrecta) {
+    opciones = opcionesArray;
+    respuestaCorrectaGlobal = respuestaCorrecta; // Necesitás una var global si querés usarla en los handlers
+
+    apretarOpcion1ButterRoyale.innerHTML = `<h3>${opciones[0]}</h3>`;
+    apretarOpcion2ButterRoyale.innerHTML = `<h3>${opciones[1]}</h3>`;
+
+    apretarOpcion1ButterRoyale.onclick = () => {
+        verificarRespuesta(opciones[0], respuestaCorrectaGlobal);
+    };
+    apretarOpcion2ButterRoyale.onclick = () => {
+        verificarRespuesta(opciones[1], respuestaCorrectaGlobal);
+    };
+}
+
+
+
+
 async function juegoButterRoyaleEatMyButter(pais1) {
     
     preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
@@ -792,7 +810,7 @@ async function juegoButterRoyaleEatMyButter(pais1) {
     const factor = Math.random() * 1.5 + 0.5;
     const respuestaIncorrecta = Math.floor(personasAlimentadas * factor);
 
-    configurarOpcionesDeRespuesta([respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5), respuestaCorrecta);
+    configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 
 }
 
@@ -835,21 +853,6 @@ juegoButterRoyaleButterMyCountry
     cargarRondaRoyale();
 }
 
-function configurarOpcionesDeRespuesta(opcionesArray, respuestaCorrecta) {
-    opciones = opcionesArray;
-    respuestaCorrectaGlobal = respuestaCorrecta; // Necesitás una var global si querés usarla en los handlers
-
-    apretarOpcion1ButterRoyale.innerHTML = `<h3>${opciones[0]}</h3>`;
-    apretarOpcion2ButterRoyale.innerHTML = `<h3>${opciones[1]}</h3>`;
-
-
-    apretarOpcion1ButterRoyale.onclick = () => {
-        verificarRespuesta(opciones[0], respuestaCorrectaGlobal);
-    };
-    apretarOpcion2ButterRoyale.onclick = () => {
-        verificarRespuesta(opciones[1], respuestaCorrectaGlobal);
-    };
-}
 
 async function actualizarHighScore(nuevoScore) {
 
@@ -916,8 +919,8 @@ async function juegoButterRoyalePayForMyButter(pais1) {
         let paisRandom = recibirPaises.Random;
         respuestaIncorrecta = paisRandom;
 
-        opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
-
+        opciones = Math.random() < 0.5 ? [respuestaCorrecta, respuestaIncorrecta] : [respuestaIncorrecta, respuestaCorrecta];
+        
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 }
 
@@ -947,7 +950,7 @@ async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
         respuestaCorrecta = toneladasTotales1;
         respuestaIncorrecta = toneladasTotales1 * (Math.floor(Math.random() * 1.5)+0.5)
     
-        opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
+        opciones = [respuestaCorrecta, respuestaIncorrecta];
 
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
     }
@@ -975,7 +978,7 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
         console.log(paisProductor);
         console.log(paisRandom);
         
-        opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
+        opciones = [respuestaCorrecta, respuestaIncorrecta];
 
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 }
@@ -999,7 +1002,7 @@ async function juegoButterRoyaleButterToTheMoon(pais1) {
         respuestaCorrecta = vecesALaLuna;
         respuestaIncorrecta = vecesALaLuna * (Math.floor(Math.random() * 1.5)+0.5);
         
-        opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
+        opciones = [respuestaCorrecta, respuestaIncorrecta];
 
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 }
