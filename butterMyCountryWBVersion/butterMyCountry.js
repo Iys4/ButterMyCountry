@@ -806,9 +806,8 @@ async function juegoButterRoyaleEatMyButter(pais1) {
     apretarOpcion1ButterRoyale.innerHTML = `${opciones[0]}`;
     apretarOpcion2ButterRoyale.innerHTML = `${opciones[1]}`;
 
-    apretarOpcion1ButterRoyale.onclick = () => verificarRespuesta(opciones[0], respuestaCorrecta);
-    apretarOpcion2ButterRoyale.onclick = () => verificarRespuesta(opciones[1], respuestaCorrecta);
-
+    apretarOpcion1ButterRoyale.addEventListener("click", verificarRespuestaEMB1);
+    apretarOpcion2ButterRoyale.addEventListener("click", verificarRespuestaEMB2);
 }
 
 const popUpAlert = document.querySelector("#popUpAlert");
@@ -832,18 +831,30 @@ if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
         puntajeActual++;
         console.log("Correcto. Puntaje ahora:", puntajeActual);
     }else{
-        cargarAlerta("¡Incorrecto!");
+        alert("¡Incorrecto!");
+        puntajeActual = 0;
+        console.log("Incorrecto. Puntaje ahora:", puntajeActual);
     }
 
     const highscoreActual = Usuario.data?.scoreMaximo || 0;
+    console.log(highscoreActual);
+
     if (puntajeActual > highscoreActual) {
+
+        Usuario.data.scoreMaximo = puntajeActual;
         await actualizarHighScore(puntajeActual);
+        await cargarLeaderboard();
     }
 
-    await cargarLeaderboard()
     cargarRondaRoyale();
 }
 
+async function verificarRespuestaEMB1(){
+    verificarRespuesta(opciones[0], respuestaCorrecta)
+};
+async function verificarRespuestaEMB2(){
+    verificarRespuesta(opciones[1], respuestaCorrecta)
+};
 
 
 async function actualizarHighScore(nuevoScore) {
