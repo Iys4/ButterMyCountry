@@ -956,5 +956,4 @@ async function conseguirPaisConGDPSimilar(guita) {
     let paisRandom = matrizPlataPais[randomIndex].nombre;
     let retorno = {"Productor": paisProductor, "Random": paisRandom};
     console.log(retorno);
-return retorno
-};}
+return retorno}
