@@ -61,8 +61,6 @@ let Usuario = "";
         esconderArticulos();
         if (Usuario === ""){ 
         await popUpConfirm();
-        iniciarButterRoyale.style = "display: block";
-        butterRoyaleJuego.style = "display: none";
         popUpUsuario.style = "display: block";
         } else {
         modoCompetitivo.style = "display: block";
@@ -539,6 +537,63 @@ function darIdUnica(idUnicas){
     }
     return randomId;}
 
+//BORRAR USUARIO
+
+const btnBorrarUsuario = document.querySelector("#borrarUsuario");
+const PUBorrar = document.querySelector("#PUBorrar");
+const confirmarBorrado = document.querySelector("#confirmarBorrado");
+const cancelarBorrado = document.querySelector("#cancelarBorrado");
+
+btnBorrarUsuario.addEventListener("click", mostrarPopupBorrado);
+confirmarBorrado.addEventListener("click", confirmarBorradoUsuario);
+cancelarBorrado.addEventListener("click", cancelarBorradoUsuario);
+
+function mostrarPopupBorrado() {
+    if (Usuario === "") {
+        alert("Debes iniciar sesión para borrar tu usuario.");
+        return;
+    }
+    PUBorrar.style.display = "block";
+}
+
+async function confirmarBorradoUsuario(){
+
+    const userId = Usuario._id;
+    const url = `${BASE_URL_USUARIOS}/${userId}`;
+
+    try {
+        const response = await fetch(`${url}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+
+        if(response.ok){
+            alert("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
+            Usuario="";
+
+            nombreUsuarioMostrar.innerHTML="";
+            PUBorrar.style.display="none";
+            popUpUsuario.style.display="none";
+        }else{
+            const errorData = await response.json();
+            alert(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
+        }
+    }catch(error){
+        const errorData = await response.json();
+        console.log("Respuesta de error:", errorData);
+        alert(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
+
+    }    
+}
+
+function cancelarBorradoUsuario(){
+    PUBorrar.style.display="none";
+}
+
+
+
     //COMPARADOR
     /* const selectComparador = document.querySelector("#comparador");
     selectComparador.addEventListener("change", cambiarComparacion)
@@ -659,8 +714,6 @@ async function eatMyButter(){
         resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
     }
 
-    
-}
 
 
 //BUTTERROYALE//
@@ -903,4 +956,5 @@ async function conseguirPaisConGDPSimilar(guita) {
     let paisRandom = matrizPlataPais[randomIndex].nombre;
     let retorno = {"Productor": paisProductor, "Random": paisRandom};
     console.log(retorno);
-return retorno}
+return retorno
+};}
