@@ -131,10 +131,19 @@ let Usuario = "";
     }
 
     async function recibirBanderaDePais(pais) {
-        let response = await fetch(`https://restcountries.com/v3.1/alpha/${pais}`);
-        let data = await response.json();
-        console.log(data[0].flags.png);
-        return data[0].flags.png;
+        try {
+            let response = await fetch(`https://restcountries.com/v3.1/alpha/${pais}`);
+            let data = await response.json();
+            if (data && data[0] && data[0].flags && data[0].flags.png) {
+                console.log(data[0].flags.png);
+                return data[0].flags.png;
+            } else {
+                return "https://via.placeholder.com/150"; // default flag
+            }
+        } catch (error) {
+            console.log("Error fetching flag:", error);
+            return "https://via.placeholder.com/150";
+        }
     }
 
     async function recibirDatoDePais(indicador, pais) {
@@ -706,4 +715,246 @@ async function eatMyButter(){
     }
 
 
+
+//BUTTERROYALE//
+
+const iniciarButterRoyale = document.querySelector("#iniciarButterRoyale");
+const butterRoyaleJuego = document.querySelector("#butterRoyaleJuego");
+const preguntaButterRoyale = document.querySelector("#preguntaButterRoyale");
+const opcion1ButterRoyale = document.querySelector("#opcion1ButterRoyale");
+const apretarOpcion1ButterRoyale = document.querySelector("#apretarOpcion1ButterRoyale");
+const opcion2ButterRoyale = document.querySelector("#opcion2ButterRoyale");
+const apretarOpcion2ButterRoyale = document.querySelector("#apretarOpcion2ButterRoyale");
+iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
+
+async function iniciarButterRoyaleFuncion(){
+    //iniciarButterRoyale.style = "display: none";
+    butterRoyaleJuego.style = "display: block";
+    console.log("se carga boton");
+    await cargarPartidaRoyale();
 }
+async function cargarPartidaRoyale(){
+await cargarRondaRoyale();
+}
+
+
+async function cargarRondaRoyale() {
+    const paises = await obtenerListaPaisesWorldBank();
+    const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
+    const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
+        let electorDeJuego = Math.floor(Math.random() * 5);   
+        console.log("elector " + electorDeJuego); 
+        
+    if (electorDeJuego === 0){
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+        await juegoButterRoyaleButterMyCountry(paisAleatorio);
+    } else if (electorDeJuego === 1){
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+        await juegoButterRoyaleProduceMyButter(paisAleatorio);
+    } else if (electorDeJuego === 2){
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+        await juegoButterRoyaleButterToTheMoon(paisAleatorio, paisAleatorio2);
+} else if (electorDeJuego === 3){
+        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+        await juegoButterRoyalePayForMyButter(paisAleatorio);
+}else {
+        await juegoButterRoyaleEatMyButter(paisAleatorio, paisAleatorio2);
+}}
+
+//Juegos Competitivos//
+
+async function juegoButterRoyaleEatMyButter(pais1) {
+        preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
+        let electorDeJuego = Math.floor(Math.random() * 2);
+        preguntaButterRoyale.innerHTML += `
+        <h2>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h2>`
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+            const calorías = 2400;
+            const diasAño = 365;
+            const caloriasAño = calorías * diasAño;
+            const caloriasMantecaGramo = 7.17;
+
+    const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
+    const kilosMantecaPersona = gramosMantecaPersona / 1000;
+    const toneladasMantecaPersona = kilosMantecaPersona / 1000;
+    const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
+        if (electorDeJuego === 0) {
+            apretarOpcion1ButterRoyale.innerHTML = `<h3>${personasAlimentadas}</h3>`;
+            apretarOpcion2ButterRoyale.innerHTML = `<h3>${personasAlimentadas * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+        } else {
+            apretarOpcion2ButterRoyale.innerHTML = `<h3>${personasAlimentadas}</h3>`;
+            apretarOpcion1ButterRoyale.innerHTML = `<h3>${personasAlimentadas * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+        }
+}
+
+async function juegoButterRoyalePayForMyButter(pais1) {
+    console.log("PIJA")
+    preguntaButterRoyale.innerHTML = `<h2>Pay For My Butter</h2>`
+    let electorDeJuego = Math.floor(Math.random() * 2);
+        preguntaButterRoyale.innerHTML += `
+        <h2>Qué pais puede pagar la manteca necesaria para enmantecar ${pais1.name}?</h2>`
+        let guita = await cambiarGuitaCompetitivo(pais1.id);
+        guita = guita.valor;
+        console.log(guita);
+        let recibirPaises = await conseguirPaisConGDPSimilar(guita);
+        console.log(recibirPaises);
+        let paisProductor = recibirPaises.Productor;
+        let paisRandom = recibirPaises.Random;
+        if (electorDeJuego === 0) {
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${paisProductor}</h3>`;
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${paisRandom}</h3>`;
+        } else {
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${paisRandom}</h3>`;
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${paisProductor}</h3>`;  
+        }
+}
+
+        async function cambiarGuitaCompetitivo(contenido){
+        let pais = await recibirDatoDePais("NY.GDP.MKTP.CD", contenido)
+        guitaData = pais.valor;
+        paisData = pais.pais;
+        let dataEnviar = {nombre: paisData, valor: guitaData}
+        return dataEnviar
+        }
+
+
+async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
+    preguntaButterRoyale.innerHTML = `<h2>Butter My Country</h2>`
+    let electorDeJuego = Math.floor(Math.random() * 2);
+    console.log(electorDeJuego);
+    if (electorDeJuego === 0) {
+        preguntaButterRoyale.innerHTML += `
+        <h2>Cuantas toneladas de manteca necesitas para enmantecar ${pais1.name}?</h2>`
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        console.log(areaData);
+        let toneladasTotales1 = toneladasTotalesCalc(areaData);
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${toneladasTotales1}</h3>`;
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${toneladasTotales1 * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+    } else {
+               preguntaButterRoyale.innerHTML += `
+        <h2>Cuantas toneladas de manteca necesitas para enmantecar ${pais1.name}?</h2>`
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        console.log(areaData);
+        let toneladasTotales1 = toneladasTotalesCalc(areaData);
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${toneladasTotales1}</h3>`;
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${toneladasTotales1 * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`; 
+    }
+}
+async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
+    preguntaButterRoyale.innerHTML = `<h2>Prdouce My Butter</h2>`
+    let electorDeJuego = Math.floor(Math.random() * 2);
+    console.log(electorDeJuego);
+        preguntaButterRoyale.innerHTML += `
+        <h2>Qué pais puede enmantecar completamente a ${pais1.name} con su producción de manteca?</h2>`
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        console.log("area " + areaData);
+        let toneladasTotales1 = toneladasTotalesCalc(areaData);
+        console.log("toneladas " + toneladasTotales1);
+        let recibirPaises = conseguirPaisConMantecaSimilar(areaData);
+        let paisProductor = recibirPaises.Productor;
+        let paisRandom = recibirPaises.Random;
+        console.log(paisProductor);
+        console.log(paisRandom);
+        if (electorDeJuego === 0) {
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${paisProductor}</h3>`;
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${paisRandom}</h3>`;
+        } else {
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${paisRandom}</h3>`;
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${paisProductor}</h3>`;  
+        }
+}
+
+
+async function juegoButterRoyaleButterToTheMoon(pais1) {
+        preguntaButterRoyale.innerHTML = `<h2>Butter My Country</h2>`
+        let electorDeJuego = Math.floor(Math.random() * 2);
+        preguntaButterRoyale.innerHTML += `
+        <h2>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h2>`
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        let toneladasTotales1 = toneladasTotalesCalc(areaData);
+        const alturaBarraMantecaMetros = 0.115;
+        //Una barra de manteca pesa 200gramos
+        const alturaKiloManteca = alturaBarraMantecaMetros * 5;
+        const alturaToneladaManteca = alturaKiloManteca * 1000;
+        const distanciaTierraALuna = 384400000;
+        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+        let vecesALaLuna = alturaTotal / distanciaTierraALuna;
+        if (electorDeJuego === 0) {
+            apretarOpcion1ButterRoyale.innerHTML = `<h3>${vecesALaLuna}</h3>`;
+            apretarOpcion2ButterRoyale.innerHTML = `<h3>${vecesALaLuna * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+        } else {
+            apretarOpcion2ButterRoyale.innerHTML = `<h3>${vecesALaLuna}</h3>`;
+            apretarOpcion1ButterRoyale.innerHTML = `<h3>${vecesALaLuna * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
+        }
+}
+
+
+
+  async function cargarDatosDePaisRandomCompetitivo(contenido, imagen){
+    let idContenido = contenido.id;
+    let nombreContenido = contenido.name;
+    let pais = await recibirBanderaDePais(idContenido);
+    imagen.innerHTML = `<h3>${nombreContenido}</h3>`
+    imagen.innerHTML += `<img src="${pais}"></img>`;
+  }
+
+      async function cambiarAreaCompetitivo(contenido){
+        let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
+        areaData = pais.valor;
+        paisData = pais.pais;
+        return {areaData, paisData}
+    }
+
+
+function conseguirPaisConMantecaSimilar(toneladasTotales) {
+    for (let index = produccionDeMantecaPorPais.length - 1; index >= 0; index--) {
+        const element = produccionDeMantecaPorPais[index];
+        if (element.manteca > toneladasTotales) {
+            let paisProductor = element.nombre;
+            let randomIndex = Math.floor(Math.random() * (index + 1));
+            let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
+            let retorno = {Productor: paisProductor, Random: paisRandom};
+            return retorno;
+        }
+    }
+    let paisProductor = produccionDeMantecaPorPais[0].nombre;
+    let randomIndex = Math.floor(Math.random() * produccionDeMantecaPorPais.length);
+    let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
+    let retorno = {Productor: paisProductor, Random: paisRandom};
+    return retorno;
+}
+
+async function conseguirPaisConGDPSimilar(guita) {
+        const listaPaises = await obtenerListaPaisesWorldBank();
+        console.log(listaPaises);
+        let matrizPlataPais = [];
+        listaPaises.sort();
+        let promesas = listaPaises.map(element => cambiarGuitaCompetitivo(element.id));
+        let results = await Promise.all(promesas);
+        for (let i = 0; i < listaPaises.length; i++) {
+            if (results[i].valor != null && !isNaN(results[i].valor)) {
+                matrizPlataPais.push({nombre: listaPaises[i].name, plata: results[i].valor});
+            }
+        }
+        console.log(matrizPlataPais);
+        matrizPlataPais.sort((a, b) => a.plata - b.plata);
+    for (let index = 0; index < matrizPlataPais.length; index++) {
+        const element = matrizPlataPais[index];
+        if (element.plata > guita) {
+            console.log(element.plata);
+            let paisProductor = element.nombre;
+            let randomIndex = Math.floor(Math.random() * (index + 1));
+            let paisRandom = matrizPlataPais[randomIndex].nombre;
+            let retorno = {"Productor": paisProductor, "Random": paisRandom};
+            console.log(retorno);            
+            return retorno;
+        }
+    }
+    let paisProductor = matrizPlataPais[matrizPlataPais.length - 1].nombre;
+    let randomIndex = Math.floor(Math.random() * matrizPlataPais.length);
+    let paisRandom = matrizPlataPais[randomIndex].nombre;
+    let retorno = {"Productor": paisProductor, "Random": paisRandom};
+    console.log(retorno);
+return retorno
+};}
