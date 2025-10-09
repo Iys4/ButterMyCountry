@@ -406,14 +406,12 @@ ol {
     align-items: center;
 }
 
-#separadorOpciones button:nth-child(1){
-    box-shadow: 0 12px 0 var(--VerdeOscuro);
-    background-color: var(--VerdePrincipal);
-}
-
 #separadorOpciones button{
     width: 100%;
     height: 15vh;
+    box-shadow: 0 12px 0 var(--AmarilloOscuro);
+    background-color: var(--AmarilloPrincipal);
+    color: #272727;
 }
 
 #scoreTemporal p {

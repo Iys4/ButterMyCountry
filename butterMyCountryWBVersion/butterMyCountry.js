@@ -817,7 +817,7 @@ if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
         puntajeActual++;
         scoreTemporal.innerHTML = `<p>Puntaje: ${puntajeActual}</p>`;
     }else{
-        alert("¡Incorrecto!");
+        cargarAlert("¡Incorrecto!");
         puntajeActual = 0;
         scoreTemporal.innerHTML = `<p>Incorrecto. Puntaje ahora: ${puntajeActual}</p>`;
     }
