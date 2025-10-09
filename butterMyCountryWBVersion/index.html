@@ -32,7 +32,7 @@
         </div>
         <div id="selectModo" class="container">
             <button class="modoJuego" id="modoSingleButton">LeaderBoard</button>
-            <button class="modoJuego" id="modoCompetitivoButton">Competitivo</button>
+            <button class="modoJuego" id="modoCompetitivoButton">Butter Royale</button>
         </div>
 
         <section id="juegos" class="sectionJuegos">
@@ -186,7 +186,8 @@
                 <p>Se te dara una pregunta y dos opciones para responderla, el que logre más respuestas correctas quedara en el top de los rankings</p>
                 <button id="iniciarButterRoyale">Iniciar Butter Royale</button>
                 <section id="butterRoyaleJuego" style="display: none;">
-                    <h2 id="preguntaButterRoyale">Te pregunto</h2>
+                    <div id="scoreTemporal"><p>Score: </p></div>
+                    <div id="preguntaButterRoyale"></div>
                     <div id="opcion1ButterRoyale" class="opcionButterRoyale">
                     </div>
                     <button id="apretarOpcion1ButterRoyale"></button>
@@ -225,10 +226,6 @@
                 <button id="cancelarBorrado">Cancelar</button>
             </div>
         </div>
-
-        <input type="text" id="nuevoUsuario" placeholder="Nuevo nombre de usuario">
-        <input type="text" id="nuevoEmail" placeholder="Nuevo email">
-        <button id="actualizarUsuario">Editar</button>
     </footer>
     
     <script src="datos.js"></script>

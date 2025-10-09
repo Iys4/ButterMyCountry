@@ -382,6 +382,31 @@ ol {
         margin-bottom: 1.5rem;
         color: var
 }}
+#butterRoyaleJuego{
+    margin-top: 3vh;
+    text-align: center;
+    width: 100%;
+    background-color: var(--AmarilloClaro);
+    padding: 2rem;
+    border-radius: var(--borderRadius);
+    box-shadow: 0 12px 0 var(--VerdeOscuro);
+    border: solid 5px var(--VerdeOscuro);
+    margin-bottom: 5vh;
+    
+}
+
+#butterRoyaleJuego h2{
+    font-size: 2rem;
+    margin-bottom: 2vh;
+}
+
+#scoreTemporal p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--FondoAmarillo);
+    background-color: var(--RojoOscuro);
+}
+
 
 #popUpUsuario {
     position: fixed;

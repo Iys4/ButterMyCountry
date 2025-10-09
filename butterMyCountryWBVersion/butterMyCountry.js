@@ -67,7 +67,6 @@ let Usuario = "";
     async function cargarModoCompetitivo(){
         esconderArticulos();
         if (Usuario === ""){ 
-        await popUpConfirm();
         iniciarButterRoyale.style = "display: block";
         butterRoyaleJuego.style = "display: none";
         popUpUsuario.style = "display: block";
@@ -448,10 +447,6 @@ async function eatMyButter(){
     //////////////////////CREACION DE USUARIOS//////////////////////
 
     const BASE_URL_USUARIOS = ("https://api-usuarios-p2.up.railway.app/api/users")
-    async function popUpConfirm() {
-        await iniciarSesionUsuario();
-        return false;
-    }
 
 const inputUsuario = document.querySelector("#inputUsuario");
 iniciarSesion.addEventListener("click", iniciarSesionUsuario);
@@ -464,12 +459,13 @@ async function iniciarSesionUsuario(){
     const data = await response.json();
     const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
     if (listaDeUsuarios.includes(inputUsuario.value)){
-        cargarAlerta("Iniciaras sesion como" + inputUsuario.value)
+        cargarAlerta("Iniciaras sesion como " + inputUsuario.value)
             data.data.forEach(element => {
         if (element.username === inputUsuario.value){
             if (element.data.juego === "ButterMyCountry"){
             Usuario = element;
             mostrarUsuario();
+            cargarModoCompetitivo();
             popUpUsuario.style = "display: none";
         }
         }
@@ -481,6 +477,7 @@ async function iniciarSesionUsuario(){
             if (element.data.juego === "ButterMyCountry"){
             Usuario = element;
             mostrarUsuario();
+            cargarModoCompetitivo();
             popUpUsuario.style = "display: none";
         }
         }
@@ -509,9 +506,8 @@ async function registrarUsuario(){
         return false;
     } else {
         crearUsuario();
-        cargarAlerta("Usuario creado con éxito.");
+        cargarAlerta("Usuario creado con éxito. Inicia sesion para continuar.");
         popUpUsuario.style = "display: none";
-        return true;
     }
 }
 
@@ -672,12 +668,6 @@ function cancelarBorradoUsuario(){
 
     } */
 
-const actualizarUsuario = document.querySelector("#actualizarUsuario");
-const inputNuevoUsuario = document.querySelector("#nuevoUsuario");
-const inputNuevoEmail = document.querySelector("#nuevoEmail");
-
-actualizarUsuario.addEventListener("click", actualizarDatosUsuario);
-
 async function actualizarDatosUsuario(){
     if (Usuario === ""){
         cargarAlerta("Debes Iniciar Sesion para actualizar tus datos");
@@ -781,7 +771,7 @@ async function juegoButterRoyaleEatMyButter(pais1) {
     
     preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
     preguntaButterRoyale.innerHTML += `
-    <h2>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h2>`
+    <h3>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h3>`
 
     let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
     let toneladasTotales = toneladasTotalesCalc(areaData);
@@ -813,7 +803,7 @@ async function juegoButterRoyaleEatMyButter(pais1) {
 const popUpAlert = document.querySelector("#popUpAlert");
 const mensajePopUp = document.querySelector("#mensajePopUp");
 const cerrarPopUp = document.querySelector("#cerrarPopUp");
-
+popUpAlert.style.display = "none";
 cerrarPopUp.addEventListener("click", () => {
     popUpAlert.style.display = "none";
 });
@@ -823,17 +813,17 @@ async function cargarAlerta(mensaje) {
     popUpAlert.style.display = "block";
     cerrarPopUp.focus();
 }
-
+const scoreTemporal = document.querySelector("#scoreTemporal");
 async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
 
 if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
         cargarAlerta("¡Correcto! Sumaste un punto.");
         puntajeActual++;
-        console.log("Correcto. Puntaje ahora:", puntajeActual);
+        scoreTemporal.innerHTML = `<p>Puntaje: ${puntajeActual}</p>`;
     }else{
         alert("¡Incorrecto!");
         puntajeActual = 0;
-        console.log("Incorrecto. Puntaje ahora:", puntajeActual);
+        scoreTemporal.innerHTML = `<p>Incorrecto. Puntaje ahora: ${puntajeActual}</p>`;
     }
 
     const highscoreActual = Usuario.data?.scoreMaximo || 0;
@@ -909,7 +899,7 @@ async function juegoButterRoyalePayForMyButter(pais1) {
     preguntaButterRoyale.innerHTML = `<h2>Pay For My Butter</h2>`
     let electorDeJuego = Math.floor(Math.random() * 2);
         preguntaButterRoyale.innerHTML += `
-        <h2>Qué pais puede pagar la manteca necesaria para enmantecar ${pais1.name}?</h2>`
+        <h3>Qué pais puede pagar la manteca necesaria para enmantecar ${pais1.name}?</h3>`
         let guita = await cambiarGuitaCompetitivo(pais1.id);
         guita = guita.valor;
         console.log(guita);
@@ -941,7 +931,7 @@ async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
     console.log(electorDeJuego);
     if (electorDeJuego === 0) {
         preguntaButterRoyale.innerHTML += `
-        <h2>Cuantas toneladas de manteca necesitas para enmantecar ${pais1.name}?</h2>`
+        <h3>Cuantas toneladas de manteca necesitas para enmantecar ${pais1.name}?</h3>`
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
         console.log(areaData);
         let toneladasTotales1 = toneladasTotalesCalc(areaData);
@@ -962,7 +952,7 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
     let electorDeJuego = Math.floor(Math.random() * 2);
     console.log(electorDeJuego);
         preguntaButterRoyale.innerHTML += `
-        <h2>Qué pais puede enmantecar completamente a ${pais1.name} con su producción de manteca?</h2>`
+        <h3>Qué pais puede enmantecar completamente a ${pais1.name} con su producción de manteca?</h3>`
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
         console.log("area " + areaData);
         let toneladasTotales1 = toneladasTotalesCalc(areaData);
@@ -983,10 +973,10 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
 
 
 async function juegoButterRoyaleButterToTheMoon(pais1) {
-        preguntaButterRoyale.innerHTML = `<h2>Butter My Country</h2>`
+        preguntaButterRoyale.innerHTML = `<h2>Butter to the moon</h2>`
         let electorDeJuego = Math.floor(Math.random() * 2);
         preguntaButterRoyale.innerHTML += `
-        <h2>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h2>`
+        <h3>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h3>`
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
         let toneladasTotales1 = toneladasTotalesCalc(areaData);
         const alturaBarraMantecaMetros = 0.115;
