@@ -901,4 +901,3 @@ async function conseguirPaisConGDPSimilar(guita) {
     console.log(retorno);
     return retorno;
 }
-}
