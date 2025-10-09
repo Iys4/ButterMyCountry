@@ -781,6 +781,14 @@ function configurarOpcionesDeRespuesta(opcionesArray, respuestaCorrecta) {
     apretarOpcion2ButterRoyale.onclick = () => {
         verificarRespuesta(opciones[1], respuestaCorrectaGlobal);
     };
+
+    console.log("Opciones mezcladas:", opciones);
+    console.log("Correcta:", respuestaCorrecta);
+    console.log("Izquierda:", opciones[0], "Derecha:", opciones[1]);
+}
+
+function mezclarOpciones(array) {
+    return array.sort(() => Math.random() - 0.5);
 }
 
 
@@ -810,6 +818,7 @@ async function juegoButterRoyaleEatMyButter(pais1) {
     const factor = Math.random() * 1.5 + 0.5;
     const respuestaIncorrecta = Math.floor(personasAlimentadas * factor);
 
+    opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
     configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 
 }
@@ -828,18 +837,19 @@ async function cargarAlerta(mensaje) {
     cerrarPopUp.focus();
 }
 const scoreTemporal = document.querySelector("#scoreTemporal");
+
 async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
 
-if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
+if (respuestaElegida === respuestaCorrecta) {
         cargarAlerta("¡Correcto! Sumaste un punto.");
         puntajeActual++;
         scoreTemporal.innerHTML = `<p>Puntaje: ${puntajeActual}</p>`;
     }else{
-        alert("¡Incorrecto!");
+        cargarAlerta("¡Incorrecto!")
         puntajeActual = 0;
         scoreTemporal.innerHTML = `<p>Incorrecto. Puntaje ahora: ${puntajeActual}</p>`;
     }
-juegoButterRoyaleButterMyCountry
+
     const highscoreActual = Usuario.data?.scoreMaximo || 0;
     console.log(highscoreActual);
 
@@ -894,6 +904,8 @@ async function actualizarHighScore(nuevoScore) {
     } catch (error) {
         console.error("Error actualizando highscore:", error);
     }
+
+    console.log("Highscore actualizado a:", nuevoScore)
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -918,9 +930,8 @@ async function juegoButterRoyalePayForMyButter(pais1) {
         respuestaCorrecta = paisProductor;
         let paisRandom = recibirPaises.Random;
         respuestaIncorrecta = paisRandom;
-
-        opciones = Math.random() < 0.5 ? [respuestaCorrecta, respuestaIncorrecta] : [respuestaIncorrecta, respuestaCorrecta];
-        
+            
+        opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 }
 
@@ -950,8 +961,7 @@ async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
         respuestaCorrecta = toneladasTotales1;
         respuestaIncorrecta = toneladasTotales1 * (Math.floor(Math.random() * 1.5)+0.5)
     
-        opciones = [respuestaCorrecta, respuestaIncorrecta];
-
+        opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
     }
 }
@@ -977,9 +987,8 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
         respuestaIncorrecta = paisRandom;
         console.log(paisProductor);
         console.log(paisRandom);
-        
-        opciones = [respuestaCorrecta, respuestaIncorrecta];
-
+                
+        opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 }
 
@@ -989,21 +998,23 @@ async function juegoButterRoyaleButterToTheMoon(pais1) {
         let electorDeJuego = Math.floor(Math.random() * 2);
         preguntaButterRoyale.innerHTML += `
         <h3>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h3>`
+
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
         let toneladasTotales1 = toneladasTotalesCalc(areaData);
+        
         const alturaBarraMantecaMetros = 0.115;
         //Una barra de manteca pesa 200gramos
         const alturaKiloManteca = alturaBarraMantecaMetros * 5;
         const alturaToneladaManteca = alturaKiloManteca * 1000;
         const distanciaTierraALuna = 384400000;
-        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+
+        let alturaTotal = toneladasTotales1 * alturaToneladaManteca;
         let vecesALaLuna = alturaTotal / distanciaTierraALuna;
 
         respuestaCorrecta = vecesALaLuna;
         respuestaIncorrecta = vecesALaLuna * (Math.floor(Math.random() * 1.5)+0.5);
-        
-        opciones = [respuestaCorrecta, respuestaIncorrecta];
-
+                
+        opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
 }
 
