@@ -39,6 +39,7 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-x: hidden;
 }
 
 main{
@@ -109,6 +110,11 @@ footer{
     margin-bottom: 4vh;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+
+    button{
+        width: 100%;
+    }
 }
 
 button{
