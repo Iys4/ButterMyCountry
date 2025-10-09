@@ -1,4 +1,3 @@
-
     //////////////////////VARIABLES//////////////////////
 let area = 0;
 let densidad = 0.911;
@@ -389,9 +388,52 @@ function recibirDatosDeManteca(id) {
         cargarPaisesEnSelect(selectPaisJ5_2);
     }
 
+    ////////EAT MY BUTTER////////
 
+const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
 
+async function eatMyButter(){
+    
+    const paisConsumidor = await conseguirId(selectPaisJ5_2);
+    const paisEnmantecado = await conseguirId(selectPaisJ5);
 
+    const calorías = 2400;
+    const diasAño = 365;
+    const caloriasAño = calorías * diasAño;
+
+    const caloriasMantecaGramo = 7.17;
+
+    const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
+    const kilosMantecaPersona = gramosMantecaPersona / 1000;
+    const toneladasMantecaPersona = kilosMantecaPersona / 1000;
+
+    let {areaData, paisData} = await cambiarArea(selectPaisJ5);;
+    const toneladasTotales = toneladasTotalesCalc(areaData);
+
+    const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
+
+    const infoPaisConsumidor = await recibirDatoDePais("SP.POP.TOTL", paisConsumidor);
+    const poblacionTotal = infoPaisConsumidor.valor;
+    const nombreConsumidor = infoPaisConsumidor.pais;
+
+    const infoPaisEnmantecado = await recibirDatoDePais("SP.POP.TOTL", paisEnmantecado);
+    const nombreProductor = infoPaisEnmantecado.pais;
+
+    infoContenidoJ5.innerHTML = `
+        <p>Si cubriéramos completamente el territorio de <strong>${nombreProductor}</strong> con una capa de manteca de 1 milímetro de altura, se necesitarían aproximadamente <strong>${Math.round(toneladasTotales)} toneladas</strong> de manteca.</p>
+        <p>Una persona necesita alrededor de <strong>${toneladasMantecaPersona} toneladas</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
+        <p>Con esa cantidad total de manteca, se podría alimentar durante un año a unas <strong>${Math.floor(personasAlimentadas)} personas</strong>.</p>
+        <p>La población de <strong>${nombreConsumidor}</strong> es de aproximadamente <strong>${Math.round(poblacionTotal)}</strong> personas.</p>
+    `;
+
+    if (personasAlimentadas >= poblacionTotal) {
+        resultadoGrandeJ5.innerHTML = `<h3>¡La manteca que cubriría a ${nombreProductor} alcanza para alimentar a toda la población de ${nombreConsumidor} durante un año!</h3>`;
+    } else {
+        resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
+    }
+
+    
+}
 
 
     //////////////////////CREACION DE USUARIOS//////////////////////
@@ -665,55 +707,6 @@ async function actualizarDatosUsuario(){
     }
 }
 
-
-////////Juego 5////////
-
-const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
-
-async function eatMyButter(){
-    
-    const paisConsumidor = await conseguirId(selectPaisJ5_2);
-    const paisEnmantecado = await conseguirId(selectPaisJ5);
-
-    const calorías = 2400;
-    const diasAño = 365;
-    const caloriasAño = calorías * diasAño;
-
-    const caloriasMantecaGramo = 7.17;
-
-    const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
-    const kilosMantecaPersona = gramosMantecaPersona / 1000;
-    const toneladasMantecaPersona = kilosMantecaPersona / 1000;
-
-    let {areaData, paisData} = await cambiarArea(selectPaisJ5);;
-    const toneladasTotales = toneladasTotalesCalc(areaData);
-
-    const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
-
-    const infoPaisConsumidor = await recibirDatoDePais("SP.POP.TOTL", paisConsumidor);
-    const poblacionTotal = infoPaisConsumidor.valor;
-    const nombreConsumidor = infoPaisConsumidor.pais;
-
-    const infoPaisEnmantecado = await recibirDatoDePais("SP.POP.TOTL", paisEnmantecado);
-    const nombreProductor = infoPaisEnmantecado.pais;
-
-    infoContenidoJ5.innerHTML = `
-        <p>Si cubriéramos completamente el territorio de <strong>${nombreProductor}</strong> con una capa de manteca de 1 milímetro de altura, se necesitarían aproximadamente <strong>${Math.round(toneladasTotales)} toneladas</strong> de manteca.</p>
-        <p>Una persona necesita alrededor de <strong>${toneladasMantecaPersona} toneladas</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
-        <p>Con esa cantidad total de manteca, se podría alimentar durante un año a unas <strong>${Math.floor(personasAlimentadas)} personas</strong>.</p>
-        <p>La población de <strong>${nombreConsumidor}</strong> es de aproximadamente <strong>${Math.round(poblacionTotal)}</strong> personas.</p>
-    `;
-
-    if (personasAlimentadas >= poblacionTotal) {
-        resultadoGrandeJ5.innerHTML = `<h3>¡La manteca que cubriría a ${nombreProductor} alcanza para alimentar a toda la población de ${nombreConsumidor} durante un año!</h3>`;
-    } else {
-        resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
-    }
-
-    
-}
-
-
 //BUTTERROYALE//
 
 const iniciarButterRoyale = document.querySelector("#iniciarButterRoyale");
@@ -725,8 +718,18 @@ const opcion2ButterRoyale = document.querySelector("#opcion2ButterRoyale");
 const apretarOpcion2ButterRoyale = document.querySelector("#apretarOpcion2ButterRoyale");
 iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
 
+let puntajeActual = 0;
+let respuestaCorrecta;
+let opciones = [];
+
 async function iniciarButterRoyaleFuncion(){
-    //iniciarButterRoyale.style = "display: none";
+
+    if (Usuario === "" || !Usuario._id) {
+        alert("Debes iniciar sesión correctamente para jugar y guardar puntaje.");
+        popUpUsuario.style = "display: block";
+        return;
+    }
+
     butterRoyaleJuego.style = "display: block";
     console.log("se carga boton");
     await cargarPartidaRoyale();
@@ -762,33 +765,108 @@ async function cargarRondaRoyale() {
 
 //Juegos Competitivos//
 
+
+/////////COMPETITIVO EAT MY BUTTER/////////////////////
+
 async function juegoButterRoyaleEatMyButter(pais1) {
-        preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
-        let electorDeJuego = Math.floor(Math.random() * 2);
-        preguntaButterRoyale.innerHTML += `
-        <h2>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h2>`
-        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
-        let toneladasTotales = toneladasTotalesCalc(areaData);
-            const calorías = 2400;
-            const diasAño = 365;
-            const caloriasAño = calorías * diasAño;
-            const caloriasMantecaGramo = 7.17;
+    
+    preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
+    preguntaButterRoyale.innerHTML += `
+    <h2>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h2>`
+
+    let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+    let toneladasTotales = toneladasTotalesCalc(areaData);
+
+    const calorías = 2400;
+    const diasAño = 365;
+    const caloriasAño = calorías * diasAño;
+    const caloriasMantecaGramo = 7.17;
 
     const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
     const kilosMantecaPersona = gramosMantecaPersona / 1000;
     const toneladasMantecaPersona = kilosMantecaPersona / 1000;
     const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
-        if (electorDeJuego === 0) {
-            apretarOpcion1ButterRoyale.innerHTML = `<h3>${personasAlimentadas}</h3>`;
-            apretarOpcion2ButterRoyale.innerHTML = `<h3>${personasAlimentadas * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
-        } else {
-            apretarOpcion2ButterRoyale.innerHTML = `<h3>${personasAlimentadas}</h3>`;
-            apretarOpcion1ButterRoyale.innerHTML = `<h3>${personasAlimentadas * (Math.floor(Math.random() * 1.5)+0.5)}</h3>`;
-        }
+
+    respuestaCorrecta = personasAlimentadas;
+
+    const factor = Math.random() * 1.5 + 0.5;
+    const respuestaIncorrecta = Math.floor(personasAlimentadas * factor);
+
+    opciones = [respuestaCorrecta, respuestaIncorrecta].sort(() => Math.random() - 0.5);
+
+    apretarOpcion1ButterRoyale.innerText = opciones[0];
+    apretarOpcion2ButterRoyale.innerText = opciones[1];
+
+    apretarOpcion1ButterRoyale.onclick = () => verificarRespuesta(opciones[0], respuestaCorrecta);
+    apretarOpcion2ButterRoyale.onclick = () => verificarRespuesta(opciones[1], respuestaCorrecta);
+
 }
 
+async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
+
+if (Number(respuestaElegida) === Number(respuestaCorrecta)) {
+        alert("¡Correcto! Sumaste un punto.");
+        puntajeActual++;
+        console.log("Correcto. Puntaje ahora:", puntajeActual);
+    }else{
+        alert("¡Incorrecto!");
+    }
+
+    const highscoreActual = Usuario.data?.scoreMaximo || 0;
+    if (puntajeActual > highscoreActual) {
+        await actualizarHighScore(puntajeActual);
+    }
+
+    await cargarLeaderboard()
+    cargarRondaRoyale();
+}
+
+
+
+async function actualizarHighScore(nuevoScore) {
+
+    if (!Usuario || !Usuario._id) {
+        console.error("Usuario inválido para update:", Usuario);
+        alert("Error: No estás logueado correctamente. Reinicia sesión.");
+        return;
+    }
+    
+    const userId = Usuario._id;
+    const url = `${BASE_URL_USUARIOS}/${userId}`;
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: Usuario.username,
+                email: Usuario.email,
+                data: {
+                    ...Usuario.data,
+                    scoreMaximo: nuevoScore
+                }
+            })
+        });
+
+        if (response.ok) {
+            const updatedUser = await response.json();
+            Usuario = updatedUser ;
+            Usuario.data.scoreMaximo = nuevoScore;
+            console.log("Usuario actualizado:", updatedUser);
+        }
+    
+    } catch (error) {
+        console.error("Error actualizando highscore:", error);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 async function juegoButterRoyalePayForMyButter(pais1) {
-    console.log("PIJA")
     preguntaButterRoyale.innerHTML = `<h2>Pay For My Butter</h2>`
     let electorDeJuego = Math.floor(Math.random() * 2);
         preguntaButterRoyale.innerHTML += `
@@ -957,3 +1035,36 @@ async function conseguirPaisConGDPSimilar(guita) {
     console.log(retorno);
     return retorno;
 }
+
+//LEADERBOARD
+
+async function cargarLeaderboard() {
+    
+    const listaLeaderboard = document.querySelector("#listaLeaderboard");
+    
+    try {
+        const response = await fetch(BASE_URL_USUARIOS);
+        const data = await response.json();
+        const usuarios = data.data;
+
+        const usuariosDeButter = usuarios.filter(u => u.data.juego === "ButterMyCountry");
+
+        usuariosDeButter.sort((a, b) => b.data.scoreMaximo - a.data.scoreMaximo);
+
+        const top10 = usuariosDeButter.slice(0, 10);
+
+        listaLeaderboard.innerHTML = "";
+
+        top10.forEach((user, index) => {
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${user.username}</strong> - ${user.data.scoreMaximo} puntos`;
+            listaLeaderboard.appendChild(li);
+        });
+
+        console.log("Usuarios actualizados:", usuariosDeButter);
+    } catch (error) {
+        console.error("Error al cargar el leaderboard:", error);
+    }  
+}
+
+cargarLeaderboard();
