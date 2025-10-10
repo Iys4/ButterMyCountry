@@ -355,10 +355,10 @@ let Usuario = "";
         console.log(proporcionPais)
         
         infoContenidoJ4.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
-        <p>Con el GDP de ${paisData2} se podria comprar ${toneladasComprables} toneladas de manteca.</p>`;
+        <p>Con el GDP de ${paisData2} se podria comprar ${toneladasComprables.toFixed(1)} toneladas de manteca.</p>`;
 
         if (proporcionPais > 1) {
-            resultadoGrandeJ4.innerHTML = `<h3> Con su GDP de 2025, ${paisData2} puede embadurnar todo ${paisData} ${proporcionPais} veces</h3>`;
+            resultadoGrandeJ4.innerHTML = `<h3> Con su GDP de 2025, ${paisData2} puede embadurnar todo ${paisData} ${proporcionPais.toFixed(1)} veces</h3>`;
         }else {
             resultadoGrandeJ4.innerHTML = `<h3> Se necesitan ${paisPobre} veces la economia de ${paisData2} para embadurnar todo ${paisData} de manteca</h3>`;
         }
@@ -398,8 +398,8 @@ let Usuario = "";
 
         infoContenidoJ2.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
         <p>${pais2} produce ${cantidadManteca2} toneladas de manteca al año. </p>
-        <p>Esto quiere decir que para embadurnar ${paisData} se necesita la produccion de manteca de ${pais2} durante ${proporcion} años. </p>`
-        resultadoGrandeJ2.innerHTML = `<h3>Se necesitan ${proporcion} años de produccion de manteca de ${pais2} para embadurnar todo ${paisData}</h3>`
+        <p>Esto quiere decir que para embadurnar ${paisData} se necesita la produccion de manteca de ${pais2} durante ${proporcion.toFixed(1)} años. </p>`
+        resultadoGrandeJ2.innerHTML = `<h3>Se necesitan ${proporcion.toFixed(1)} años de produccion de manteca de ${pais2} para embadurnar todo ${paisData}</h3>`
     }
         
 
@@ -419,17 +419,17 @@ let Usuario = "";
         //Una barra de manteca pesa 200gramos
         const alturaKiloManteca = alturaBarraMantecaMetros * 5;
         const alturaToneladaManteca = alturaKiloManteca * 1000;
-        const distanciaTierraALuna = 384400000;
-        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+        const distanciaTierraALuna = 384400;
+        let alturaTotal = ((toneladasTotales * alturaToneladaManteca)/1000);
         let vecesALaLuna = alturaTotal / distanciaTierraALuna;
         
         infoContenidoJ3.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
-        <p>Con ${toneladasTotales} toneladas de manteca se puede construir una torre de manteca de ${alturaTotal} metros de altura. </p>`;
+        <p>Con ${toneladasTotales} toneladas de manteca se puede construir una torre de manteca de ${alturaTotal.toFixed(0)} kilómetros de altura. </p>`;
 
         if (vecesALaLuna < 1){
-            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} llegariamos a solo ${vecesALaLuna}% de la distancia a la luna</h3>`;
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} llegariamos a solo ${vecesALaLuna.toFixed(2)}% de la distancia a la luna</h3>`;
         } else if (vecesALaLuna < 2){
-            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna pero no se podria volver ${vecesALaLuna} veces</h3>`;
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna pero no se podria volver. Le alcanza para: ${vecesALaLuna.toFixed(2)} veces</h3>`;
         }else {
             resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna y volver ${(vecesALaLuna/2)} veces</h3>`;
         }
@@ -467,7 +467,7 @@ let Usuario = "";
         const nombreProductor = infoPaisEnmantecado.pais;
 
         infoContenidoJ5.innerHTML = `<p>Si cubriéramos completamente el territorio de <strong>${nombreProductor}</strong> con una capa de manteca de 1 milímetro de altura, se necesitarían aproximadamente <strong>${Math.round(toneladasTotales)} toneladas</strong> de manteca.</p>
-            <p>Una persona necesita alrededor de <strong>${toneladasMantecaPersona} toneladas</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
+            <p>Una persona necesita alrededor de <strong>${(toneladasMantecaPersona*1000).toFixed(1)} kilos</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
             <p>Con esa cantidad total de manteca, se podría alimentar durante un año a unas <strong>${Math.floor(personasAlimentadas)} personas</strong>.</p>
             <p>La población de <strong>${nombreConsumidor}</strong> es de aproximadamente <strong>${Math.round(poblacionTotal)}</strong> personas.</p>`;
 
