@@ -1,4 +1,5 @@
-    //////////////////////VARIABLES//////////////////////
+//////////////////////VARIABLES//////////////////////
+
 let area = 0;
 let densidad = 0.911;
 let covertura = 0.1;
@@ -13,7 +14,8 @@ let toneladasTotales = kilogramosPorArea / 1000;
 
 let Usuario = "";
 
-    //Selects
+    //SELECTS
+
     const selectPaisJ1 = document.querySelector("#selectPaisJ1");
     const selectPaisJ2 = document.querySelector("#selectPaisJ2");
     const selectPaisJ2_2 = document.querySelector("#selectPaisJ2_2");
@@ -23,22 +25,29 @@ let Usuario = "";
     const selectPaisJ5 = document.querySelector("#selectPaisJ5");
     const selectPaisJ5_2 = document.querySelector("#selectPaisJ5_2");
     
-        //BOTONES
+    //BOTONES
+
     const botonJ1 = document.querySelector("#J1");
     const botonJ2 = document.querySelector("#J2");
     const botonJ3 = document.querySelector("#J3");
     const botonJ4 = document.querySelector("#J4");
     const botonJ5 = document.querySelector("#J5");
-    const articleJ1 = document.querySelector("#articleJ1");
-    const articleJ2 = document.querySelector("#articleJ2");
-    const articleJ3 = document.querySelector("#articleJ3");
-    const articleJ4 = document.querySelector("#articleJ4");
-    const articleJ5 = document.querySelector("#articleJ5");
+
     botonJ1.addEventListener("click", cargarJ1);
     botonJ2.addEventListener("click", cargarJ2);
     botonJ3.addEventListener("click", cargarJ3);
     botonJ4.addEventListener("click", cargarJ4);
     botonJ5.addEventListener("click", cargarJ5);
+
+    //ARTÍCULOS
+
+    const articleJ1 = document.querySelector("#articleJ1");
+    const articleJ2 = document.querySelector("#articleJ2");
+    const articleJ3 = document.querySelector("#articleJ3");
+    const articleJ4 = document.querySelector("#articleJ4");
+    const articleJ5 = document.querySelector("#articleJ5");
+
+    //IMÁGENES
 
     const imagenModuloPaisJ1 = document.querySelector("#imagenModuloPaisJ1");
     const imagenModuloPaisJ2 = document.querySelector("#imagenModuloPaisJ2");
@@ -48,21 +57,16 @@ let Usuario = "";
     const imagenModuloPaisJ4_2 = document.querySelector("#imagenModuloPaisJ4_2");
     const imagenModuloPaisJ5 = document.querySelector("#imagenModuloPaisJ5");
     const imagenModuloPaisJ5_2 = document.querySelector("#imagenModuloPaisJ5_2");
+
     const juegosContainer = document.querySelectorAll(".container");
     const popUpUsuario = document.querySelector("#popUpUsuario");
     const iniciarSesion = document.querySelector("#iniciarSesion");
 
+    //JUEGO COMPETITIVO
+
     const modoCompetitivoButton = document.querySelector("#modoCompetitivoButton");
     modoCompetitivoButton.addEventListener("click", cargarModoCompetitivo);
     const modoCompetitivo = document.querySelector("#modoCompetitivo");
-
-    const modoSingleButton = document.querySelector("#modoSingleButton");
-    const leaderboard = document.querySelector("#leaderboard");
-    modoSingleButton.addEventListener("click", cargarLeaderBoard);
-    function cargarLeaderBoard(){
-        esconderArticulos();
-        leaderboard.style = "display: block";
-    }
 
     async function cargarModoCompetitivo(){
         esconderArticulos();
@@ -75,7 +79,18 @@ let Usuario = "";
         }
     }
 
+    //LEADERBOARD
+
+    const LeaderBoardButton = document.querySelector("#LeaderBoardButton");
+    const leaderboard = document.querySelector("#leaderboard");
+    LeaderBoardButton.addEventListener("click", cargarLeaderBoard);
+    function cargarLeaderBoard(){
+        esconderArticulos();
+        leaderboard.style = "display: block";
+    }
+
     //FUNCIONES BOTONES
+
     function cargarJ2(){
         esconderArticulos();
         articleJ2.style = "display: block";
@@ -97,7 +112,6 @@ let Usuario = "";
         articleJ5.style = "display: block";
     }
 
-
     function esconderArticulos(){
         articleJ1.style = "display: none";
         articleJ2.style = "display: none";
@@ -108,20 +122,31 @@ let Usuario = "";
         popUpUsuario.style = "display: none";
         leaderboard.style = "display: none";
     }
+
+    //RESPUESTAS
+
     const infoContenidoJ1 = document.querySelector("#infoContenidoJ1");
     const infoContenidoJ2 = document.querySelector("#infoContenidoJ2");
     const infoContenidoJ3 = document.querySelector("#infoContenidoJ3");
     const infoContenidoJ4 = document.querySelector("#infoContenidoJ4");
     const infoContenidoJ5 = document.querySelector("#infoContenidoJ5");
 
+    const resultadoGrandeJ1 = document.querySelector("#resultadoGrandeJ1");
+    const resultadoGrandeJ2 = document.querySelector("#resultadoGrandeJ2");
+    const resultadoGrandeJ3 = document.querySelector("#resultadoGrandeJ3");
+    const resultadoGrandeJ4 = document.querySelector("#resultadoGrandeJ4");
+
     esconderArticulos();
 
 
-    //////////////////////FUNCIONES//////////////////////
+//////////////////////FUNCIONES//////////////////////
 
+    //URL BASE
     BASE_URL0 = 'https://api.worldbank.org/v2/';
     const BASE_URL_PAISES = `${BASE_URL0}country?format=json&per_page=300`;
+    
     // Función general para obtener la lista de países desde World Bank API
+
     async function obtenerListaPaisesWorldBank() {
         try {
             let response = await fetch(BASE_URL_PAISES);
@@ -139,6 +164,8 @@ let Usuario = "";
         }
     }
 
+    //Función para acceder a las banderas de los países de la API: REST Countries.
+
     async function recibirBanderaDePais(pais) {
         try {
             let response = await fetch(`https://restcountries.com/v3.1/alpha/${pais}`);
@@ -150,24 +177,28 @@ let Usuario = "";
                 return "https://via.placeholder.com/150"; // default flag
             }
         } catch (error) {
-            console.log("Error fetching flag:", error);
+            console.log("Error al acceder a la bandera:", error);
             return "https://via.placeholder.com/150";
         }
     }
 
+    //Función para acceder a los datos básicos de cada país.
+
     async function recibirDatoDePais(indicador, pais) {
-    const url = `${BASE_URL0}country/${pais}/indicator/${indicador}?format=json&date=2022`;
-    try {
-        let response = await fetch(url);
-        let data = await response.json();
-            let nombrePais = data[1][0].country.value;
-            let info = data[1][0].value;
-            let nombreIndicador = data[1][0].indicator.value;
-            return {pais: nombrePais, indicador: nombreIndicador, valor: info};
-    } catch (error) {
-        return { error: `Error obteniendo el indicador: ${error}` };
+        
+        const url = `${BASE_URL0}country/${pais}/indicator/${indicador}?format=json&date=2022`;
+        
+        try {
+            let response = await fetch(url);
+            let data = await response.json();
+                let nombrePais = data[1][0].country.value;
+                let info = data[1][0].value;
+                let nombreIndicador = data[1][0].indicator.value;
+                return {pais: nombrePais, indicador: nombreIndicador, valor: info};
+        } catch (error) {
+            return { error: `Error obteniendo el indicador: ${error}` };
+        }
     }
-}
 
     // Función para cargar los países en el select al iniciar el código
 
@@ -178,51 +209,30 @@ let Usuario = "";
             select.innerHTML += `<option id="${element.id}">${element.name}</option>`;
         });
     }
-    const resultadoGrandeJ1 = document.querySelector("#resultadoGrandeJ1");
-    const resultadoGrandeJ2 = document.querySelector("#resultadoGrandeJ2");
-    const resultadoGrandeJ3 = document.querySelector("#resultadoGrandeJ3");
-    const resultadoGrandeJ4 = document.querySelector("#resultadoGrandeJ4");
 
-    //FUNCIONES NO GENERALES/////////////////////////////////////////////////////////////////////
+
+//FUNCIONES NO GENERALES/////////////////////////////////////////////////////////////////////
+    
     //CARGAR DATA
 
         function cargarDataButterMyCountryBase(areaData, paisData){
-        gramosPorMetroDeSuelo = densidad * 1000;
-        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
-        kilogramosPorArea = (gramosPorKilometro/1000) * areaData;
-        toneladasTotales = kilogramosPorArea / 1000;
-        infoContenidoJ1.innerHTML = `<p>La manteca requiere <span>${gramosPorMetroDeSuelo} gramos por metro cuadrado</span> de suelo. </p> 
-        <p>Esto significa que precisamos <span>${gramosPorKilometro} gramos de manteca</span> por kilometro cuadrado. </p> 
-        <p>Como el area de ${paisData} es <span>${areaData} km2</span> tendriamos que usar <span>${kilogramosPorArea} kilogramos de manteca</span> para embadurnar el area.  </p> 
-        `
-        resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca para enmantecar todo ${paisData}</h3>`
 
-        return toneladasTotales;
+            gramosPorMetroDeSuelo = densidad * 1000;
+            gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+            kilogramosPorArea = (gramosPorKilometro/1000) * areaData;
+            toneladasTotales = kilogramosPorArea / 1000;
+
+            infoContenidoJ1.innerHTML = `<p>La manteca requiere <span>${gramosPorMetroDeSuelo} gramos por metro cuadrado</span> de suelo. </p> 
+            <p>Esto significa que precisamos <span>${gramosPorKilometro} gramos de manteca</span> por kilometro cuadrado. </p> 
+            <p>Como el area de ${paisData} es <span>${areaData} km2</span> tendriamos que usar <span>${kilogramosPorArea} kilogramos de manteca</span> para embadurnar el area.  </p>`;
+            resultadoGrandeJ1.innerHTML = `<h3>Esto en toneladas serian ${toneladasTotales} Toneladas de manteca para enmantecar todo ${paisData}</h3>`;
+
+            return toneladasTotales;
         }
 
 
-    ///////////////////PAY FOR MY BUTTER///////////////////////////////////////////////////////////////
-
-
-    function toneladasTotalesCalc(area){
-        gramosPorMetroDeSuelo = densidad * 1000;
-        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
-        kilogramosPorArea = (gramosPorKilometro/1000) * area;
-        toneladasTotales = kilogramosPorArea / 1000;
-        return toneladasTotales;
-    }
-
-
-
-
-    
-
-
-
-
-
-
     //OBTENER PAISES
+
     selectPaisJ1.addEventListener("change", async () => {
         let {areaData, paisData} = await cambiarArea(selectPaisJ1);
         conseguirBandera(selectPaisJ1, imagenModuloPaisJ1);
@@ -239,132 +249,43 @@ let Usuario = "";
         cargarInfoProcudeMyButter();
     });
 
-    async function cargarInfoProcudeMyButter () {
-        let {areaData, paisData} = await cambiarArea(selectPaisJ2);
-        let objetoManteca = await cambiarProduccion(selectPaisJ2_2);
-        let cantidadManteca2 = objetoManteca.cantidadManteca;
-        let pais2 = objetoManteca.pais;
-        console.log(cantidadManteca2, pais2);
-        cargarDataProduceMyButter(areaData, paisData, cantidadManteca2, pais2);
-    }
+    //CAMBIAR LOS DATOS
 
-    function cargarDataProduceMyButter(areaData, paisData, cantidadManteca2, pais2){
-        console.log(areaData, paisData, cantidadManteca2, pais2);
-        let toneladasTotales = toneladasTotalesCalc(areaData);
-        let proporcion = toneladasTotales / cantidadManteca2;
-        infoContenidoJ2.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
-        <p>${pais2} produce ${cantidadManteca2} toneladas de manteca al año. </p>
-        <p>Esto quiere decir que para embadurnar ${paisData} se necesita la produccion de manteca de ${pais2} durante ${proporcion} años. </p>`
-        resultadoGrandeJ2.innerHTML = `<h3>Se necesitan ${proporcion} años de produccion de manteca de ${pais2} para embadurnar todo ${paisData}</h3>`
-        }
+    async function conseguirId(select){
+        let contenido = select.options[select.selectedIndex].getAttribute("id");
         
-
-    selectPaisJ3.addEventListener("change", async () => {
-        conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
-        await cargarButterToTheMoon();
-    });
-    async function cargarButterToTheMoon (){
-        let {areaData, paisData} = await cambiarArea(selectPaisJ3);
-        let toneladasTotales = toneladasTotalesCalc(areaData);
-        const alturaBarraMantecaMetros = 0.115;
-        //Una barra de manteca pesa 200gramos
-        const alturaKiloManteca = alturaBarraMantecaMetros * 5;
-        const alturaToneladaManteca = alturaKiloManteca * 1000;
-        const distanciaTierraALuna = 384400000;
-        let alturaTotal = toneladasTotales * alturaToneladaManteca;
-        let vecesALaLuna = alturaTotal / distanciaTierraALuna;
-        infoContenidoJ3.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
-        <p>Con ${toneladasTotales} toneladas de manteca se puede construir una torre de manteca de ${alturaTotal} metros de altura. </p>`
-        if (vecesALaLuna < 1){
-            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} llegariamos a solo ${vecesALaLuna}% de la distancia a la luna</h3>`
-        } else if (vecesALaLuna < 2){
-            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna pero no se podria volver ${vecesALaLuna} veces</h3>
-            `}
-            else {
-                resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna y volver ${(vecesALaLuna/2)} veces</h3>
-            `
-            }
+        return contenido;
     }
 
 
-    selectPaisJ4.addEventListener("change", async () => {
-        conseguirBandera(selectPaisJ4, imagenModuloPaisJ4);
-        await cargarInfoPayForMyButter();
-    });
-
-    async function cargarInfoPayForMyButter() {
-        let {areaData, paisData} = await cambiarArea(selectPaisJ4);
-        console.log(areaData, paisData);
-        let infoGuita = await cambiarGuita(selectPaisJ4_2);
-        let paisData2 = infoGuita.nombre;
-        let guitaData = infoGuita.valor;
-        console.log(infoGuita);
-        cargarDataPayForMyButter(areaData, paisData, guitaData, paisData2)
+    async function conseguirBandera(selectAUsar, imagen){
+        let contenido = await conseguirId(selectAUsar);
+        let pais = await recibirBanderaDePais(contenido);
+        
+        imagen.innerHTML = `<img src="${pais}"></img>`;
     }
 
-    function cargarDataPayForMyButter(areaData, paisData, guitaData, paisData2){
-        let precioDeToneladaDeManteca = 9270;
-        let toneladasTotales = toneladasTotalesCalc(areaData);
-        let precioTotal = toneladasTotales * precioDeToneladaDeManteca;
-        let toneladasComprables = guitaData / precioDeToneladaDeManteca;
-        let proporcionPais = guitaData / precioTotal;
-        let paisPobre = 1 / proporcionPais;
-        console.log(proporcionPais)
-        infoContenidoJ4.innerHTML = 
-        `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
-         <p>Con el GDP de ${paisData2} se podria comprar ${toneladasComprables} toneladas de manteca.
-         </p>`
-         if (proporcionPais > 1) {
-         resultadoGrandeJ4.innerHTML = `<h3> Con su GDP de 2025, ${paisData2} puede embadurnar todo ${paisData} ${proporcionPais} veces</h3>
-         `} else {
-            resultadoGrandeJ4.innerHTML = `<h3> Se necesitan ${paisPobre} veces la economia de ${paisData2} para embadurnar todo ${paisData} de manteca</h3>
-         `
-         }
-    }
-    
-
-    selectPaisJ4_2.addEventListener("change", async () => {
-        conseguirBandera(selectPaisJ4_2, imagenModuloPaisJ4_2);
-        cargarInfoPayForMyButter();
-    });
-    selectPaisJ5.addEventListener("change", async () => {
-        conseguirBandera(selectPaisJ5, imagenModuloPaisJ5);
-        eatMyButter();
-    });
-    selectPaisJ5_2.addEventListener("change", async () => {
-        conseguirBandera(selectPaisJ5_2, imagenModuloPaisJ5_2);
-        eatMyButter();
-    });
-    //CAMBIAR AREA
-
-  async function conseguirId(select){
-    let contenido = select.options[select.selectedIndex].getAttribute("id");
-    return contenido;
-  }
-
-
-  async function conseguirBandera(selectAUsar, imagen){
-    let contenido = await conseguirId(selectAUsar);
-    let pais = await recibirBanderaDePais(contenido);
-    imagen.innerHTML = `<img src="${pais}"></img>`;
-  }
     async function cambiarArea(selectAUsar){
         let contenido = await conseguirId(selectAUsar);
         let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
+        
         areaData = pais.valor;
         paisData = pais.pais;
+        
         return {areaData, paisData}
     }
 
-        async function cambiarGuita(selectAUsar){
+    async function cambiarGuita(selectAUsar){
         let contenido = await conseguirId(selectAUsar);
         let pais = await recibirDatoDePais("NY.GDP.MKTP.CD", contenido)
+        
         guitaData = pais.valor;
         paisData = pais.pais;
         let dataEnviar = {nombre: paisData, valor: guitaData}
         console.log(paisData)
+        
         return dataEnviar
-        }
+    }
 
     async function cambiarProduccion(selectAUsar) {
         console.log("cambio produccion");
@@ -373,18 +294,187 @@ let Usuario = "";
         return objetoManteca;
     }
 
-function recibirDatosDeManteca(id) {
-    const element = produccionDeMantecaPorPais.find(e => e.iso3 === id);
-    if (element) {
-        return {
-            cantidadManteca: element.manteca,
-            pais: element.nombre
-        };
+    function recibirDatosDeManteca(id) {
+        const element = produccionDeMantecaPorPais.find(e => e.iso3 === id);
+        if (element) {
+            return {
+                cantidadManteca: element.manteca,
+                pais: element.nombre
+            };
+        }
+        return { cantidadManteca: 0, pais: "Desconocido" };
     }
-    return { cantidadManteca: 0, pais: "Desconocido" }; // fallback
-}
 
-        cargarTodosLosSelect();
+    
+//PAY FOR MY BUTTER///////////////////////////////////////////////////////////////
+
+    function toneladasTotalesCalc(area){
+       
+        gramosPorMetroDeSuelo = densidad * 1000;
+        gramosPorKilometro = gramosPorMetroDeSuelo * 1000;
+        kilogramosPorArea = (gramosPorKilometro/1000) * area;
+        toneladasTotales = kilogramosPorArea / 1000;
+        
+        return toneladasTotales;
+    }
+    
+    async function cargarInfoPayForMyButter() {
+        
+        let {areaData, paisData} = await cambiarArea(selectPaisJ4);
+        console.log(areaData, paisData);
+        let infoGuita = await cambiarGuita(selectPaisJ4_2);
+        let paisData2 = infoGuita.nombre;
+        let guitaData = infoGuita.valor;
+        console.log(infoGuita);
+        
+        cargarDataPayForMyButter(areaData, paisData, guitaData, paisData2)
+    }
+
+    function cargarDataPayForMyButter(areaData, paisData, guitaData, paisData2){
+        
+        let precioDeToneladaDeManteca = 9270;
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        let precioTotal = toneladasTotales * precioDeToneladaDeManteca;
+        let toneladasComprables = guitaData / precioDeToneladaDeManteca;
+        let proporcionPais = guitaData / precioTotal;
+        let paisPobre = 1 / proporcionPais;
+        console.log(proporcionPais)
+        
+        infoContenidoJ4.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>Con el GDP de ${paisData2} se podria comprar ${toneladasComprables} toneladas de manteca.</p>`;
+
+        if (proporcionPais > 1) {
+            resultadoGrandeJ4.innerHTML = `<h3> Con su GDP de 2025, ${paisData2} puede embadurnar todo ${paisData} ${proporcionPais} veces</h3>`;
+        }else {
+            resultadoGrandeJ4.innerHTML = `<h3> Se necesitan ${paisPobre} veces la economia de ${paisData2} para embadurnar todo ${paisData} de manteca</h3>`;
+        }
+    }
+
+    selectPaisJ4.addEventListener("change", async () => {
+        conseguirBandera(selectPaisJ4, imagenModuloPaisJ4);
+        await cargarInfoPayForMyButter();
+    });
+    
+
+    selectPaisJ4_2.addEventListener("change", async () => {
+        conseguirBandera(selectPaisJ4_2, imagenModuloPaisJ4_2);
+        cargarInfoPayForMyButter();
+    });
+
+//PRODUCE MY BUTTER////////////////////////////////////////////////////////////////////////////////////
+
+    async function cargarInfoProcudeMyButter () {
+        
+        let {areaData, paisData} = await cambiarArea(selectPaisJ2);
+        let objetoManteca = await cambiarProduccion(selectPaisJ2_2);
+        let cantidadManteca2 = objetoManteca.cantidadManteca;
+        let pais2 = objetoManteca.pais;
+        
+        console.log(cantidadManteca2, pais2);
+        
+        cargarDataProduceMyButter(areaData, paisData, cantidadManteca2, pais2);
+    }
+
+    function cargarDataProduceMyButter(areaData, paisData, cantidadManteca2, pais2){
+        
+        console.log(areaData, paisData, cantidadManteca2, pais2);
+
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        let proporcion = toneladasTotales / cantidadManteca2;
+
+        infoContenidoJ2.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>${pais2} produce ${cantidadManteca2} toneladas de manteca al año. </p>
+        <p>Esto quiere decir que para embadurnar ${paisData} se necesita la produccion de manteca de ${pais2} durante ${proporcion} años. </p>`
+        resultadoGrandeJ2.innerHTML = `<h3>Se necesitan ${proporcion} años de produccion de manteca de ${pais2} para embadurnar todo ${paisData}</h3>`
+    }
+        
+
+    selectPaisJ3.addEventListener("change", async () => {
+        conseguirBandera(selectPaisJ3, imagenModuloPaisJ3);
+        await cargarButterToTheMoon();
+    });
+
+//BUTTER TO THE MOON///////////////////////////////////////////////////////////////////////////////////
+
+    async function cargarButterToTheMoon (){
+        
+        let {areaData, paisData} = await cambiarArea(selectPaisJ3);
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+        const alturaBarraMantecaMetros = 0.115;
+        
+        //Una barra de manteca pesa 200gramos
+        const alturaKiloManteca = alturaBarraMantecaMetros * 5;
+        const alturaToneladaManteca = alturaKiloManteca * 1000;
+        const distanciaTierraALuna = 384400000;
+        let alturaTotal = toneladasTotales * alturaToneladaManteca;
+        let vecesALaLuna = alturaTotal / distanciaTierraALuna;
+        
+        infoContenidoJ3.innerHTML = `<p>Para embadurnar ${paisData} se necesitan ${toneladasTotales} toneladas de manteca. </p>
+        <p>Con ${toneladasTotales} toneladas de manteca se puede construir una torre de manteca de ${alturaTotal} metros de altura. </p>`;
+
+        if (vecesALaLuna < 1){
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} llegariamos a solo ${vecesALaLuna}% de la distancia a la luna</h3>`;
+        } else if (vecesALaLuna < 2){
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna pero no se podria volver ${vecesALaLuna} veces</h3>`;
+        }else {
+            resultadoGrandeJ3.innerHTML = `<h3>Con la manteca para embadurnar todo ${paisData} se puede llegar a la luna y volver ${(vecesALaLuna/2)} veces</h3>`;
+        }
+    }
+
+//EAT MY BUTTER//////////////////////////////////////////////////////////////////////////
+
+    const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
+
+    async function eatMyButter(){
+    
+        const paisConsumidor = await conseguirId(selectPaisJ5_2);
+        const paisEnmantecado = await conseguirId(selectPaisJ5);
+
+        const calorías = 2400;
+        const diasAño = 365;
+        const caloriasAño = calorías * diasAño;
+
+        const caloriasMantecaGramo = 7.17;
+
+        const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
+        const kilosMantecaPersona = gramosMantecaPersona / 1000;
+        const toneladasMantecaPersona = kilosMantecaPersona / 1000;
+
+        let {areaData, paisData} = await cambiarArea(selectPaisJ5);;
+        const toneladasTotales = toneladasTotalesCalc(areaData);
+
+        const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
+
+        const infoPaisConsumidor = await recibirDatoDePais("SP.POP.TOTL", paisConsumidor);
+        const poblacionTotal = infoPaisConsumidor.valor;
+        const nombreConsumidor = infoPaisConsumidor.pais;
+
+        const infoPaisEnmantecado = await recibirDatoDePais("SP.POP.TOTL", paisEnmantecado);
+        const nombreProductor = infoPaisEnmantecado.pais;
+
+        infoContenidoJ5.innerHTML = `<p>Si cubriéramos completamente el territorio de <strong>${nombreProductor}</strong> con una capa de manteca de 1 milímetro de altura, se necesitarían aproximadamente <strong>${Math.round(toneladasTotales)} toneladas</strong> de manteca.</p>
+            <p>Una persona necesita alrededor de <strong>${toneladasMantecaPersona} toneladas</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
+            <p>Con esa cantidad total de manteca, se podría alimentar durante un año a unas <strong>${Math.floor(personasAlimentadas)} personas</strong>.</p>
+            <p>La población de <strong>${nombreConsumidor}</strong> es de aproximadamente <strong>${Math.round(poblacionTotal)}</strong> personas.</p>`;
+
+        if (personasAlimentadas >= poblacionTotal) {
+            resultadoGrandeJ5.innerHTML = `<h3>¡La manteca que cubriría a ${nombreProductor} alcanza para alimentar a toda la población de ${nombreConsumidor} durante un año!</h3>`;
+        }else {
+            resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
+        }
+    }
+
+    selectPaisJ5.addEventListener("change", async () => {
+        conseguirBandera(selectPaisJ5, imagenModuloPaisJ5);
+        eatMyButter();
+    });
+    selectPaisJ5_2.addEventListener("change", async () => {
+        conseguirBandera(selectPaisJ5_2, imagenModuloPaisJ5_2);
+        eatMyButter();
+    });
+
+//CARGAR TODOS LOS SELECTS///////////////////////////////////////////////////////////////////////////////
+
     function cargarTodosLosSelect(){
         cargarPaisesEnSelect(selectPaisJ1);
         cargarPaisesEnSelect(selectPaisJ2);
@@ -396,97 +486,59 @@ function recibirDatosDeManteca(id) {
         cargarPaisesEnSelect(selectPaisJ5_2);
     }
 
-    ////////EAT MY BUTTER////////
+    cargarTodosLosSelect();
 
-const resultadoGrandeJ5 = document.querySelector("#resultadoGrandeJ5");
+//////////////////////CREACION DE USUARIOS//////////////////////
 
-async function eatMyButter(){
-    
-    const paisConsumidor = await conseguirId(selectPaisJ5_2);
-    const paisEnmantecado = await conseguirId(selectPaisJ5);
-
-    const calorías = 2400;
-    const diasAño = 365;
-    const caloriasAño = calorías * diasAño;
-
-    const caloriasMantecaGramo = 7.17;
-
-    const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
-    const kilosMantecaPersona = gramosMantecaPersona / 1000;
-    const toneladasMantecaPersona = kilosMantecaPersona / 1000;
-
-    let {areaData, paisData} = await cambiarArea(selectPaisJ5);;
-    const toneladasTotales = toneladasTotalesCalc(areaData);
-
-    const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
-
-    const infoPaisConsumidor = await recibirDatoDePais("SP.POP.TOTL", paisConsumidor);
-    const poblacionTotal = infoPaisConsumidor.valor;
-    const nombreConsumidor = infoPaisConsumidor.pais;
-
-    const infoPaisEnmantecado = await recibirDatoDePais("SP.POP.TOTL", paisEnmantecado);
-    const nombreProductor = infoPaisEnmantecado.pais;
-
-    infoContenidoJ5.innerHTML = `
-        <p>Si cubriéramos completamente el territorio de <strong>${nombreProductor}</strong> con una capa de manteca de 1 milímetro de altura, se necesitarían aproximadamente <strong>${Math.round(toneladasTotales)} toneladas</strong> de manteca.</p>
-        <p>Una persona necesita alrededor de <strong>${toneladasMantecaPersona} toneladas</strong> de manteca por año para sobrevivir con una dieta de 2400 calorías diarias compuesta solo de manteca.</p>
-        <p>Con esa cantidad total de manteca, se podría alimentar durante un año a unas <strong>${Math.floor(personasAlimentadas)} personas</strong>.</p>
-        <p>La población de <strong>${nombreConsumidor}</strong> es de aproximadamente <strong>${Math.round(poblacionTotal)}</strong> personas.</p>
-    `;
-
-    if (personasAlimentadas >= poblacionTotal) {
-        resultadoGrandeJ5.innerHTML = `<h3>¡La manteca que cubriría a ${nombreProductor} alcanza para alimentar a toda la población de ${nombreConsumidor} durante un año!</h3>`;
-    } else {
-        resultadoGrandeJ5.innerHTML = `<h3>No alcanza... solo se puede alimentar a <strong>${Math.floor(personasAlimentadas)}</strong> personas en ${nombreConsumidor} durante un año comiendo solo manteca.</h3>`;
-    }
-
-    
-}
-
-
-    //////////////////////CREACION DE USUARIOS//////////////////////
-
+    //URL BASE
     const BASE_URL_USUARIOS = ("https://api-usuarios-p2.up.railway.app/api/users")
 
-const inputUsuario = document.querySelector("#inputUsuario");
-iniciarSesion.addEventListener("click", iniciarSesionUsuario);
-const inputEmail = document.querySelector("#inputEmail");
-const registrarseSesion = document.querySelector("#registrarseSesion");
-registrarseSesion.addEventListener("click", registrarUsuario)
+    const inputUsuario = document.querySelector("#inputUsuario");
+    const inputEmail = document.querySelector("#inputEmail");
+    const registrarseSesion = document.querySelector("#registrarseSesion");
+    
+    registrarseSesion.addEventListener("click", registrarUsuario);
+    iniciarSesion.addEventListener("click", iniciarSesionUsuario);
 
-async function iniciarSesionUsuario(){
-    const response = await fetch(`${BASE_URL_USUARIOS}`);
-    const data = await response.json();
-    const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
-    if (listaDeUsuarios.includes(inputUsuario.value)){
-        cargarAlerta("Iniciaras sesion como " + inputUsuario.value)
-            data.data.forEach(element => {
-        if (element.username === inputUsuario.value){
-            if (element.data.juego === "ButterMyCountry"){
-            Usuario = element;
-            mostrarUsuario();
-            cargarModoCompetitivo();
-            popUpUsuario.style = "display: none";
+    //INICIAR SESIÓN///////////////////////////////////////////////////////
+
+    async function iniciarSesionUsuario(){
+        
+        const response = await fetch(`${BASE_URL_USUARIOS}`);
+        const data = await response.json();
+        const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
+        
+        if (listaDeUsuarios.includes(inputUsuario.value)){
+            cargarAlerta("Iniciaras sesion como " + inputUsuario.value)
+                data.data.forEach(element => {
+            if (element.username === inputUsuario.value){
+                if (element.data.juego === "ButterMyCountry"){
+                    Usuario = element;
+                    mostrarUsuario();
+                    cargarModoCompetitivo();
+                    popUpUsuario.style = "display: none";
+                }
+            }
+        });
+        } else if (listaDeEmails.includes(inputEmail.value)) {
+            cargarAlerta("Ingresaras con el email " + inputEmail.value);
+                data.data.forEach(element => {
+            if (element.email === inputEmail.value){
+                if (element.data.juego === "ButterMyCountry"){
+                    Usuario = element;
+                    mostrarUsuario();
+                    cargarModoCompetitivo();
+                    popUpUsuario.style = "display: none";
+                }
+            }
+        });
+        } else {
+            cargarAlerta("El usuario que ingresaste no existe, registrate o revisa tus datos");
+            return false;
         }
-        }
-    });
-    } else if (listaDeEmails.includes(inputEmail.value)) {
-        cargarAlerta("Ingresaras con el email " + inputEmail.value);
-            data.data.forEach(element => {
-        if (element.email === inputEmail.value){
-            if (element.data.juego === "ButterMyCountry"){
-            Usuario = element;
-            mostrarUsuario();
-            cargarModoCompetitivo();
-            popUpUsuario.style = "display: none";
-        }
-        }
-    });
-    } else {
-        cargarAlerta("El usuario que ingresaste no existe, registrate o revisa tus datos");
-        return false;
     }
-}
+
+    //REGISTRARSE///////////////////////////////////////////////////////
 
 async function registrarUsuario(){
     const response = await fetch(`${BASE_URL_USUARIOS}`);
