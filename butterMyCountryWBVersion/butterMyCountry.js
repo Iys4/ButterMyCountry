@@ -2,7 +2,7 @@
 
 let area = 0;
 let densidad = 0.911;
-let covertura = 0.1;
+let cobertura = 0.1;
 let pais = "";
 let paisComparado = "";
 let gramosPorMetroDeSuelo = densidad * 1000;
@@ -84,6 +84,7 @@ let Usuario = "";
     const LeaderBoardButton = document.querySelector("#LeaderBoardButton");
     const leaderboard = document.querySelector("#leaderboard");
     LeaderBoardButton.addEventListener("click", cargarLeaderBoard);
+    
     function cargarLeaderBoard(){
         esconderArticulos();
         leaderboard.style = "display: block";
