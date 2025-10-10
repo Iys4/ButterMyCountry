@@ -523,7 +523,7 @@ let Usuario = "";
         const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
         
         if (listaDeUsuarios.includes(inputUsuario.value)){
-            cargarAlerta("Iniciaras sesion como " + inputUsuario.value)
+            cargarAlerta("Iniciarás sesión como " + inputUsuario.value)
                 data.data.forEach(element => {
             if (element.username === inputUsuario.value){
                 if (element.data.juego === "ButterMyCountry"){
@@ -576,6 +576,7 @@ let Usuario = "";
             try {
                 const nuevoUsuario = await crearUsuario();
                 Usuario = nuevoUsuario;
+                iniciarSesionUsuario();
                 mostrarUsuario()
                 cargarModoCompetitivo();
                 cargarAlerta("Usuario creado con éxito.");
