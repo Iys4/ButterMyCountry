@@ -632,54 +632,6 @@ let Usuario = "";
         });
 
         if(response.ok){
-            cargarAlerta("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
-            Usuario="";
-
-            await cargarLeaderboard();
-            nombreUsuarioMostrar.innerHTML="";
-            PUBorrar.style.display="none";
-            popUpUsuario.style.display="none";
-        }else{
-            const errorData = await response.json();
-            cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
-        }
-    }catch(error){
-        const errorData = await response.json();
-        console.log("Respuesta de error:", errorData);
-        cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
-
-    }    
-}
-
-function cancelarBorradoUsuario(){
-    PUBorrar.style.display="none";
-}
-
-async function actualizarDatosUsuario(){
-    if (Usuario === ""){
-        cargarAlerta("Debes Iniciar Sesion para actualizar tus datos");
-        return false;
-    }
-
-    const url = `${BASE_URL_USUARIOS}/${Usuario.data.id}`;
-    
-    const nuevosDatos = {
-        username: inputNuevoUsuario.value || Usuario.username,
-        email: inputNuevoEmail.value || Usuario.email,
-        data: Usuario.data.id
-    };
-    console.log(nuevosDatos)
-
-    try {
-        const response = await fetch(`${url}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(nuevosDatos)
-        });
-
-        if (response.ok) {
             const data = await response.json();
             return data;
         }else{
