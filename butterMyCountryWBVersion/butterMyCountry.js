@@ -230,7 +230,6 @@ let Usuario = "";
             return toneladasTotales;
         }
 
-
     //OBTENER PAISES
 
     selectPaisJ1.addEventListener("change", async () => {
@@ -573,221 +572,157 @@ let Usuario = "";
         }
     }
 
-const nombreUsuarioMostrar = document.querySelector("#nombreUsuarioMostrar")
+    //MOSTRAR USUARIO///////////////////////////////////////////////////////
 
-function mostrarUsuario(){
-    nombreUsuarioMostrar.innerHTML = `<p>${Usuario.username} #${Usuario.data.id}</p>`;
-}
+    const nombreUsuarioMostrar = document.querySelector("#nombreUsuarioMostrar");
 
-async function listaDeUsuariosYMails(array){
-    let usersDeButter = [];
+    function mostrarUsuario(){
+        nombreUsuarioMostrar.innerHTML = `<p>${Usuario.username} #${Usuario.data.id}</p>`;
+    }
 
-    console.log(array.data);
+    //ACCEDER A LOS USUARIOS Y SUS MAILS Y LOS DEVUELVE EN FORMA DE LISTA//////////////////////////////
 
-    array.data.forEach(element => {
-       if (element.data && element.data.juego === "ButterMyCountry"){
-           usersDeButter.push(element);
-       }
-    });
+    async function listaDeUsuariosYMails(array){
+        let usersDeButter = [];
 
-    let listaDeUsuarios = [];  // Lista de usernames únicos
-    let listaDeEmails = [];    // Lista de emails únicos
+        console.log(array.data);
 
-    usersDeButter.forEach(element => {
-        if (element.username) {
-            listaDeUsuarios.push(element.username);
+        array.data.forEach(element => {
+        if (element.data && element.data.juego === "ButterMyCountry"){
+            usersDeButter.push(element);
         }
-        if (element.email) {
-            listaDeEmails.push(element.email);
-        }
-    });
+        });
 
-    return {listaDeUsuarios, listaDeEmails};
-};
+        let listaDeUsuarios = [];  // Lista de usernames únicos
+        let listaDeEmails = [];    // Lista de emails únicos
 
-//Creador de usuarios
-async function crearUsuario(){
-    let idNueva = await crearId();
-    const nuevoUsuario = {
-        username: `${inputUsuario.value}`,
-        email: `${inputEmail.value}`,
-        data: {
-            juego: "ButterMyCountry",
-            scoreMaximo: 0,
-            partidasJugadas: 0,
-            id: idNueva
-        }
+        usersDeButter.forEach(element => {
+            if (element.username) {
+                listaDeUsuarios.push(element.username);
+            }
+            if (element.email) {
+                listaDeEmails.push(element.email);
+            }
+        });
+
+        return {listaDeUsuarios, listaDeEmails};
     };
-    
-    const response = await fetch(`${BASE_URL_USUARIOS}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(nuevoUsuario)
-    });
 
-    if(response.ok){
-        const data = await response.json();
-        return data;
-    }else{
-        console.log("Error al crear el usuario");
-    }
+//CREAR USUARIO///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    mostrarUsuario();
-}
-
-async function crearId(){
-    const response = await fetch(`${BASE_URL_USUARIOS}`);
-    const data = await response.json();
-    let usersDeButter = [];
-   
-    data.data.forEach(element => {
-       if (element.data && element.data.juego === "ButterMyCountry"){
-           usersDeButter.push(element);
-           console.log(element);
-       }
-    });
-    const idUnicas = [];
-    usersDeButter.forEach(element => {
-        idUnicas.push(element.data.id);
-    });
-    let idUnica = darIdUnica(idUnicas);
-    return idUnica;
-}
-
-function darIdUnica(idUnicas){
-    let randomId = Math.floor(Math.random() * 9999);
-    while (idUnicas.includes(randomId)){
-        randomId = Math.floor(Math.random() * 9999);
-    }
-    return randomId;}
-
-//BORRAR USUARIO
-
-const btnBorrarUsuario = document.querySelector("#borrarUsuario");
-const PUBorrar = document.querySelector("#PUBorrar");
-const confirmarBorrado = document.querySelector("#confirmarBorrado");
-const cancelarBorrado = document.querySelector("#cancelarBorrado");
-
-btnBorrarUsuario.addEventListener("click", mostrarPopupBorrado);
-confirmarBorrado.addEventListener("click", confirmarBorradoUsuario);
-cancelarBorrado.addEventListener("click", cancelarBorradoUsuario);
-
-function mostrarPopupBorrado() {
-    if (Usuario === "") {
-        cargarAlerta("Debes iniciar sesión para borrar tu usuario.");
-        return;
-    }
-    PUBorrar.style.display = "block";
-}
-
-async function confirmarBorradoUsuario(){
-
-    const userId = Usuario._id;
-    const url = `${BASE_URL_USUARIOS}/${userId}`;
-
-    try {
-        const response = await fetch(`${url}`, {
-            method: "DELETE",
+    async function crearUsuario(){
+        let idNueva = await crearId();
+        const nuevoUsuario = {
+            username: `${inputUsuario.value}`,
+            email: `${inputEmail.value}`,
+            data: {
+                juego: "ButterMyCountry",
+                scoreMaximo: 0,
+                partidasJugadas: 0,
+                id: idNueva
+            }
+        };
+        
+        const response = await fetch(`${BASE_URL_USUARIOS}`, {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
-            },
+                'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(nuevoUsuario)
         });
 
         if(response.ok){
-            cargarAlerta("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
-            Usuario="";
-
-            await cargarLeaderboard();
-            nombreUsuarioMostrar.innerHTML="";
-            PUBorrar.style.display="none";
-            popUpUsuario.style.display="none";
-        }else{
-            const errorData = await response.json();
-            cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
-        }
-    }catch(error){
-        const errorData = await response.json();
-        console.log("Respuesta de error:", errorData);
-        cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
-
-    }    
-}
-
-function cancelarBorradoUsuario(){
-    PUBorrar.style.display="none";
-}
-
-
-    //COMPARADOR
-    /* const selectComparador = document.querySelector("#comparador");
-    selectComparador.addEventListener("change", cambiarComparacion)
-    cargarComparador();
-    
-    
-    //CARGAR COMPARADOR
-    
-    function cargarComparador (){
-        produccionDeMantecaPorPais.forEach(element => {
-            selectComparador.innerHTML += `<option>${element.nombre}</option>`
-            console.log(element)
-        });
-    }
-
-
-    //CAMBIAR COMPARACION
-
-    function cambiarComparacion(){
-    let paisUsado = selectComparador.value;
-    produccionDeMantecaPorPais.forEach(element => {
-        if (element.nombre === paisUsado){
-                paisComparado = element.nombre;
-                produccionDeManteca = element.manteca;
-                console.log(element.manteca);
-                cargarDataButterMyCountryBase();
-        }
-    });
-
-    } */
-
-async function actualizarDatosUsuario(){
-    if (Usuario === ""){
-        cargarAlerta("Debes Iniciar Sesion para actualizar tus datos");
-        return false;
-    }
-
-    const url = `${BASE_URL_USUARIOS}/${Usuario.data.id}`;
-    
-    const nuevosDatos = {
-        username: inputNuevoUsuario.value || Usuario.username,
-        email: inputNuevoEmail.value || Usuario.email,
-        data: Usuario.data.id
-    };
-    console.log(nuevosDatos)
-
-    try {
-        const response = await fetch(`${url}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(nuevosDatos)
-        });
-
-        if (response.ok) {
             const data = await response.json();
-            cargarAlerta("Usuario actualizado con éxito.");
-            Usuario = data;
-            mostrarUsuario();
-        } else {
-            cargarAlerta("Error al actualizar el usuario.");
+            return data;
+        }else{
+            console.log("Error al crear el usuario");
         }
-    } catch (error) {
-        console.log("Error actualizando:", error);
-        cargarAlerta("Ocurrió un error al intentar actualizar el usuario.");
+
+        mostrarUsuario();
     }
-}
+
+    async function crearId(){
+        const response = await fetch(`${BASE_URL_USUARIOS}`);
+        const data = await response.json();
+        let usersDeButter = [];
+    
+        data.data.forEach(element => {
+        if (element.data && element.data.juego === "ButterMyCountry"){
+            usersDeButter.push(element);
+            console.log(element);
+        }
+        });
+        const idUnicas = [];
+        usersDeButter.forEach(element => {
+            idUnicas.push(element.data.id);
+        });
+        let idUnica = darIdUnica(idUnicas);
+        return idUnica;
+    }
+
+    function darIdUnica(idUnicas){
+        let randomId = Math.floor(Math.random() * 9999);
+        while (idUnicas.includes(randomId)){
+            randomId = Math.floor(Math.random() * 9999);
+        }
+        return randomId;
+    }
+
+//BORRAR USUARIO///////////////////////////////////////////////////////////////////////////////////
+
+    const btnBorrarUsuario = document.querySelector("#borrarUsuario");
+    const PUBorrar = document.querySelector("#PUBorrar");
+    const confirmarBorrado = document.querySelector("#confirmarBorrado");
+    const cancelarBorrado = document.querySelector("#cancelarBorrado");
+
+    btnBorrarUsuario.addEventListener("click", mostrarPopupBorrado);
+    confirmarBorrado.addEventListener("click", confirmarBorradoUsuario);
+    cancelarBorrado.addEventListener("click", cancelarBorradoUsuario);
+
+    function mostrarPopupBorrado() {
+        if (Usuario === "") {
+            cargarAlerta("Debes iniciar sesión para borrar tu usuario.");
+            return;
+        }
+        PUBorrar.style.display = "block";
+    }
+
+    async function confirmarBorradoUsuario(){    //Función que usa el método Delete para borrar un usuario de la base de datos
+
+        const userId = Usuario._id;
+        const url = `${BASE_URL_USUARIOS}/${userId}`;
+
+        try {
+            const response = await fetch(`${url}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+
+            if(response.ok){
+                cargarAlerta("Usuario borrado exitosamente. Esperamos que te enmanteques nuevamente en un futuro.");
+                Usuario="";
+
+                await cargarLeaderboard();
+                nombreUsuarioMostrar.innerHTML="";
+                PUBorrar.style.display="none";
+                popUpUsuario.style.display="none";
+            }else{
+                const errorData = await response.json();
+                cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
+            }
+        }catch(error){
+            const errorData = await response.json();
+            console.log("Respuesta de error:", errorData);
+            cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
+
+        }    
+    }
+
+    function cancelarBorradoUsuario(){
+        PUBorrar.style.display="none";
+    }
 
 //BUTTERROYALE//
 
