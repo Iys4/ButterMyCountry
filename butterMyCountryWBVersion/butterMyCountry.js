@@ -70,6 +70,7 @@ let Usuario = "";
 
     async function cargarModoCompetitivo(){
         esconderArticulos();
+        //Si el usuario no inicio sesion espera a que inicie y le muestra las opciones para hacerlo
         if (Usuario === ""){ 
         iniciarButterRoyale.style = "display: block";
         butterRoyaleJuego.style = "display: none";
@@ -84,7 +85,7 @@ let Usuario = "";
     const LeaderBoardButton = document.querySelector("#LeaderBoardButton");
     const leaderboard = document.querySelector("#leaderboard");
     LeaderBoardButton.addEventListener("click", cargarLeaderBoard);
-    
+    //Esconde los otros menus y carga leaderboard
     function cargarLeaderBoard(){
         esconderArticulos();
         leaderboard.style = "display: block";
@@ -113,6 +114,7 @@ let Usuario = "";
         articleJ5.style = "display: block";
     }
 
+    //Funcion poco modular, esconde todos los menus.
     function esconderArticulos(){
         articleJ1.style = "display: none";
         articleJ2.style = "display: none";
@@ -153,8 +155,11 @@ let Usuario = "";
             let response = await fetch(BASE_URL_PAISES);
             let data = await response.json();
             let listaPaises = [];
+            //Data[1] es donde esta guardada la informacion de paises dentro de la API
+            //El primer elemento es metadata y nosotros buscamos la data de los paises.
             let countries = data[1];
-            // Filtrar regiones que no son países
+            // Filtrar regiones que no son países, la lista de la API nos da paises con regiones enteras en la misma lista,
+            //filtramos las regiones con id NA.
             countries.filter(country => country.region.id !== 'NA').forEach(country => {
                 listaPaises.push(country); // Usar el nombre del país
             });
@@ -171,11 +176,13 @@ let Usuario = "";
         try {
             let response = await fetch(`https://restcountries.com/v3.1/alpha/${pais}`);
             let data = await response.json();
+            //Pregunta varias veces, si el objeto tiene data y esa data tiene banderas y esas banderas tienen png, si no tiene
+            //alguna de esas no se ejecuta.
             if (data && data[0] && data[0].flags && data[0].flags.png) {
                 console.log(data[0].flags.png);
                 return data[0].flags.png;
             } else {
-                return "https://via.placeholder.com/150"; // default flag
+                return "https://via.placeholder.com/150"; // Bandera default por si acaso
             }
         } catch (error) {
             console.log("Error al acceder a la bandera:", error);
@@ -192,9 +199,12 @@ let Usuario = "";
         try {
             let response = await fetch(url);
             let data = await response.json();
+            //En la estructura de la api data[1][0] es donde estan ingresados los datos especificos del pais
+            //Nosotros le dimos a nuestra funcion el indicador que queriamos y ahora leemos que value nos da.
                 let nombrePais = data[1][0].country.value;
                 let info = data[1][0].value;
                 let nombreIndicador = data[1][0].indicator.value;
+                //Devuelve un objeto con el nombre del pais y el valor del indicador.
                 return {pais: nombrePais, indicador: nombreIndicador, valor: info};
         } catch (error) {
             return { error: `Error obteniendo el indicador: ${error}` };
@@ -232,7 +242,7 @@ let Usuario = "";
         }
 
     //OBTENER PAISES
-
+    //Carga data cuando ocurre un cambio
     selectPaisJ1.addEventListener("change", async () => {
         let {areaData, paisData} = await cambiarArea(selectPaisJ1);
         conseguirBandera(selectPaisJ1, imagenModuloPaisJ1);
@@ -251,13 +261,15 @@ let Usuario = "";
 
     //CAMBIAR LOS DATOS
 
+    //Consigue la id de un select, la id de nuestros select es el codigo ISO3 de nuestro pais, se usa justamente
+    //Para usar la id del pais en las busquedas de la api
     async function conseguirId(select){
         let contenido = select.options[select.selectedIndex].getAttribute("id");
         
         return contenido;
     }
 
-
+    //Consigue la bandera del pais seleccionado en el select que le demos, y se la asigna a un contenedor de img
     async function conseguirBandera(selectAUsar, imagen){
         let contenido = await conseguirId(selectAUsar);
         let pais = await recibirBanderaDePais(contenido);
@@ -265,6 +277,7 @@ let Usuario = "";
         imagen.innerHTML = `<img src="${pais}"></img>`;
     }
 
+    //Funcion util solo para conseguir el area de un elemento dentro de un select
     async function cambiarArea(selectAUsar){
         let contenido = await conseguirId(selectAUsar);
         let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
@@ -275,6 +288,7 @@ let Usuario = "";
         return {areaData, paisData}
     }
 
+    //Funcion util solo para conseguir la plata de un elemento dentro de un select
     async function cambiarGuita(selectAUsar){
         let contenido = await conseguirId(selectAUsar);
         let pais = await recibirDatoDePais("NY.GDP.MKTP.CD", contenido)
