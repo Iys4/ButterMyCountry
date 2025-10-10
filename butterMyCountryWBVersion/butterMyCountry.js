@@ -540,38 +540,38 @@ let Usuario = "";
 
     //REGISTRARSE///////////////////////////////////////////////////////
 
-async function registrarUsuario(){
-    const response = await fetch(`${BASE_URL_USUARIOS}`);
-    const data = await response.json();
-    const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
-    
-    if (listaDeUsuarios.includes(inputUsuario.value)){
-        cargarAlerta("El usuario ya existe, por favor elija otro nombre de usuario.");
-        return false;
-    } else if (inputUsuario.value === "" || inputEmail.value === ""){
-        cargarAlerta("Por favor complete todos los campos.");
-        return false;
-    } else if (!inputEmail.value.includes("@")){
-        cargarAlerta("Por favor ingrese un email válido.");
-        return false;
-    } else if (listaDeEmails.includes(inputEmail.value)){
-        cargarAlerta("El email ya está en uso, por favor ingrese otro email.");
-        return false;
-    } else {
+    async function registrarUsuario(){
+        const response = await fetch(`${BASE_URL_USUARIOS}`);
+        const data = await response.json();
+        const {listaDeUsuarios, listaDeEmails} = await listaDeUsuariosYMails(data);
+        
+        if (listaDeUsuarios.includes(inputUsuario.value)){
+            cargarAlerta("El usuario ya existe, por favor elija otro nombre de usuario.");
+            return false;
+        } else if (inputUsuario.value === "" || inputEmail.value === ""){
+            cargarAlerta("Por favor complete todos los campos.");
+            return false;
+        } else if (!inputEmail.value.includes("@")){
+            cargarAlerta("Por favor ingrese un email válido.");
+            return false;
+        } else if (listaDeEmails.includes(inputEmail.value)){
+            cargarAlerta("El email ya está en uso, por favor ingrese otro email.");
+            return false;
+        } else {
 
-        try {
-            const nuevoUsuario = await crearUsuario();
-            Usuario = nuevoUsuario;
-            mostrarUsuario()
-            cargarModoCompetitivo();
-            cargarAlerta("Usuario creado con éxito.");
-            popUpUsuario.style = "display: none"
-        }catch (error){
-            console.error("Error detallado al crear el usuario:", error);
-            cargarAlerta("Ocurrió un error al crear el usuario");
+            try {
+                const nuevoUsuario = await crearUsuario();
+                Usuario = nuevoUsuario;
+                mostrarUsuario()
+                cargarModoCompetitivo();
+                cargarAlerta("Usuario creado con éxito.");
+                popUpUsuario.style = "display: none"
+            }catch (error){
+                console.error("Error detallado al crear el usuario:", error);
+                cargarAlerta("Ocurrió un error al crear el usuario");
+            }
         }
     }
-}
 
 const nombreUsuarioMostrar = document.querySelector("#nombreUsuarioMostrar")
 

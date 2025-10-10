@@ -175,12 +175,12 @@ button:active {
     box-shadow: 0 4px 0 var(--VerdeOscuro);
 }
 
-#modoSingleButton{
+#LeaderBoardButton{
     background-color: var(--AzulPrincipal);
     box-shadow: 0 8px 0 var(--AzulOscuro);
 }
 
-#modoSingleButton:active{
+#LeaderBoardButton:active{
     box-shadow: 0 4px 0 var(--AzulOscuro);
 }
 
