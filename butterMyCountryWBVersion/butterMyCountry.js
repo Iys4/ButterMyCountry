@@ -724,247 +724,297 @@ let Usuario = "";
         PUBorrar.style.display="none";
     }
 
-//BUTTERROYALE//
+///////////////////////////////////////////////////////BUTTERROYALE///////////////////////////////////////////////////////////////////
 
-const iniciarButterRoyale = document.querySelector("#iniciarButterRoyale");
-const butterRoyaleJuego = document.querySelector("#butterRoyaleJuego");
-const preguntaButterRoyale = document.querySelector("#preguntaButterRoyale");
-const opcion1ButterRoyale = document.querySelector("#opcion1ButterRoyale");
-const apretarOpcion1ButterRoyale = document.querySelector("#apretarOpcion1ButterRoyale");
-const opcion2ButterRoyale = document.querySelector("#opcion2ButterRoyale");
-const apretarOpcion2ButterRoyale = document.querySelector("#apretarOpcion2ButterRoyale");
-iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
+    const iniciarButterRoyale = document.querySelector("#iniciarButterRoyale");
+    const butterRoyaleJuego = document.querySelector("#butterRoyaleJuego");
+    const preguntaButterRoyale = document.querySelector("#preguntaButterRoyale");
+    const opcion1ButterRoyale = document.querySelector("#opcion1ButterRoyale");
+    const apretarOpcion1ButterRoyale = document.querySelector("#apretarOpcion1ButterRoyale");
+    const opcion2ButterRoyale = document.querySelector("#opcion2ButterRoyale");
+    const apretarOpcion2ButterRoyale = document.querySelector("#apretarOpcion2ButterRoyale");
 
-let puntajeActual = 0;
-let respuestaCorrectaGlobal;
-let opciones = [];
+    iniciarButterRoyale.addEventListener("click", iniciarButterRoyaleFuncion);
 
-async function iniciarButterRoyaleFuncion(){
+    let puntajeActual = 0;
+    let respuestaCorrectaGlobal;
+    let opciones = [];
 
-    if (Usuario === "" || !Usuario._id) {
-        cargarAlerta("Debes iniciar sesión correctamente para jugar y guardar puntaje.");
-        popUpUsuario.style = "display: block";
-        return;
-    }
+    async function iniciarButterRoyaleFuncion(){
 
-    butterRoyaleJuego.style = "display: block";
-    console.log("se carga boton");
-    await cargarPartidaRoyale();
-}
-
-async function cargarPartidaRoyale(){
-await cargarRondaRoyale();
-}
-
-
-async function cargarRondaRoyale() {
-    const paises = await obtenerListaPaisesWorldBank();
-    const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
-    const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
-        let electorDeJuego = Math.floor(Math.random() * 5);   
-        console.log("elector " + electorDeJuego); 
-        
-    if (electorDeJuego === 0){
-        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
-        await juegoButterRoyaleButterMyCountry(paisAleatorio);
-    } else if (electorDeJuego === 1){
-        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
-        await juegoButterRoyaleProduceMyButter(paisAleatorio);
-    } else if (electorDeJuego === 2){
-        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
-        await juegoButterRoyaleButterToTheMoon(paisAleatorio, paisAleatorio2);
-    } else if (electorDeJuego === 3){
-        await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
-        await juegoButterRoyalePayForMyButter(paisAleatorio);
-    }else {
-        await juegoButterRoyaleEatMyButter(paisAleatorio, paisAleatorio2);
-}}
-
-//Juegos Competitivos//
-
-
-/////////COMPETITIVO EAT MY BUTTER/////////////////////
-
-function configurarOpcionesDeRespuesta(opcionesArray, respuestaCorrecta) {
-    opciones = opcionesArray;
-    respuestaCorrectaGlobal = respuestaCorrecta; // Necesitás una var global si querés usarla en los handlers
-
-    apretarOpcion1ButterRoyale.innerHTML = `<h3>${opciones[0]}</h3>`;
-    apretarOpcion2ButterRoyale.innerHTML = `<h3>${opciones[1]}</h3>`;
-
-    apretarOpcion1ButterRoyale.onclick = () => {
-        verificarRespuesta(opciones[0], respuestaCorrectaGlobal);
-    };
-    apretarOpcion2ButterRoyale.onclick = () => {
-        verificarRespuesta(opciones[1], respuestaCorrectaGlobal);
-    };
-
-    console.log("Opciones mezcladas:", opciones);
-    console.log("Correcta:", respuestaCorrecta);
-    console.log("Izquierda:", opciones[0], "Derecha:", opciones[1]);
-}
-
-function mezclarOpciones(array) {
-    return array.sort(() => Math.random() - 0.5);
-}
-
-
-
-
-async function juegoButterRoyaleEatMyButter(pais1) {
-    
-    preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
-    preguntaButterRoyale.innerHTML += `
-    <h3>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h3>`
-
-    let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
-    let toneladasTotales = toneladasTotalesCalc(areaData);
-
-    const calorías = 2400;
-    const diasAño = 365;
-    const caloriasAño = calorías * diasAño;
-    const caloriasMantecaGramo = 7.17;
-
-    const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
-    const kilosMantecaPersona = gramosMantecaPersona / 1000;
-    const toneladasMantecaPersona = kilosMantecaPersona / 1000;
-    const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
-
-    respuestaCorrecta = personasAlimentadas;
-
-    const factor = Math.random() * 1.5 + 0.5;
-    const respuestaIncorrecta = Math.floor(personasAlimentadas * factor);
-
-    opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
-    configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
-
-}
-
-const popUpAlert = document.querySelector("#popUpAlert");
-const mensajePopUp = document.querySelector("#mensajePopUp");
-const cerrarPopUp = document.querySelector("#cerrarPopUp");
-popUpAlert.style.display = "none";
-cerrarPopUp.addEventListener("click", () => {
-    popUpAlert.style.display = "none";
-});
-
-async function cargarAlerta(mensaje) {
-    mensajePopUp.innerHTML = `<p>${mensaje}</p>`;
-    popUpAlert.style.display = "block";
-    cerrarPopUp.focus();
-}
-const scoreTemporal = document.querySelector("#scoreTemporal");
-
-async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
-
-if (respuestaElegida === respuestaCorrecta) {
-        cargarAlerta("¡Correcto! Sumaste un punto.");
-        puntajeActual++;
-        scoreTemporal.innerHTML = `<p>Puntaje: ${puntajeActual}</p>`;
-    }else{
-        cargarAlerta("¡Incorrecto!")
-        puntajeActual = 0;
-        scoreTemporal.innerHTML = `<p>Incorrecto. Puntaje ahora: ${puntajeActual}</p>`;
-    }
-
-    const highscoreActual = Usuario.data?.scoreMaximo || 0;
-    console.log(highscoreActual);
-
-    if (puntajeActual > highscoreActual) {
-
-        Usuario.data.scoreMaximo = puntajeActual;
-        await actualizarHighScore(puntajeActual);
-        await cargarLeaderboard();
-    }
-
-    cargarRondaRoyale();
-}
-
-
-async function actualizarHighScore(nuevoScore) {
-
-    if (!Usuario || !Usuario._id) {
-        console.error("Usuario inválido para update:", Usuario);
-        cargarAlerta("Error: No estás logueado correctamente. Reinicia sesión.");
-        return;
-    }
-    
-    const userId = Usuario._id;
-    const url = `${BASE_URL_USUARIOS}/${userId}`;
-
-    try {
-        const response = await fetch(url, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                username: Usuario.username,
-                email: Usuario.email,
-                data: {
-                    ...Usuario.data,
-                    scoreMaximo: nuevoScore
-                }
-            })
-        });
-
-        if (response.ok) {
-            const updatedUser = await response.json();
-                Usuario = {
-                            ...Usuario, 
-                            ...updatedUser,
-                            data: {
-                                ...Usuario.data,
-                                ...updatedUser.data
-                            }
-                        };
+        if (Usuario === "" || !Usuario._id) {
+            cargarAlerta("Debes iniciar sesión correctamente para jugar y guardar puntaje.");
+            popUpUsuario.style = "display: block";
+            return;
         }
-    
-    } catch (error) {
-        console.error("Error actualizando highscore:", error);
+
+        butterRoyaleJuego.style = "display: block";
+        console.log("se carga boton");
+        await cargarPartidaRoyale();
     }
 
-    console.log("Highscore actualizado a:", nuevoScore)
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
+    async function cargarPartidaRoyale(){
+    await cargarRondaRoyale();
+    }
 
 
+    async function cargarRondaRoyale() {
+        const paises = await obtenerListaPaisesWorldBank();
+        const paisAleatorio = paises[Math.floor(Math.random() * paises.length)];
+        const paisAleatorio2 = paises[Math.floor(Math.random() * paises.length)];
+            let electorDeJuego = Math.floor(Math.random() * 5);   
+            console.log("elector " + electorDeJuego); 
+            
+        if (electorDeJuego === 0){
+            await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+            await juegoButterRoyaleButterMyCountry(paisAleatorio);
+        } else if (electorDeJuego === 1){
+            await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+            await juegoButterRoyaleProduceMyButter(paisAleatorio);
+        } else if (electorDeJuego === 2){
+            await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+            await juegoButterRoyaleButterToTheMoon(paisAleatorio, paisAleatorio2);
+        } else if (electorDeJuego === 3){
+            await cargarDatosDePaisRandomCompetitivo(paisAleatorio, opcion1ButterRoyale);
+            await juegoButterRoyalePayForMyButter(paisAleatorio);
+        }else {
+            await juegoButterRoyaleEatMyButter(paisAleatorio, paisAleatorio2);
+    }}
 
-
-async function juegoButterRoyalePayForMyButter(pais1) {
-    preguntaButterRoyale.innerHTML = `<h2>Pay For My Butter</h2>`
+//////////////////////////////////////////Juegos Competitivos/////////////////////////////////////////
     
-    preguntaButterRoyale.innerHTML += `
-    <h3>Qué pais puede pagar la manteca necesaria para enmantecar ${pais1.name}?</h3>`
-    let guita = await cambiarGuitaCompetitivo(pais1.id);
-    guita = guita.valor;
-    console.log(guita);
-    let recibirPaises = await conseguirPaisConGDPSimilar(guita);
-    console.log(recibirPaises);
-    
-    let paisProductor = recibirPaises.Productor;
-    respuestaCorrecta = paisProductor;
-    let paisRandom = recibirPaises.Random;
-    respuestaIncorrecta = paisRandom;
+    //FUNCIONES GENERALES
+
+    function configurarOpcionesDeRespuesta(opcionesArray, respuestaCorrecta) {
+        opciones = opcionesArray;
+        respuestaCorrectaGlobal = respuestaCorrecta; // Necesitás una var global si querés usarla en los handlers
+
+        apretarOpcion1ButterRoyale.innerHTML = `<h3>${opciones[0]}</h3>`;
+        apretarOpcion2ButterRoyale.innerHTML = `<h3>${opciones[1]}</h3>`;
+
+        apretarOpcion1ButterRoyale.onclick = () => {
+            verificarRespuesta(opciones[0], respuestaCorrectaGlobal);
+        };
+        apretarOpcion2ButterRoyale.onclick = () => {
+            verificarRespuesta(opciones[1], respuestaCorrectaGlobal);
+        };
+
+        console.log("Opciones mezcladas:", opciones);
+        console.log("Correcta:", respuestaCorrecta);
+        console.log("Izquierda:", opciones[0], "Derecha:", opciones[1]);
+    }
+
+    function mezclarOpciones(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    const popUpAlert = document.querySelector("#popUpAlert");
+    const mensajePopUp = document.querySelector("#mensajePopUp");
+    const cerrarPopUp = document.querySelector("#cerrarPopUp");
+
+    popUpAlert.style.display = "none";
+
+    cerrarPopUp.addEventListener("click", () => {
+        popUpAlert.style.display = "none";
+    });
+
+    async function cargarAlerta(mensaje) {
+        mensajePopUp.innerHTML = `<p>${mensaje}</p>`;
+        popUpAlert.style.display = "block";
+        cerrarPopUp.focus();
+    }
+    const scoreTemporal = document.querySelector("#scoreTemporal");
+
+    async function verificarRespuesta(respuestaElegida, respuestaCorrecta){
+
+    if (respuestaElegida === respuestaCorrecta) {
+            cargarAlerta("¡Correcto! Sumaste un punto.");
+            puntajeActual++;
+            scoreTemporal.innerHTML = `<p>Puntaje: ${puntajeActual}</p>`;
+        }else{
+            cargarAlerta("¡Incorrecto!")
+            puntajeActual = 0;
+            scoreTemporal.innerHTML = `<p>Incorrecto. Puntaje ahora: ${puntajeActual}</p>`;
+        }
+
+        const highscoreActual = Usuario.data?.scoreMaximo || 0;
+        console.log(highscoreActual);
+
+        if (puntajeActual > highscoreActual) {
+
+            Usuario.data.scoreMaximo = puntajeActual;
+            await actualizarHighScore(puntajeActual);
+            await cargarLeaderboard();
+        }
+
+        cargarRondaRoyale();
+    }
+
+    async function actualizarHighScore(nuevoScore) {
+
+        if (!Usuario || !Usuario._id) {
+            console.error("Usuario inválido para update:", Usuario);
+            cargarAlerta("Error: No estás logueado correctamente. Reinicia sesión.");
+            return;
+        }
         
-    opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
-    configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
-}
+        const userId = Usuario._id;
+        const url = `${BASE_URL_USUARIOS}/${userId}`;
+
+        try {
+            const response = await fetch(url, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: Usuario.username,
+                    email: Usuario.email,
+                    data: {
+                        ...Usuario.data,
+                        scoreMaximo: nuevoScore
+                    }
+                })
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                Usuario = {
+                    ...Usuario, 
+                    ...updatedUser,
+                    data: {
+                        ...Usuario.data,
+                        ...updatedUser.data
+                    }
+                };
+            }
+        } catch (error) {
+            console.error("Error actualizando highscore:", error);
+        }
+
+        console.log("Highscore actualizado a:", nuevoScore)
+    }
+
+    async function cargarDatosDePaisRandomCompetitivo(contenido, imagen){
+        let idContenido = contenido.id;
+        let nombreContenido = contenido.name;
+        let pais = await recibirBanderaDePais(idContenido);
+        imagen.innerHTML = `<h3>${nombreContenido}</h3>`
+        imagen.innerHTML += `<img src="${pais}"></img>`;
+    }
+
+    async function cambiarAreaCompetitivo(contenido){
+        let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
+        areaData = pais.valor;
+        paisData = pais.pais;
+        return {areaData, paisData}
+    }
 
 
+//COMPETITIVO EAT MY BUTTER/////////////////////
 
-        async function cambiarGuitaCompetitivo(contenido){
+    async function juegoButterRoyaleEatMyButter(pais1) {
+        
+        preguntaButterRoyale.innerHTML = `<h2>Eat My Butter</h2>`
+        preguntaButterRoyale.innerHTML += `
+        <h3>A cuanta gente podes alimentar en un año con la manteca que embadurna a ${pais1.name}?</h3>`
+
+        let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
+        let toneladasTotales = toneladasTotalesCalc(areaData);
+
+        const calorías = 2400;
+        const diasAño = 365;
+        const caloriasAño = calorías * diasAño;
+        const caloriasMantecaGramo = 7.17;
+
+        const gramosMantecaPersona = caloriasAño / caloriasMantecaGramo;
+        const kilosMantecaPersona = gramosMantecaPersona / 1000;
+        const toneladasMantecaPersona = kilosMantecaPersona / 1000;
+        const personasAlimentadas = Math.floor(toneladasTotales / toneladasMantecaPersona);
+
+        respuestaCorrecta = personasAlimentadas;
+
+        const factor = Math.random() * 1.5 + 0.5;
+        const respuestaIncorrecta = Math.floor(personasAlimentadas * factor);
+
+        opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
+        configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
+    }
+
+//COMPETITIVO PAY FOR MY BUTTER/////////////////////
+
+    async function juegoButterRoyalePayForMyButter(pais1) {
+        preguntaButterRoyale.innerHTML = `<h2>Pay For My Butter</h2>`
+        
+        preguntaButterRoyale.innerHTML += `
+        <h3>Qué pais puede pagar la manteca necesaria para enmantecar ${pais1.name}?</h3>`
+        let guita = await cambiarGuitaCompetitivo(pais1.id);
+        guita = guita.valor;
+        console.log(guita);
+        let recibirPaises = await conseguirPaisConGDPSimilar(guita);
+        console.log(recibirPaises);
+        
+        let paisProductor = recibirPaises.Productor;
+        respuestaCorrecta = paisProductor;
+        let paisRandom = recibirPaises.Random;
+        respuestaIncorrecta = paisRandom;
+            
+        opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
+        configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
+    }
+
+    async function cambiarGuitaCompetitivo(contenido){
         let pais = await recibirDatoDePais("NY.GDP.MKTP.CD", contenido)
         guitaData = pais.valor;
         paisData = pais.pais;
         let dataEnviar = {nombre: paisData, valor: guitaData}
-        return dataEnviar
+        
+        return dataEnviar;
+    }
+
+    async function conseguirPaisConGDPSimilar(guita) {
+        const listaPaises = await obtenerListaPaisesWorldBank();
+        
+        console.log(listaPaises);
+        let matrizPlataPais = [];
+        listaPaises.sort();
+        let promesas = listaPaises.map(element => cambiarGuitaCompetitivo(element.id));
+        let results = await Promise.all(promesas);
+        
+        for (let i = 0; i < listaPaises.length; i++) {
+            if (results[i].valor != null && !isNaN(results[i].valor)) {
+                matrizPlataPais.push({nombre: listaPaises[i].name, plata: results[i].valor});
+            }
         }
+        
+        console.log(matrizPlataPais);
+        matrizPlataPais.sort((a, b) => a.plata - b.plata);
+        
+        for (let index = 0; index < matrizPlataPais.length; index++) {
+            const element = matrizPlataPais[index];
+            if (element.plata > guita) {
+                console.log(element.plata);
+                let paisProductor = element.nombre;
+                let randomIndex = Math.floor(Math.random() * (index + 1));
+                let paisRandom = matrizPlataPais[randomIndex].nombre;
+                let retorno = {"Productor": paisProductor, "Random": paisRandom};
+                console.log(retorno);            
+                return retorno;
+            }
+        }
+        
+        let paisProductor = matrizPlataPais[matrizPlataPais.length - 1].nombre;
+        let randomIndex = Math.floor(Math.random() * matrizPlataPais.length);
+        let paisRandom = matrizPlataPais[randomIndex].nombre;
+        let retorno = {"Productor": paisProductor, "Random": paisRandom};
+        console.log(retorno);
+        
+        return retorno;
+    }
 
+//COMPETITIVO BUTTER MY COUNTRY/////////////////////
 
-async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
-    preguntaButterRoyale.innerHTML = `<h2>Butter My Country</h2>`
-    
+    async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
+        preguntaButterRoyale.innerHTML = `<h2>Butter My Country</h2>`
+        
         preguntaButterRoyale.innerHTML += `
         <h3>Cuantas toneladas de manteca necesitas para enmantecar ${pais1.name}?</h3>`
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
@@ -976,14 +1026,12 @@ async function juegoButterRoyaleButterMyCountry(pais1, pais2) {
     
         opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
-}
+    }
 
+//COMPETITIVO PRODUCE MY BUTTER/////////////////////
 
-
-
-
-async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
-    preguntaButterRoyale.innerHTML = `<h2>Prdouce My Butter</h2>`
+    async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
+        preguntaButterRoyale.innerHTML = `<h2>Prdouce My Butter</h2>`
         preguntaButterRoyale.innerHTML += `
         <h3>Qué pais puede enmantecar completamente a ${pais1.name} con su producción de manteca?</h3>`
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
@@ -1000,18 +1048,37 @@ async function juegoButterRoyaleProduceMyButter(pais1, pais2) {
                 
         opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
-}
+    }
 
+    function conseguirPaisConMantecaSimilar(toneladasTotales) {
+        for (let index = produccionDeMantecaPorPais.length - 1; index >= 0; index--) {
+            const element = produccionDeMantecaPorPais[index];
+            if (element.manteca > toneladasTotales) {
+                let paisProductor = element.nombre;
+                let randomIndex = Math.floor(Math.random() * (index + 1));
+                let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
+                let retorno = {Productor: paisProductor, Random: paisRandom};
+                return retorno;
+            }
+        }
+        let paisProductor = produccionDeMantecaPorPais[0].nombre;
+        let randomIndex = Math.floor(Math.random() * produccionDeMantecaPorPais.length);
+        let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
+        let retorno = {Productor: paisProductor, Random: paisRandom};
+        return retorno;
+    }
 
-async function juegoButterRoyaleButterToTheMoon(pais1) {
-        preguntaButterRoyale.innerHTML = `<h2>Butter to the moon</h2>`
-        preguntaButterRoyale.innerHTML += `
-        <h3>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h3>`
+//COMPETITIVO BUTTER TO THE MOON/////////////////////
+
+    async function juegoButterRoyaleButterToTheMoon(pais1) {
+        preguntaButterRoyale.innerHTML = `<h2>Butter to the moon</h2>`;
+        preguntaButterRoyale.innerHTML += `<h3>Que tan cerca de la luna puede llegar la torre de manteca que embadurna ${pais1.name}?</h3>`;
 
         let {areaData, paisData} = await cambiarAreaCompetitivo(pais1.id);
         let toneladasTotales1 = toneladasTotalesCalc(areaData);
         
         const alturaBarraMantecaMetros = 0.115;
+        
         //Una barra de manteca pesa 200gramos
         const alturaKiloManteca = alturaBarraMantecaMetros * 5;
         const alturaToneladaManteca = alturaKiloManteca * 1000;
@@ -1025,107 +1092,41 @@ async function juegoButterRoyaleButterToTheMoon(pais1) {
                 
         opciones = mezclarOpciones([respuestaCorrecta, respuestaIncorrecta]);
         configurarOpcionesDeRespuesta(opciones, respuestaCorrecta);
-}
-
-
-
-  async function cargarDatosDePaisRandomCompetitivo(contenido, imagen){
-    let idContenido = contenido.id;
-    let nombreContenido = contenido.name;
-    let pais = await recibirBanderaDePais(idContenido);
-    imagen.innerHTML = `<h3>${nombreContenido}</h3>`
-    imagen.innerHTML += `<img src="${pais}"></img>`;
-  }
-
-      async function cambiarAreaCompetitivo(contenido){
-        let pais = await recibirDatoDePais("AG.LND.TOTL.K2", contenido)
-        areaData = pais.valor;
-        paisData = pais.pais;
-        return {areaData, paisData}
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function conseguirPaisConMantecaSimilar(toneladasTotales) {
-    for (let index = produccionDeMantecaPorPais.length - 1; index >= 0; index--) {
-        const element = produccionDeMantecaPorPais[index];
-        if (element.manteca > toneladasTotales) {
-            let paisProductor = element.nombre;
-            let randomIndex = Math.floor(Math.random() * (index + 1));
-            let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
-            let retorno = {Productor: paisProductor, Random: paisRandom};
-            return retorno;
-        }
-    }
-    let paisProductor = produccionDeMantecaPorPais[0].nombre;
-    let randomIndex = Math.floor(Math.random() * produccionDeMantecaPorPais.length);
-    let paisRandom = produccionDeMantecaPorPais[randomIndex].nombre;
-    let retorno = {Productor: paisProductor, Random: paisRandom};
-    return retorno;
-}
-
-async function conseguirPaisConGDPSimilar(guita) {
-        const listaPaises = await obtenerListaPaisesWorldBank();
-        console.log(listaPaises);
-        let matrizPlataPais = [];
-        listaPaises.sort();
-        let promesas = listaPaises.map(element => cambiarGuitaCompetitivo(element.id));
-        let results = await Promise.all(promesas);
-        for (let i = 0; i < listaPaises.length; i++) {
-            if (results[i].valor != null && !isNaN(results[i].valor)) {
-                matrizPlataPais.push({nombre: listaPaises[i].name, plata: results[i].valor});
-            }
-        }
-        console.log(matrizPlataPais);
-        matrizPlataPais.sort((a, b) => a.plata - b.plata);
-    for (let index = 0; index < matrizPlataPais.length; index++) {
-        const element = matrizPlataPais[index];
-        if (element.plata > guita) {
-            console.log(element.plata);
-            let paisProductor = element.nombre;
-            let randomIndex = Math.floor(Math.random() * (index + 1));
-            let paisRandom = matrizPlataPais[randomIndex].nombre;
-            let retorno = {"Productor": paisProductor, "Random": paisRandom};
-            console.log(retorno);            
-            return retorno;
-        }
-    }
-    let paisProductor = matrizPlataPais[matrizPlataPais.length - 1].nombre;
-    let randomIndex = Math.floor(Math.random() * matrizPlataPais.length);
-    let paisRandom = matrizPlataPais[randomIndex].nombre;
-    let retorno = {"Productor": paisProductor, "Random": paisRandom};
-    console.log(retorno);
-    return retorno;
-}
+    
 
 //LEADERBOARD
 
-async function cargarLeaderboard() {
-    
-    const listaLeaderboard = document.querySelector("#listaLeaderboard");
-    
-    try {
-        const response = await fetch(BASE_URL_USUARIOS);
-        const data = await response.json();
-        const usuarios = data.data;
+    async function cargarLeaderboard() {
+        
+        const listaLeaderboard = document.querySelector("#listaLeaderboard");
+        
+        try {
+            const response = await fetch(BASE_URL_USUARIOS);
+            const data = await response.json();
+            const usuarios = data.data;
 
-        const usuariosDeButter = usuarios.filter(u => u.data && u.data.juego === "ButterMyCountry");
+            const usuariosDeButter = usuarios.filter(u => u.data && u.data.juego === "ButterMyCountry");
 
-        usuariosDeButter.sort((a, b) => b.data.scoreMaximo - a.data.scoreMaximo);
+            usuariosDeButter.sort((a, b) => b.data.scoreMaximo - a.data.scoreMaximo);
 
-        const top10 = usuariosDeButter.slice(0, 10);
+            const top10 = usuariosDeButter.slice(0, 10);
 
-        listaLeaderboard.innerHTML = "";
+            listaLeaderboard.innerHTML = "";
 
-        top10.forEach((user, index) => {
-            const li = document.createElement("li");
-            li.innerHTML = `<strong>${user.username}</strong> ${user.data.scoreMaximo} puntos`;
-            listaLeaderboard.appendChild(li);
-        });
+            top10.forEach((user, index) => {
+                const li = document.createElement("li");
+                li.innerHTML = `<strong>${user.username}</strong> ${user.data.scoreMaximo} puntos`;
+                listaLeaderboard.appendChild(li);
+            });
 
-        console.log("Usuarios actualizados:", usuariosDeButter);
-    } catch (error) {
-        console.error("Error al cargar el leaderboard:", error);
-    }  
-}
+            console.log("Usuarios actualizados:", usuariosDeButter);
+        } catch (error) {
+            console.error("Error al cargar el leaderboard:", error);
+        }  
+    }
 
-cargarLeaderboard();
+    cargarLeaderboard();
