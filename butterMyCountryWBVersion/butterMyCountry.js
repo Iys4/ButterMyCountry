@@ -647,9 +647,7 @@ let Usuario = "";
         const errorData = await response.json();
         console.log("Respuesta de error:", errorData);
         cargarAlerta(`Error al borrar el usuario: ${errorData.message || JSON.stringify(errorData)}`);
-
-    }    
-}
+    }
 
 function cancelarBorradoUsuario(){
     PUBorrar.style.display="none";
@@ -1177,4 +1175,5 @@ async function actualizarDatosUsuario(){
         }  
     }
 
-    cargarLeaderboard();
+        cargarLeaderboard(); 
+    }
